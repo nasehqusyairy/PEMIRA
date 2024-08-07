@@ -15,8 +15,7 @@ public abstract class TableSeeder(DatabaseContext context) : ISeeder
     var tableProperty = DBContext.GetType().GetProperty(Model.Name + "s");
     if (tableProperty == null) return;
 
-    var table = tableProperty.GetValue(DBContext) as IQueryable<object>;
-    if (table == null) return;
+    if (tableProperty.GetValue(DBContext) is not IQueryable<object> table) return;
 
     DBContext.RemoveRange(table);
     DBContext.SaveChanges();

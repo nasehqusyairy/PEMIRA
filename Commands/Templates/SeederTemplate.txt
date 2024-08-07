@@ -1,0 +1,22 @@
+using PEMIRA.Interfaces;
+using PEMIRA.Models;
+
+namespace PEMIRA.Seeders
+{
+    public class {Model}Seeder(DatabaseContext context) : TableSeeder(context), ISeeder
+    {
+        public override Type Model => typeof({Model});
+
+        public override void Seed()
+        {
+            if (DBContext.{Model}s.Any()) return;
+
+            List<{Model}> items = new List<{Model}>
+            {
+                new {Model}() { }
+            };
+            DBContext.{Model}s.AddRange(items);
+            DBContext.SaveChanges();
+        }
+    }
+}
