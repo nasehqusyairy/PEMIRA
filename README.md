@@ -13,14 +13,14 @@ This is the PEMIRA project built with ASP.NET Core MVC and Entity Framework.
 
 1. **Clone the repository:**
 
-  ```bash
+  ```PowerShell
     git clone https://github.com/nasehqusyairy/PEMIRA.git
     cd PEMIRA
   ```
 
 2. **Open the project in Visual Studio Code:**
 
-  ```bash
+  ```PowerShell
     code .
   ```
   
@@ -33,20 +33,20 @@ This is the PEMIRA project built with ASP.NET Core MVC and Entity Framework.
 
   Open the terminal in VS Code (Ctrl + `) and run:
 
-  ```bash
+  ```PowerShell
     dotnet restore
   ```
 
 5. **Update database**
 
   Run the following command to apply migrations:
-  ```bash
+  ```PowerShell
     dotnet ef database update
   ```
 
 6. **Run the Project**
 
-  ```bash
+  ```PowerShell
     dotnet run
   ```
 
@@ -54,7 +54,7 @@ This is the PEMIRA project built with ASP.NET Core MVC and Entity Framework.
 
 1. **Clone the repository**
 
-  ```bash
+  ```PowerShell
     git clone https://github.com/nasehqusyairy/PEMIRA.git
     cd PEMIRA
   ```
@@ -70,7 +70,7 @@ This is the PEMIRA project built with ASP.NET Core MVC and Entity Framework.
 4. **Update the dataase**
 
    Open the ``Package Manager Console`` from ``Tools`` > ``NuGet Package Manager`` and run:
-   ```bash
+   ```PowerShell
     Update-Database
    ```
 
