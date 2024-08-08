@@ -60,12 +60,20 @@
           }
         </div>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID">
+          <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID" required>
           <label asp-for="Code">ID</label>
         </div>
-        <div class="form-floating mb-3">
-          <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password">
-          <label asp-for="Password">Password</label>
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password" required>
+            <label asp-for="Password">Password</label>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="showPassword()" style="
+            display: flex;
+            align-items: center;
+            justify-content: center;" id="show-password" title="Show Password">
+            <i class="bi bi-eye"></i>
+          </button>
         </div>
         <div class="d-grid gap-2 mb-3">
           <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
@@ -100,6 +108,22 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+
+  <script>
+    function showPassword() {
+      const password = document.getElementById('Password');
+      const showPassword = document.getElementById('show-password');
+      if (password.type === 'password') {
+        password.type = 'text';
+        showPassword.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        showPassword.title = 'Hide Password';
+      } else {
+        password.type = 'password';
+        showPassword.innerHTML = '<i class="bi bi-eye"></i>';
+        showPassword.title = 'Show Password';
+      }
+    }
+  </script>
 
 </body>
 
