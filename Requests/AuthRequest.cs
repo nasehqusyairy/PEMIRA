@@ -51,7 +51,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
             RoleUser? roleUser = user.RoleUsers.FirstOrDefault();
             if (roleUser == null)
             {
-                errorMessages.Add("Kamu tidak memiliki akses ke pemilihan ini");
+                errorMessages.Add("Kamu tidak memiliki akses ke pencoblosan ini");
             }
         }
 
