@@ -1,0 +1,106 @@
+@model User
+@{
+  Layout = null;
+  ViewBag.PageTitle = "Authentication";
+  List<string> errorMessages = TempData["ErrorMessages"] as List<string> ?? new List<string>();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insuladev Templates | Sign In</title>
+  <link rel="stylesheet" href="~/css/main.min.css">
+  <link rel="shortcut icon" href="/img/LOGO BULAT.png">
+
+  <!-- Theme Color -->
+  <!-- <meta name="theme-color" content="#008080"> -->
+  <meta name="theme-color" content="#0d6efd">
+  <style>
+    .bd-login-form {
+      min-height: 100vh;
+      flex: 3;
+      background-position: center;
+      background-size: cover;
+    }
+
+    .bd-login-cover {
+      flex: 8;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .5)), url(/img/bg-login.jpg);
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+
+<body style="background-color: var(--bs-gray-900);">
+  <div class="bg-white d-block d-lg-flex">
+
+    <section class="bd-login-form px-5 h-100 d-flex align-items-center justify-content-center">
+      <!-- login form -->
+      <form class="w-100" asp-action="Login" method="post">
+        <div class="text-center">
+          <h3 class=" fw-bold">Sign In</h3>
+          <p class="text-muted ">
+            Please enter your ID and Password
+          </p>
+          @if (errorMessages.Count > 0)
+          {
+            <div class="alert alert-danger text-justify" id="error-message" role="alert">
+              <ul>
+                @foreach (var errorMessage in errorMessages)
+                {
+                  <li>@errorMessage</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+        <div class="form-floating mb-3">
+          <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID">
+          <label asp-for="Code">ID</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password">
+          <label asp-for="Password">Password</label>
+        </div>
+        <div class="d-grid gap-2 mb-3">
+          <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="bd-login-cover p-3 p-lg-5 d-flex flex-column justify-content-center justify-content-lg-end">
+      <div class="row justify-content-end">
+        <div class="col-12 col-lg-6">
+          <div class="border border-light rounded p-5 shadow" style="
+          backdrop-filter: blur( 4px );
+          backdrop-filter: blur( 7.5px );
+          -webkit-backdrop-filter: blur( 10px );">
+            <div class="text-white text-justify">
+              <img src="/img/LOGO_TRANSPARAN.png" alt="Logo" height="75" class="mb-3">
+              <h2 class="fw-bold">Insuladev Templates</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In nemo a debitis iure autem pariatur sed
+                enim,
+                numquam, aliquid repudiandae, maxime inventore laborum recusandae veritatis laboriosam corrupti libero
+                perferendis explicabo! </p>
+              <p>© @(DateTime.Now.Year) Insuladev Official. All rights reserved.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

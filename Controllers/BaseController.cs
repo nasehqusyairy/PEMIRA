@@ -3,11 +3,11 @@ using PEMIRA.Models;
 
 namespace PEMIRA.Controllers
 {
-	public class Base : Controller
+	public class BaseController : Controller
 	{
 		protected readonly DatabaseContext _context;
 
-		public Base()
+		public BaseController()
 		{
 			_context = new DatabaseContext();
 		}

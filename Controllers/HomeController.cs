@@ -8,7 +8,7 @@ using PEMIRA.ViewModels;
 
 namespace PEMIRA.Controllers
 {
-	public class HomeController : Base
+	public class HomeController : BaseController
 	{
 		public IActionResult Index() => View();
 
