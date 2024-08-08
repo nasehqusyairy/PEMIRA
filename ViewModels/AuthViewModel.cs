@@ -13,10 +13,7 @@ namespace PEMIRA.ViewModels
 
     public long ElectionId { get; set; } = 0;
 
-    public List<Election> GetElections()
-    {
-      return new DatabaseContext().Elections.ToList();
-    }
+    public List<Election> GetElections() => [.. new DatabaseContext().Elections];
 
   }
 }

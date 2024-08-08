@@ -11,10 +11,10 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.Permissions.Any()) return;
 
-            List<Permission> items = new List<Permission>
-            {
-                new Permission() { }
-            };
+            List<Permission> items = [
+                new () { }
+            ];
+            
             DBContext.Permissions.AddRange(items);
             DBContext.SaveChanges();
         }

@@ -14,7 +14,7 @@ public class AuthController : BaseController
     public IActionResult Index(AuthViewModel input)
     {
         AuthService service = new(_context);
-        AuthRequest requestValidator = new(_context, input, service);
+        AuthRequest requestValidator = new(input, service);
 
         List<string> errorMessages = requestValidator.GetErrorMessages();
         if (errorMessages.Count > 0)

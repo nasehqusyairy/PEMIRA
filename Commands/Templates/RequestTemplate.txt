@@ -3,9 +3,8 @@ using PEMIRA.Models;
 
 namespace PEMIRA.Requests
 {
-  public class {ClassName}(DatabaseContext context, {Model} input) : IRequest<{Model}>
+  public class {ClassName}({Model} input) : IRequest<{Model}>
   {
-    public DatabaseContext DBContext { get; set; } = context;
     public {Model} UserInput { get; set; } = input;
 
     public List<string> GetErrorMessages()
