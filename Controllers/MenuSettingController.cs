@@ -2,7 +2,7 @@
 
 namespace PEMIRA.Controllers
 {
-    public class MenuSettingController : Base
+    public class MenuSettingController : BaseController
     {
         public IActionResult Index() => View();
         
