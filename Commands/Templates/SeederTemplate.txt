@@ -11,10 +11,9 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.{Model}s.Any()) return;
 
-            List<{Model}> items = new List<{Model}>
-            {
-                new {Model}() { }
-            };
+            List<{Model}> items = [
+                new () { }
+            ];
             DBContext.{Model}s.AddRange(items);
             DBContext.SaveChanges();
         }

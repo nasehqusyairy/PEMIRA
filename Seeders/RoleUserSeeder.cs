@@ -11,10 +11,14 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.RoleUsers.Any()) return;
 
-            List<RoleUser> items = new List<RoleUser>
-            {
-                new RoleUser() { }
-            };
+            List<Role> roles = [.. DBContext.Roles];
+            List<User> users = [.. DBContext.Users];
+            List<RoleUser> items = [
+                new() {
+                    RoleId = roles[0].Id,
+                    UserId = users[0].Id
+                }
+            ];
             DBContext.RoleUsers.AddRange(items);
             DBContext.SaveChanges();
         }

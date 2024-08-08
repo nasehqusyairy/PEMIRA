@@ -11,10 +11,15 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.Users.Any()) return;
 
-            List<User> items = new List<User>
-            {
-                new User() { }
-            };
+            List<User> items = [
+                new() {
+                    Name = "Admin",
+                    Code = "70536",
+                    Password = "password",
+                    Gender = true
+                }
+            ];
+
             DBContext.Users.AddRange(items);
             DBContext.SaveChanges();
         }

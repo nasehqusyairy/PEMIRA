@@ -2,9 +2,9 @@
 
 namespace PEMIRA.Controllers
 {
-    public class UserController : Base
+    public class UserController : BaseController
     {
         public IActionResult Index() => View();
-        
+
     }
 }

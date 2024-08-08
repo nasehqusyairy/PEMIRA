@@ -34,15 +34,13 @@ app.OnExecute(() =>
 	else
 	{
 		// Database seeding
-		using (var scope = app.Services.CreateScope())
-		{
-			var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+		using var scope = app.Services.CreateScope();
+		var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
 
-			// Uncomment this line to revert the database
-			// seeder.Revert();
+		// Uncomment this line to revert the database
+		seeder.Revert();
 
-			seeder.Seed();
-		}
+		seeder.Seed();
 	}
 
 	app.UseHttpsRedirection();

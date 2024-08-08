@@ -2,9 +2,9 @@
 
 namespace PEMIRA.Controllers
 {
-    public class TokenController : Base
+    public class TokenController : BaseController
     {
         public IActionResult Index() => View();
-        
+
     }
 }

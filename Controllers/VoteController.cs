@@ -2,9 +2,9 @@
 
 namespace PEMIRA.Controllers
 {
-    public class VoteController : Base
+    public class VoteController : BaseController
     {
         public IActionResult Index() => View();
-        
+
     }
 }
