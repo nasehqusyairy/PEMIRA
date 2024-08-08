@@ -3,6 +3,8 @@ using PEMIRA.Requests;
 using PEMIRA.ViewModels;
 using PEMIRA.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace PEMIRA.Controllers;
 public class AuthController : BaseController
@@ -12,7 +14,7 @@ public class AuthController : BaseController
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Index(AuthViewModel input)
+    public async Task<IActionResult> Index(AuthViewModel input)
     {
         AuthService service = new(_context);
         AuthRequest requestValidator = new(input, service);
@@ -25,16 +27,21 @@ public class AuthController : BaseController
         }
 
         HttpContext.Session.SetString("Code", input.Code);
-        long RoleId = requestValidator.ValidatedData.Id == 1 ? 1 :
-              requestValidator.ValidatedData.RoleUsers.FirstOrDefault()?.RoleId ?? 4;
         List<Claim> claims = [
-                    new Claim(ClaimTypes.Name, requestValidator.ValidatedData.Name),
-                    new Claim(ClaimTypes.Role, RoleId.ToString())];
+            new Claim(ClaimTypes.Name, requestValidator.ValidatedData.User.Name),
+            new Claim(ClaimTypes.Role, requestValidator.ValidatedData.RoleId.ToString())
+        ];
+
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
         return RedirectToAction("Index", "Home");
     }
 
     public ActionResult Logout()
     {
+        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         HttpContext.Session.Remove("code");
         HttpContext.Session.Clear();
         return RedirectToAction("Index", "Auth"); // Redirect to login page after logout

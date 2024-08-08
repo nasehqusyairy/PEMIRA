@@ -6,9 +6,8 @@ namespace PEMIRA.Services
     {
         private readonly DatabaseContext _context = context;
 
-        public User? GetUserByCode(string code, long electionId) => _context.Users
-        .Include(user => user.RoleUsers.Where(roleUser => roleUser.ElectionId == electionId))
-        .ThenInclude(roleUser => roleUser.Role)
-        .FirstOrDefault(user => user.Code == code);
+        public User? GetUserByCode(string code) => _context.Users.FirstOrDefault(user => user.Code == code);
+
+        public RoleUser? GetRoleUserByUserId(long userId, long electionId) => _context.RoleUsers.FirstOrDefault(roleUser => roleUser.UserId == userId && roleUser.ElectionId == electionId);
     }
 }

@@ -9,7 +9,13 @@ namespace PEMIRA.Requests;
 
 public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<AuthViewModel>
 {
-    public User ValidatedData { get; set; } = new(); 
+    public class ValidatedDataObject
+    {
+        public required User User { get; set; }
+        public long RoleId { get; set; }
+    };
+
+    public ValidatedDataObject ValidatedData { get; set; }
     public AuthViewModel UserInput { get; set; } = input;
     private readonly AuthService _service = service;
 
@@ -38,7 +44,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
 
         // periksa apakah user ditemukan, password benar, dan memiliki akses ke pemilihan
-        User? user = _service.GetUserByCode(UserInput.Code, UserInput.ElectionId);
+        User? user = _service.GetUserByCode(UserInput.Code);
         if (user == null)
         {
             errorMessages.Add("User tidak ditemukan");
@@ -49,15 +55,27 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
         else if (user.Id != 1)
         {
-            RoleUser? roleUser = user.RoleUsers.FirstOrDefault();
+            RoleUser? roleUser = _service.GetRoleUserByUserId(user.Id, UserInput.ElectionId);
             if (roleUser == null)
             {
                 errorMessages.Add("Kamu tidak memiliki akses ke pencoblosan ini");
             }
             else
             {
-                ValidatedData = user;
+                ValidatedData = new()
+                {
+                    User = user,
+                    RoleId = roleUser.RoleId
+                };
             }
+        }
+        else
+        {
+            ValidatedData = new()
+            {
+                User = user,
+                RoleId = 1
+            };
         }
 
         return errorMessages;
