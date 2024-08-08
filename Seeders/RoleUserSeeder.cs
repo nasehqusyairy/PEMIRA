@@ -19,6 +19,15 @@ namespace PEMIRA.Seeders
                     UserId = users[0].Id
                 }
             ];
+
+            for (int i = 0; i < 10; i++)
+            {
+                items.Add(new RoleUser
+                {
+                    RoleId = roles[3].Id,
+                    UserId = users[i + 1].Id
+                });
+            }
             DBContext.RoleUsers.AddRange(items);
             DBContext.SaveChanges();
         }

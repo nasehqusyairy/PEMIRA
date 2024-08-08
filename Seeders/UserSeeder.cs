@@ -16,9 +16,20 @@ namespace PEMIRA.Seeders
                     Name = "Admin",
                     Code = "70536",
                     Password = "password",
-                    Gender = true
+                    Gender = false
                 }
             ];
+
+            for (int i = 0; i < 10; i++)
+            {
+                items.Add(new User
+                {
+                    Name = Faker.Name.FullName(),
+                    Code = Faker.RandomNumber.Next(10000, 99999).ToString(),
+                    Password = "password",
+                    Gender = Faker.RandomNumber.Next(0, 1) == 0
+                });
+            }
 
             DBContext.Users.AddRange(items);
             DBContext.SaveChanges();
