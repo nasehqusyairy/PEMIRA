@@ -10,7 +10,7 @@ namespace PEMIRA.Controllers;
 public class AuthController : BaseController
 {
 
-    public IActionResult Index() => View(new AuthViewModel());
+    public IActionResult Index() => (User?.Identity?.IsAuthenticated == true) ? RedirectToAction("Index", "Home") : View(new AuthViewModel());
 
     [HttpPost]
     [ValidateAntiForgeryToken]
