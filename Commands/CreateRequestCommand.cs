@@ -4,16 +4,23 @@ using System.IO;
 
 namespace PEMIRA.Commands
 {
-  public class CreateSeederCommand
+  public class CreateRequestCommand
   {
     public static void Register(CommandLineApplication app)
     {
-      app.Command("create-seeder", (command) =>
+      app.Command("create-form-request-validator", (command) =>
       {
-        command.Description = "Create a seeder file with the specified model name";
+        command.Description = "Create a form request validator file with the specified name";
 
         command.OnExecute(() =>
           {
+            var className = Prompt.GetString("Enter class name: ");
+            if (string.IsNullOrEmpty(className))
+            {
+              Console.WriteLine("Class name is required.");
+              return 1;
+            }
+
             var modelName = Prompt.GetString("Enter model name: ");
             if (string.IsNullOrEmpty(modelName))
             {
@@ -21,7 +28,7 @@ namespace PEMIRA.Commands
               return 1;
             }
 
-            var templateFilePath = Path.Combine("Commands/Templates", "SeederTemplate.txt");
+            var templateFilePath = Path.Combine("Commands/Templates", "RequestTemplate.txt");
             if (!File.Exists(templateFilePath))
             {
               Console.WriteLine($"Template file not found: {templateFilePath}");
@@ -29,13 +36,14 @@ namespace PEMIRA.Commands
             }
 
             var template = File.ReadAllText(templateFilePath);
+            template = template.Replace("{ClassName}", className);
             template = template.Replace("{Model}", modelName);
 
-            var filePath = Path.Combine("Seeders", $"{modelName}Seeder.cs");
+            var filePath = Path.Combine("Requests", $"{className}.cs");
             Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
             File.WriteAllText(filePath, template);
 
-            Console.WriteLine($"Seeder for {modelName} model has been created successfully at {filePath}");
+            Console.WriteLine($"{className} class has been created successfully at {filePath}");
             return 0;
           });
       });

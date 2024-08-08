@@ -1,13 +1,12 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using PEMIRA.Interfaces;
 using PEMIRA.Models;
 
 namespace PEMIRA.Requests
 {
-  public class TagRequest(DatabaseContext context, Tag input) : IRequest<Tag>
+  public class CandidateRequest(DatabaseContext context, Candidate input) : IRequest<Candidate>
   {
     public DatabaseContext _context { get; set; } = context;
-    public Tag Input { get; set; } = input;
+    public Candidate Input { get; set; } = input;
 
     public List<string> GetErrorMessages()
     {

@@ -12,6 +12,7 @@ var app = new CommandLineApplication
 app.HelpOption("-?|-h|--help");
 
 CreateSeederCommand.Register(app);
+CreateRequestCommand.Register(app);
 
 app.OnExecute(() =>
 {

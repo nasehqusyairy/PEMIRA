@@ -14,6 +14,7 @@ namespace PEMIRA.Seeders
             List<{Model}> items = [
                 new () { }
             ];
+            
             DBContext.{Model}s.AddRange(items);
             DBContext.SaveChanges();
         }
