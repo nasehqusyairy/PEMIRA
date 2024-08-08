@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PEMIRA.Models;
-
 namespace PEMIRA.Controllers
 {
 	public class BaseController : Controller

@@ -14,8 +14,8 @@ namespace PEMIRA.Seeders
       if (DBContext.Menusegments.Any()) return;
 
       List<Menusegment> menusegments = [
-        new() { Name = "Pemira Bayhi" },
-        new() { Name = "Administrator" },
+        new() { Name = "Pemira" },
+        new() { Name = "Admin" },
         new() { Name = "Settings" }
       ];
       DBContext.Menusegments.AddRange(menusegments);

@@ -4,12 +4,14 @@ using PEMIRA.Requests;
 using PEMIRA.Services;
 using System.Diagnostics;
 using PEMIRA.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace PEMIRA.Controllers
 {
 	public class HomeController : BaseController
 	{
+		[Authorize]
 		public IActionResult Index() => View();
 
 		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
