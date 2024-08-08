@@ -2,6 +2,22 @@
 @{
   List<Menusegment> segments = Model.AdminMenus.Select(m => m.Menusegment).Distinct().ToList();
 }
+<style>
+  #sidebar .list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #sidebar .list-group-item :first-child {
+    flex: 0;
+    height: fit-content;
+  }
+
+  #sidebar .submenu-title {
+    flex: auto;
+  }
+</style>
 <aside class="bd-sidebar">
   <div class="offcanvas-lg offcanvas-start text-bg-dark pb-5" id="sidebar">
 
@@ -72,7 +88,7 @@
           <div class="accordion-header px-3">
             <button class="accordion-button text-bg-dark shadow-none p-0 py-3" type="button" data-bs-toggle="collapse"
               data-bs-target="#submenu-general">
-              GENERAL
+              UMUM
             </button>
           </div>
 
@@ -81,8 +97,7 @@
             <div class="accordion-body p-0 px-3">
               <div class="list-group list-group-flush">
 
-                <a href="./profile.html"
-                  class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark text-truncate"
+                <a href="./profile.html" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark"
                   data-bs-placement="right" data-bs-title="Profile">
                   <img src="~/img/LOGO_LIGHT MODE.png" alt="" width="16" class="me-3 rounded-circle">
                   <span class="submenu-title">Mohammad Nasyikh Al-Qusyairy</span>
