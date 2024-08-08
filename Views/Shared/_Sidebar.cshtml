@@ -88,7 +88,7 @@
           <div class="accordion-header px-3">
             <button class="accordion-button text-bg-dark shadow-none p-0 py-3" type="button" data-bs-toggle="collapse"
               data-bs-target="#submenu-general">
-              UMUM
+              Profil
             </button>
           </div>
 
@@ -97,17 +97,23 @@
             <div class="accordion-body p-0 px-3">
               <div class="list-group list-group-flush">
 
-                <a asp-controller="Profile" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark"
+                @{
+                  var isActive = string.Equals(ViewContext.RouteData.Values["controller"]?.ToString(), "Profile",
+                  StringComparison.OrdinalIgnoreCase);
+                }
+
+                <a asp-controller="Profile"
+                  class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark @(isActive ? "active" : "")"
                   data-bs-placement="right" data-bs-title="Profile">
                   <img src="~/img/LOGO_LIGHT MODE.png" alt="" width="16" class="me-3 rounded-circle">
-                  <span class="submenu-title">Mohammad Nasyikh Al-Qusyairy</span>
+                  <span class="submenu-title">Mohammad...</span>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark"
                   data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right"
                   data-bs-title="Log Out">
                   <i class="bi bi-box-arrow-left me-3"></i>
-                  <span class="submenu-title">Log Out</span>
+                  <span class="submenu-title">Keluar</span>
                 </a>
 
               </div>
