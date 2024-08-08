@@ -9,6 +9,7 @@ namespace PEMIRA.Requests;
 
 public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<AuthViewModel>
 {
+    public User ValidatedData { get; set; } = new(); 
     public AuthViewModel UserInput { get; set; } = input;
     private readonly AuthService _service = service;
 
@@ -52,6 +53,10 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
             if (roleUser == null)
             {
                 errorMessages.Add("Kamu tidak memiliki akses ke pencoblosan ini");
+            }
+            else
+            {
+                ValidatedData = user;
             }
         }
 

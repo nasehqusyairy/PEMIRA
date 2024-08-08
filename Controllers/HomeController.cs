@@ -3,20 +3,21 @@ using System.Diagnostics;
 using PEMIRA.ViewModels;
 using PEMIRA.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace PEMIRA.Controllers
 {
 	public class HomeController : BaseController
 	{
+		[Authorize]
 		public IActionResult Index()
 		{
 			string? code = HttpContext.Session.GetString("Code");
-			if (code == null)
-			{
-				return RedirectToAction("Index", "Auth");
-			}
-
+			//if (code == null)
+			//{
+			//	return RedirectToAction("Index", "Auth");
+			//}
 			User user = _context.Users
 				.Where(u => u.Code == code)
 				.Include(u => u.RoleUsers.Where(ru => ru.ElectionId == 2))

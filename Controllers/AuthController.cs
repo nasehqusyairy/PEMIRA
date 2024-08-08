@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PEMIRA.Requests;
 using PEMIRA.ViewModels;
 using PEMIRA.Services;
+using System.Security.Claims;
 
 namespace PEMIRA.Controllers;
 public class AuthController : BaseController
@@ -24,7 +25,11 @@ public class AuthController : BaseController
         }
 
         HttpContext.Session.SetString("Code", input.Code);
-
+        long RoleId = requestValidator.ValidatedData.Id == 1 ? 1 :
+              requestValidator.ValidatedData.RoleUsers.FirstOrDefault()?.RoleId ?? 4;
+        List<Claim> claims = [
+                    new Claim(ClaimTypes.Name, requestValidator.ValidatedData.Name),
+                    new Claim(ClaimTypes.Role, RoleId.ToString())];
         return RedirectToAction("Index", "Home");
     }
 

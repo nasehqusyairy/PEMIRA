@@ -32,17 +32,17 @@ app.OnExecute(() =>
 
     });
     builder.Services.AddHttpContextAccessor();
-    // builder.Services.AddAuthorization(options =>
-    // {
-    //     options.AddPolicy("Admin",
-    //          policy => policy.RequireRole("Admin"));
-    //     options.AddPolicy("Pembina",
-    //          policy => policy.RequireRole("Pembina"));
-    //     options.AddPolicy("Panitia",
-    //          policy => policy.RequireRole("Panitia"));
-    //     options.AddPolicy("Peserta",
-    //          policy => policy.RequireRole("Peserta"));
-    // });
+    builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("Admin",
+             policy => policy.RequireRole("1"));
+        options.AddPolicy("Pembina",
+             policy => policy.RequireRole("2"));
+        options.AddPolicy("Panitia",
+             policy => policy.RequireRole("3"));
+        options.AddPolicy("Peserta",
+             policy => policy.RequireRole("4"));
+    });
     builder.Services.AddSession(options =>
     {
         options.Cookie.Name = ".PEMIRA.Session";
@@ -76,7 +76,7 @@ app.OnExecute(() =>
     app.UseSession();
     app.UseRouting();
 
-    // app.UseAuthorization();
+    app.UseAuthorization();
 
     app.MapControllerRoute(
             name: "default",
