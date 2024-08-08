@@ -11,11 +11,11 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
 {
     public class ValidatedDataObject
     {
-        public required User User { get; set; }
+        public User User { get; set; } = new();
         public long RoleId { get; set; }
     };
 
-    public ValidatedDataObject ValidatedData { get; set; }
+    public ValidatedDataObject ValidatedData { get; set; } = new();
     public AuthViewModel UserInput { get; set; } = input;
     private readonly AuthService _service = service;
 
@@ -44,7 +44,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
 
         // periksa apakah user ditemukan, password benar, dan memiliki akses ke pemilihan
-        User? user = _service.GetUserByCode(UserInput.Code);
+        User? user = _service.GetUserByCode(UserInput.Code, UserInput.ElectionId);
         if (user == null)
         {
             errorMessages.Add("User tidak ditemukan");
@@ -55,7 +55,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
         else if (user.Id != 1)
         {
-            RoleUser? roleUser = _service.GetRoleUserByUserId(user.Id, UserInput.ElectionId);
+            RoleUser? roleUser = user.RoleUsers.FirstOrDefault(ru => ru.ElectionId == UserInput.ElectionId);
             if (roleUser == null)
             {
                 errorMessages.Add("Kamu tidak memiliki akses ke pencoblosan ini");
