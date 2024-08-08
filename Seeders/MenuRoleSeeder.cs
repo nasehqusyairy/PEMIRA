@@ -22,7 +22,8 @@ namespace PEMIRA.Seeders
         new() { MenuId = menus[3].Id, RoleId = roles[0].Id },
         new() { MenuId = menus[4].Id, RoleId = roles[0].Id },
         new() { MenuId = menus[5].Id, RoleId = roles[0].Id },
-        new() { MenuId = menus[6].Id, RoleId = roles[0].Id }
+        new() { MenuId = menus[6].Id, RoleId = roles[0].Id },
+        new() { MenuId = menus[7].Id, RoleId = roles[0].Id },
       ];
       DBContext.MenuRoles.AddRange(menuRoles);
       DBContext.SaveChanges();

@@ -14,7 +14,9 @@ namespace PEMIRA.Seeders
 
       List<Role> roles = [
         new() { Name = "Admin" },
-        new() { Name = "User" }
+        new() { Name = "Pembina" },
+        new() { Name = "Panitia" },
+        new() { Name = "Peserta" }
       ];
       DBContext.Roles.AddRange(roles);
       DBContext.SaveChanges();
