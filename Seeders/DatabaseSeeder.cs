@@ -17,6 +17,7 @@ namespace PEMIRA.Seeders
         new MenusegmentSeeder(DBContext),
         new MenuSeeder(DBContext),
         new MenuRoleSeeder(DBContext),
+        new UserSeeder(DBContext),
       ];
     }
     private readonly List<ISeeder> Seeders;

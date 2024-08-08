@@ -12,9 +12,10 @@ public class AuthController : BaseController
   [HttpPost]
   public IActionResult Login(User input)
   {
-    if (new AuthRequest(_context, ModelState, input).Validate())
+    var errorMessages = new AuthRequest(_context, input).GetErrorMessages();
+    if (errorMessages.Count > 0)
     {
-      TempData["ErrorMessages"] = RequestHelper.GetErrorMessages(ModelState);
+      TempData["ErrorMessages"] = errorMessages;
       return View("Index", input);
     }
 
