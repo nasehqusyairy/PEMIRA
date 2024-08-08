@@ -146,7 +146,6 @@ namespace PEMIRA.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false, defaultValueSql: "'New Candidate'", collation: "utf8mb4_general_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    owner = table.Column<long>(type: "bigint(20)", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "current_timestamp()"),
                     updated_at = table.Column<DateTime>(type: "timestamp", nullable: false, defaultValueSql: "current_timestamp()")
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
@@ -158,12 +157,6 @@ namespace PEMIRA.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PRIMARY", x => x.id);
-                    table.ForeignKey(
-                        name: "elections_users_fk",
-                        column: x => x.owner,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_elections_created_by",
                         column: x => x.created_by,
@@ -503,11 +496,6 @@ namespace PEMIRA.Migrations
                 name: "election_user_users_FK",
                 table: "election_user",
                 column: "user_id");
-
-            migrationBuilder.CreateIndex(
-                name: "elections_users_fk",
-                table: "elections",
-                column: "owner");
 
             migrationBuilder.CreateIndex(
                 name: "fk_elections_created_by",

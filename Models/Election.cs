@@ -9,8 +9,6 @@ public partial class Election
 
     public string Name { get; set; } = null!;
 
-    public long Owner { get; set; }
-
     public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
@@ -30,8 +28,6 @@ public partial class Election
     public virtual User? DeletedByNavigation { get; set; }
 
     public virtual ICollection<ElectionUser> ElectionUsers { get; set; } = new List<ElectionUser>();
-
-    public virtual User OwnerNavigation { get; set; } = null!;
 
     public virtual ICollection<RoleUser> RoleUsers { get; set; } = new List<RoleUser>();
 

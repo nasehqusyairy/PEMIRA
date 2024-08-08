@@ -11,10 +11,14 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.Elections.Any()) return;
 
-            List<Election> items = new List<Election>
-            {
-                new Election() { }
-            };
+            List<Election> items = [
+                new(){
+                    Name = "Pemira 2021"
+                },
+                new(){
+                    Name = "Pemira 2022"
+                },
+            ];
             DBContext.Elections.AddRange(items);
             DBContext.SaveChanges();
         }

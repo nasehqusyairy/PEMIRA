@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 var app = new CommandLineApplication
 {
-	Name = "PEMIRA CLI"
+    Name = "PEMIRA CLI"
 };
 app.HelpOption("-?|-h|--help");
 
@@ -16,33 +16,33 @@ CreateRequestCommand.Register(app);
 
 app.OnExecute(() =>
 {
-	var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
-	// Add services to the container.
-	builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+    // Add services to the container.
+    builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-	builder.Services.AddScoped<DatabaseSeeder>();
+    builder.Services.AddScoped<DatabaseSeeder>();
     builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Auth/Index"; // Redirect to Login action on unauthorized access
+        options.LoginPath = "/Auth/"; // Redirect to Login action on unauthorized access
         options.LogoutPath = "/Login/Logout";
         options.AccessDeniedPath = "/AccessDenied"; // Redirect on forbidden actions
         options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Set cookie expiration
 
     });
     builder.Services.AddHttpContextAccessor();
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("Admin",
-             policy => policy.RequireRole("Admin"));
-        options.AddPolicy("Pembina",
-             policy => policy.RequireRole("Pembina"));
-        options.AddPolicy("Panitia",
-             policy => policy.RequireRole("Panitia"));
-        options.AddPolicy("Peserta",
-             policy => policy.RequireRole("Peserta"));
-    });
+    // builder.Services.AddAuthorization(options =>
+    // {
+    //     options.AddPolicy("Admin",
+    //          policy => policy.RequireRole("Admin"));
+    //     options.AddPolicy("Pembina",
+    //          policy => policy.RequireRole("Pembina"));
+    //     options.AddPolicy("Panitia",
+    //          policy => policy.RequireRole("Panitia"));
+    //     options.AddPolicy("Peserta",
+    //          policy => policy.RequireRole("Peserta"));
+    // });
     builder.Services.AddSession(options =>
     {
         options.Cookie.Name = ".PEMIRA.Session";
@@ -52,39 +52,39 @@ app.OnExecute(() =>
     });
     var app = builder.Build();
 
-	// Configure the HTTP request pipeline.
-	if (!app.Environment.IsDevelopment())
-	{
-		app.UseExceptionHandler("/Home/Error");
-		// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-		app.UseHsts();
-	}
-	else
-	{
-		// Database seeding
-		using var scope = app.Services.CreateScope();
-		var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Home/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+    else
+    {
+        // Database seeding
+        using var scope = app.Services.CreateScope();
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
 
-		// Uncomment this line to revert the database
-		//seeder.Revert();
+        // Uncomment this line to revert the database
+        seeder.Revert();
 
-		seeder.Seed();
-	}
+        seeder.Seed();
+    }
 
-	app.UseHttpsRedirection();
-	app.UseStaticFiles();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
     app.UseSession();
     app.UseRouting();
 
-	app.UseAuthorization();
+    // app.UseAuthorization();
 
-	app.MapControllerRoute(
-			name: "default",
-			pattern: "{controller=Home}/{action=Index}/{id?}");
+    app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
 
-	app.Run();
+    app.Run();
 
-	return 0;
+    return 0;
 });
 
 app.Execute(args);

@@ -18,6 +18,8 @@ namespace PEMIRA.Seeders
         new MenuSeeder(DBContext),
         new MenuRoleSeeder(DBContext),
         new UserSeeder(DBContext),
+        new ElectionSeeder(DBContext),
+        new RoleUserSeeder(DBContext),
       ];
     }
     private readonly List<ISeeder> Seeders;

@@ -5,9 +5,9 @@ namespace PEMIRA.Interfaces;
 
 public interface IRequest<T>
 {
-  DatabaseContext _context { get; set; }
+  DatabaseContext DBContext { get; set; }
 
-  T Input { get; set; }
+  T UserInput { get; set; }
 
   List<string> GetErrorMessages();
 }

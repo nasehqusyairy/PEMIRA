@@ -12,7 +12,7 @@ using PEMIRA.Models;
 namespace PEMIRA.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240807063554_Init")]
+    [Migration("20240808154035_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -169,10 +169,6 @@ namespace PEMIRA.Migrations
                         .HasColumnName("name")
                         .HasDefaultValueSql("'New Candidate'");
 
-                    b.Property<long>("Owner")
-                        .HasColumnType("bigint(20)")
-                        .HasColumnName("owner");
-
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("timestamp")
@@ -187,8 +183,6 @@ namespace PEMIRA.Migrations
 
                     b.HasKey("Id")
                         .HasName("PRIMARY");
-
-                    b.HasIndex(new[] { "Owner" }, "elections_users_fk");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_elections_created_by");
 
@@ -681,13 +675,6 @@ namespace PEMIRA.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("fk_elections_deleted_by");
 
-                    b.HasOne("PEMIRA.Models.User", "OwnerNavigation")
-                        .WithMany("ElectionOwnerNavigations")
-                        .HasForeignKey("Owner")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("elections_users_fk");
-
                     b.HasOne("PEMIRA.Models.User", "UpdatedByNavigation")
                         .WithMany("ElectionUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
@@ -697,8 +684,6 @@ namespace PEMIRA.Migrations
                     b.Navigation("CreatedByNavigation");
 
                     b.Navigation("DeletedByNavigation");
-
-                    b.Navigation("OwnerNavigation");
 
                     b.Navigation("UpdatedByNavigation");
                 });
@@ -939,8 +924,6 @@ namespace PEMIRA.Migrations
                     b.Navigation("ElectionCreatedByNavigations");
 
                     b.Navigation("ElectionDeletedByNavigations");
-
-                    b.Navigation("ElectionOwnerNavigations");
 
                     b.Navigation("ElectionUpdatedByNavigations");
 

@@ -1,4 +1,4 @@
-@model User
+@model AuthViewModel
 @{
   Layout = null;
   ViewBag.PageTitle = "Authentication";
@@ -41,7 +41,7 @@
 
     <section class="bd-login-form px-5 h-100 d-flex align-items-center justify-content-center">
       <!-- login form -->
-      <form class="w-100" asp-action="Login" method="post">
+      <form class="w-100" asp-action="Index" method="post">
         <div class="text-center">
           <h3 class=" fw-bold">Sign In</h3>
           <p class="text-muted ">
@@ -74,6 +74,17 @@
             justify-content: center;" id="show-password" title="Show Password">
             <i class="bi bi-eye"></i>
           </button>
+        </div>
+        @* select election *@
+        <div class="form-floating mb-3">
+          <select class="form-select" asp-for="ElectionId" required>
+            <option value="0">Select Election</option>
+            @foreach (Election election in Model.GetElections())
+            {
+              <option value="@(election.Id)">@election.Name</option>
+            }
+          </select>
+          <label asp-for="ElectionId">Election</label>
         </div>
         <div class="d-grid gap-2 mb-3">
           <button type="submit" class="btn btn-primary btn-lg">Sign In</button>

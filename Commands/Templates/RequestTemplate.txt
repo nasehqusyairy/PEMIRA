@@ -5,8 +5,8 @@ namespace PEMIRA.Requests
 {
   public class {ClassName}(DatabaseContext context, {Model} input) : IRequest<{Model}>
   {
-    public DatabaseContext _context { get; set; } = context;
-    public {Model} Input { get; set; } = input;
+    public DatabaseContext DBContext { get; set; } = context;
+    public {Model} UserInput { get; set; } = input;
 
     public List<string> GetErrorMessages()
     {

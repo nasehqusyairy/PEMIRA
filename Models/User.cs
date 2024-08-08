@@ -47,8 +47,6 @@ public partial class User
 
     public virtual ICollection<Election> ElectionDeletedByNavigations { get; set; } = new List<Election>();
 
-    public virtual ICollection<Election> ElectionOwnerNavigations { get; set; } = new List<Election>();
-
     public virtual ICollection<Election> ElectionUpdatedByNavigations { get; set; } = new List<Election>();
 
     public virtual ICollection<ElectionUser> ElectionUsers { get; set; } = new List<ElectionUser>();

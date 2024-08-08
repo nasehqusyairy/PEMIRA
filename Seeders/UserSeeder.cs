@@ -31,6 +31,14 @@ namespace PEMIRA.Seeders
                 });
             }
 
+            items.Add(new User
+            {
+                Name = "Test User 1",
+                Code = "70537",
+                Password = "password",
+                Gender = false
+            });
+
             DBContext.Users.AddRange(items);
             DBContext.SaveChanges();
         }

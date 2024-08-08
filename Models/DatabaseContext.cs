@@ -169,8 +169,6 @@ public partial class DatabaseContext : DbContext
 
             entity.ToTable("elections");
 
-            entity.HasIndex(e => e.Owner, "elections_users_fk");
-
             entity.HasIndex(e => e.CreatedBy, "fk_elections_created_by");
 
             entity.HasIndex(e => e.DeletedBy, "fk_elections_deleted_by");
@@ -197,9 +195,6 @@ public partial class DatabaseContext : DbContext
                 .HasMaxLength(100)
                 .HasDefaultValueSql("'New Candidate'")
                 .HasColumnName("name");
-            entity.Property(e => e.Owner)
-                .HasColumnType("bigint(20)")
-                .HasColumnName("owner");
             entity.Property(e => e.UpdatedAt)
                 .ValueGeneratedOnAddOrUpdate()
                 .HasDefaultValueSql("current_timestamp()")
@@ -218,10 +213,6 @@ public partial class DatabaseContext : DbContext
                 .HasForeignKey(d => d.DeletedBy)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("fk_elections_deleted_by");
-
-            entity.HasOne(d => d.OwnerNavigation).WithMany(p => p.ElectionOwnerNavigations)
-                .HasForeignKey(d => d.Owner)
-                .HasConstraintName("elections_users_fk");
 
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.ElectionUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)

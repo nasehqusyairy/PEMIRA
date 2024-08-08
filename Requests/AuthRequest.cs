@@ -1,58 +1,85 @@
+using Microsoft.EntityFrameworkCore;
 using PEMIRA.Interfaces;
 using PEMIRA.Models;
+using PEMIRA.Services;
+using PEMIRA.ViewModels;
 using System.Text.RegularExpressions;
 
-namespace PEMIRA.Requests
-{
-    public class AuthRequest(DatabaseContext context, User input) : IRequest<User>
-    {
-        public DatabaseContext _context { get; set; } = context;
-        public User Input { get; set; } = input;
-        private readonly User _input = input;
+namespace PEMIRA.Requests;
 
-        public List<string> GetErrorMessages()
+public class AuthRequest(DatabaseContext context, AuthViewModel input, AuthService service) : IRequest<AuthViewModel>
+{
+    public DatabaseContext DBContext { get; set; } = context;
+    public AuthViewModel UserInput { get; set; } = input;
+
+    private readonly AuthService _service = service;
+
+    public List<string> GetErrorMessages()
+    {
+        List<string> errorMessages = [];
+        // periksa apakah code dan password diisi
+        if (!string.IsNullOrWhiteSpace(UserInput.Code))
         {
-            List<string> errorMessages = [];
-            // periksa apakah code dan password diisi
-            if (!string.IsNullOrWhiteSpace(_input.Code))
+            if (!string.IsNullOrEmpty(UserInput.Password))
             {
-                if (!string.IsNullOrEmpty(_input.Password))
+                // pastikan code hanya berisi huruf dan angka
+                if (Regex.IsMatch(UserInput.Code, @"^[a-zA-Z0-9]+$"))
                 {
-                    // pastikan code hanya berisi huruf dan angka
-                    if (!Regex.IsMatch(_input.Code, @"^[a-zA-Z0-9]+$"))
+                    if (Regex.IsMatch(UserInput.Password, @"^[a-zA-Z0-9]+$"))
                     {
-                        errorMessages.Add("ID Hanya Boleh Berisi Huruf dan Angka");
+                        // cari user berdasarkan code
+                        User? user = _service.GetUserByCode(UserInput.Code, UserInput.ElectionId);
+                        if (user != null)
+                        {
+                            if (user.Password == UserInput.Password)
+                            {
+                                // jika id user = 1, maka user adalah admin
+                                if (user.Id != 1)
+                                {
+                                    // cari role user berdasarkan id user dan id pemilihan
+                                    RoleUser? roleUser = user.RoleUsers.FirstOrDefault();
+                                    if (roleUser != null)
+                                    {
+                                        return [];
+                                    }
+                                    else
+                                    {
+                                        errorMessages.Add("Kamu tidak memiliki akses ke pemilihan ini");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                errorMessages.Add("Password salah");
+                            }
+                        }
+                        else
+                        {
+                            errorMessages.Add("User tidak ditemukan");
+                        }
                     }
-                    if (!Regex.IsMatch(_input.Password, @"^[a-zA-Z0-9]+$"))
+                    else
                     {
                         errorMessages.Add("Password Hanya Boleh Berisi Huruf dan Angka");
-                    }
-                    var user = _context.Users.FirstOrDefault(user => user.Code == _input.Code);
-                    if (user == null)
-                    {
-                        errorMessages.Add("User tidak ditemukan");
-                    }
-                    else if (user.Password != _input.Password)
-                    {
-                        errorMessages.Add("Password salah");
                     }
                 }
                 else
                 {
-                    errorMessages.Add("Password harus diisi");
+                    errorMessages.Add("ID Hanya Boleh Berisi Huruf dan Angka");
                 }
             }
             else
             {
-                errorMessages.Add("ID harus diisi");
+                errorMessages.Add("Password harus diisi");
             }
-
-
-            // periksa apakah user sudah terdaftar
-
-
-            return errorMessages;
         }
+        else
+        {
+            errorMessages.Add("ID harus diisi");
+        }
+
+        return errorMessages;
     }
 }
+
 
