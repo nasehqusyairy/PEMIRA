@@ -57,10 +57,6 @@ namespace PEMIRA.Seeders
                 new() {
                     Name = "Token",
                     Icon = "shield-exclamation",
-<<<<<<< Updated upstream
-                    Url = "/Token/",
-                    MenusegmentId = menusegments[1].Id
-=======
                     Url = "/Token/Index",
                     MenusegmentId = menusegments[1].Id 
                 },
@@ -69,7 +65,6 @@ namespace PEMIRA.Seeders
                     Icon = "gear",
                     Url = "/MenuSetting/Index",
                     MenusegmentId = menusegments[2].Id 
->>>>>>> Stashed changes
                 }
             ];
             DBContext.Menus.AddRange(menus);
