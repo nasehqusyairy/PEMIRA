@@ -1,6 +1,6 @@
 
 # PEMIRA Project
-This is the PEMIRA project built with ASP.NET Core MVC and Entity Framework.
+This is the PEMIRA (Pemilihan Umum Raya) project built with ASP.NET Core MVC and Entity Framework.
 
 ## Prerequisites
 
