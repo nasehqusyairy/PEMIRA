@@ -14,14 +14,14 @@ This is the PEMIRA (Pemilihan Umum Raya) project built with ASP.NET Core MVC and
 
 1.  **Clone the repository:**
 
-```powerShell
+```bash
 git clone "https://github.com/nasehqusyairy/PEMIRA.git"
 cd PEMIRA
 ```
 
 2.  **Open the project in Visual Studio Code:**
 
-```powerShell
+```bash
 code .
 ```
 
@@ -34,7 +34,7 @@ code .
 4.  **Restore the NuGet Packages**
 Open the terminal in VS Code (Ctrl + `) and run:
 
-```powerShell
+```bash
 dotnet restore
 ```
 
@@ -52,7 +52,7 @@ dotnet run
 
 1.  **Clone the repository**
 
-```powerShell
+```bash
 git clone "https://github.com/nasehqusyairy/PEMIRA.git"
 cd PEMIRA
 ```
@@ -87,13 +87,13 @@ You also need to uncomment this line in the `Program.cs` file
 Once everything is ready, do a build on the project to empty the data in the table and fill it again with data from the seeder that has been created
 
 Command:
-```PowerShell
-dotnet run create-seeder
+```bash
+dotnet run create:seeder
 ```
 This command will display a prompt asking us to enter the class name of the model in question.
 
 Example:
-```PowerShell
+```bash
 Enter model name:	User
 ```
 It will create a file named `UserSeeder.cs` in `Seeders` folder. You can also use the [Faker.Net](https://github.com/oriches/faker-cs) library to compose various data
@@ -102,6 +102,6 @@ It will create a file named `UserSeeder.cs` in `Seeders` folder. You can also us
 We separated the logic for validating user input into a separate file in the `Requests ` folder. This may not be the best way, but it is enough to solve our problem of data validation flexibly.
 
 Command:
-```PowerShell
-dotnet run create-form-request-validator
+```bash
+dotnet run create:request-validator
 ```
