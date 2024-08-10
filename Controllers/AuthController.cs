@@ -26,11 +26,13 @@ public class AuthController : BaseController
             return View("Index", input);
         }
 
+        var validatedData = (AuthRequest.ValidatedDataObject)requestValidator.ValidatedData;
+
         List<Claim> claims = [
             // simpan id election ke cookie
             new Claim("ElectionId", input.ElectionId.ToString()),
-            new Claim("UserId", requestValidator.ValidatedData.User.Id.ToString()),
-            new Claim(ClaimTypes.Role, requestValidator.ValidatedData.RoleId.ToString())
+            new Claim("UserId", validatedData.User.Id.ToString()),
+            new Claim(ClaimTypes.Role, validatedData.RoleId.ToString())
         ];
 
         ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);

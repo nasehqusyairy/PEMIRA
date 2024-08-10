@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace PEMIRA.Requests;
 
-public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<AuthViewModel>
+public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<AuthViewModel, AuthService>
 {
     public class ValidatedDataObject
     {
@@ -15,9 +15,10 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         public long RoleId { get; set; }
     };
 
-    public ValidatedDataObject ValidatedData { get; set; } = new();
+    public object ValidatedData { get; set; } = new ValidatedDataObject();
     public AuthViewModel UserInput { get; set; } = input;
-    private readonly AuthService _service = service;
+
+    public AuthService Service { get; set; } = service;
 
     public List<string> GetErrorMessages()
     {
@@ -44,7 +45,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
 
         // periksa apakah user ditemukan, password benar, dan memiliki akses ke pemilihan
-        User? user = _service.GetUserByCode(UserInput.Code, UserInput.ElectionId);
+        User? user = Service.GetUserByCode(UserInput.Code, UserInput.ElectionId);
         if (user == null)
         {
             errorMessages.Add("User tidak ditemukan");
@@ -62,7 +63,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
             }
             else
             {
-                ValidatedData = new()
+                ValidatedData = new ValidatedDataObject()
                 {
                     User = user,
                     RoleId = roleUser.RoleId
@@ -71,7 +72,7 @@ public class AuthRequest(AuthViewModel input, AuthService service) : IRequest<Au
         }
         else
         {
-            ValidatedData = new()
+            ValidatedData = new ValidatedDataObject()
             {
                 User = user,
                 RoleId = 1

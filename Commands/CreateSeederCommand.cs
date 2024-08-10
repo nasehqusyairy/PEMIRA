@@ -32,6 +32,17 @@ namespace PEMIRA.Commands
             template = template.Replace("{Model}", modelName);
 
             var filePath = Path.Combine("Seeders", $"{modelName}Seeder.cs");
+
+            if (File.Exists(filePath))
+            {
+              var overwrite = Prompt.GetYesNo("File already exists. Overwrite?", false);
+              if (!overwrite)
+              {
+                Console.WriteLine("Operation cancelled.");
+                return 1;
+              }
+            }
+
             Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
             File.WriteAllText(filePath, template);
 

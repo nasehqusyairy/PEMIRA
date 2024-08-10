@@ -3,9 +3,16 @@ using PEMIRA.Models;
 
 namespace PEMIRA.Requests
 {
-  public class {ClassName}({Model} input) : IRequest<{Model}>
-  {
-    public {Model} UserInput { get; set; } = input;
+public class {ClassName}({InputModel} input{ServiceParameter}) : IRequest<{InputModel}{ServiceType}>
+{
+    public class ValidatedDataObject
+    {
+      // Summary of validated values
+    };
+
+    public object ValidatedData { get; set; } = new ValidatedDataObject();
+    public {InputModel} UserInput { get; set; } = input;
+    {ServiceProperty}
 
     public List<string> GetErrorMessages()
     {
