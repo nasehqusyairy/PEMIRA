@@ -3,13 +3,4 @@
     ViewBag.PageTitle = "Home Page";
 }
 
-<h2>Welcome, @(Model.Name).
-    @if (Model.Id == 1)
-    {
-        <span>You are logged as an Admin.</span>
-    }
-    else
-    {
-        <span>You are logged as @(Model.RoleUsers.First().Role.Name).</span>
-    }
-</h2>
+<h2>Welcome, @(Model.Name).</h2>

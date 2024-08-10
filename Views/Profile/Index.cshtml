@@ -1,33 +1,48 @@
-@model User
+@model ProfileViewModel
 @{
   ViewBag.PageTitle = "Profil";
 }
 
 <div class="row">
-  <div class="col-12 col-md-6">
+  <div class="col-12">
     <div class="card">
       <div class="card-body">
         <form asp-action="Edit" method="post">
-          <div class="mb-3">
-            <label class="form-label" asp-for="Code">ID</label>
-            <input type="text" class="form-control" asp-for="Code" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" asp-for="Name">Nama</label>
-            <input type="text" class="form-control" asp-for="Name" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" asp-for="Password">Password</label>
-            <input type="password" class="form-control" asp-for="Password" required>
-          </div>
-          @* select with floating label *@
-          <div class="mb-3">
-            <label class="form-label" asp-for="Gender">Jenis Kelamin</label>
-            <select class="form-select" asp-for="Gender" required>
-              <option value="">Pilih Jenis Kelamin</option>
-              <option value="false">Laki-Laki</option>
-              <option value="true">Perempuan</option>
-            </select>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="Code">ID</label>
+                <input type="text" class="form-control" asp-for="Code" required>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="Name">Nama</label>
+                <input type="text" class="form-control" asp-for="Name" required>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="Password">Kata Sandi</label>
+                <input type="password" class="form-control" asp-for="Password" required>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="ConfirmPassword">Konfirmasi Kata Sandi</label>
+                <input type="password" class="form-control" asp-for="ConfirmPassword" required>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label" asp-for="Gender">Jenis Kelamin</label>
+                <select class="form-select" asp-for="Gender" required>
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="false">Laki-Laki</option>
+                  <option value="true">Perempuan</option>
+                </select>
+              </div>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary">Simpan</button>
         </form>

@@ -4,25 +4,19 @@ using PEMIRA.ViewModels;
 using PEMIRA.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace PEMIRA.Controllers
 {
 	public class HomeController : BaseController
 	{
+
 		[Authorize]
 		public IActionResult Index()
 		{
-			string? code = HttpContext.Session.GetString("Code");
-			//if (code == null)
-			//{
-			//	return RedirectToAction("Index", "Auth");
-			//}
-			User user = _context.Users
-				.Where(u => u.Code == code)
-				.Include(u => u.RoleUsers.Where(ru => ru.ElectionId == 2))
-					.ThenInclude(ru => ru.Role)
-				.First();
+			long id = Convert.ToInt64(_cookie.FindFirst("UserId")?.Value);
+			User user = new DatabaseContext().Users.First(u => u.Id == id);
 
 			return View(user);
 		}

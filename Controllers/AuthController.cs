@@ -10,7 +10,7 @@ namespace PEMIRA.Controllers;
 public class AuthController : BaseController
 {
 
-    public IActionResult Index() => (User?.Identity?.IsAuthenticated == true) ? RedirectToAction("Index", "Home") : View(new AuthViewModel());
+    public IActionResult Index() => (_cookie.Identity?.IsAuthenticated == true) ? RedirectToAction("Index", "Home") : View(new AuthViewModel());
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -26,15 +26,21 @@ public class AuthController : BaseController
             return View("Index", input);
         }
 
-        HttpContext.Session.SetString("Code", input.Code);
         List<Claim> claims = [
-            new Claim(ClaimTypes.Name, requestValidator.ValidatedData.User.Name),
+            // simpan id election ke cookie
+            new Claim("ElectionId", input.ElectionId.ToString()),
+            new Claim("UserId", requestValidator.ValidatedData.User.Id.ToString()),
             new Claim(ClaimTypes.Role, requestValidator.ValidatedData.RoleId.ToString())
         ];
 
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        var principal = new ClaimsPrincipal(identity);
+        ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        ClaimsPrincipal principal = new(identity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+        if (input.ReturnUrl != null)
+        {
+            return Redirect(input.ReturnUrl);
+        }
 
         return RedirectToAction("Index", "Home");
     }
@@ -42,8 +48,6 @@ public class AuthController : BaseController
     public ActionResult Logout()
     {
         HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        HttpContext.Session.Remove("code");
-        HttpContext.Session.Clear();
         return RedirectToAction("Index", "Auth"); // Redirect to login page after logout
     }
 }

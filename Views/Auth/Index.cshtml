@@ -3,6 +3,7 @@
   Layout = null;
   ViewBag.PageTitle = "Authentication";
   List<string> errorMessages = TempData["ErrorMessages"] as List<string> ?? new List<string>();
+  Model.ReturnUrl = Context.Request.Query["ReturnUrl"];
 }
 
 <!DOCTYPE html>
@@ -42,23 +43,24 @@
     <section class="bd-login-form px-5 h-100 d-flex align-items-center justify-content-center">
       <!-- login form -->
       <form class="w-100" asp-action="Index" method="post">
+        <input type="hidden" asp-for="ReturnUrl">
         <div class="text-center">
           <h3 class=" fw-bold">Autentikasi</h3>
           <p class="text-muted ">
             Silahkan masukkan ID dan Kata Sandi Anda
           </p>
-          @if (errorMessages.Count > 0)
-          {
-            <div class="alert alert-danger text-justify" id="error-message" role="alert">
-              <ul class="m-0">
-                @foreach (var errorMessage in errorMessages)
-                {
-                  <li>@errorMessage</li>
-                }
-              </ul>
-            </div>
-          }
         </div>
+        @if (errorMessages.Count > 0)
+        {
+          <div class="alert alert-danger" id="error-message" role="alert">
+            <ul class="m-0">
+              @foreach (var errorMessage in errorMessages)
+              {
+                <li>@errorMessage</li>
+              }
+            </ul>
+          </div>
+        }
         <div class="form-floating mb-3">
           <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID" required>
           <label asp-for="Code">ID</label>
@@ -72,7 +74,7 @@
             display: flex;
             align-items: center;
             justify-content: center;" id="show-password" title="Show Password">
-            <i class="bi bi-eye"></i>
+            <i class="bi bi-eye px-2"></i>
           </button>
         </div>
         @* select election *@
@@ -84,7 +86,7 @@
               <option value="@(election.Id)">@election.Name</option>
             }
           </select>
-          <label asp-for="ElectionId">Election</label>
+          <label asp-for="ElectionId">Pencoblosan</label>
         </div>
         <div class="d-grid gap-2 mb-3">
           <button type="submit" class="btn btn-primary btn-lg">Masuk</button>
@@ -126,11 +128,11 @@
       const showPassword = document.getElementById('show-password');
       if (password.type === 'password') {
         password.type = 'text';
-        showPassword.innerHTML = '<i class="bi bi-eye-slash"></i>';
+        showPassword.innerHTML = '<i class="px-2 bi bi-eye-slash"></i>';
         showPassword.title = 'Sembunyikan Kata Sandi';
       } else {
         password.type = 'password';
-        showPassword.innerHTML = '<i class="bi bi-eye"></i>';
+        showPassword.innerHTML = '<i class="px-2 bi bi-eye"></i>';
         showPassword.title = 'Tampilkan Kata Sandi';
       }
     }
