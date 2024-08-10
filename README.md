@@ -98,7 +98,7 @@ Enter model name:	User
 ```
 It will create a file named `UserSeeder.cs` in `Seeders` folder. You can also use the [Faker.Net](https://github.com/oriches/faker-cs) library to compose various data
 
-### Create Form Request Validator
+### Create Request Validator
 We separated the logic for validating user input into a separate file in the `Requests ` folder. This may not be the best way, but it is enough to solve our problem of data validation flexibly.
 
 Command:

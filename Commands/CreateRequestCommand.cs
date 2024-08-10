@@ -8,7 +8,7 @@ namespace PEMIRA.Commands
   {
     public static void Register(CommandLineApplication app)
     {
-      app.Command("create-form-request-validator", (command) =>
+      app.Command("create:request-validator", (command) =>
       {
         command.Description = "Create a form request validator file with the specified name";
 

@@ -3,7 +3,7 @@ using PEMIRA.Models;
 
 namespace PEMIRA.Seeders
 {
-    public class UserSeeder(DatabaseContext context) : TableSeeder(context), ISeeder
+    public class UserSeeder(DatabaseContext context) : TableSeeder(context)
     {
         public override Type Model => typeof(User);
 
