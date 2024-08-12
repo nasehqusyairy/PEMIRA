@@ -44,7 +44,7 @@ namespace PEMIRA.Commands
                   }
                   serviceType = $", {serviceName}";
                   serviceParameter = $", {serviceName} service";
-                  serviceProperty = $"public {serviceName} Service = service;";
+                  serviceProperty = $"public {serviceName} Service {{ get; set; }} = service;";
                 }
 
                 var templateFilePath = Path.Combine("Commands/Templates", "RequestTemplate.txt");

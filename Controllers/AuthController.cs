@@ -10,29 +10,31 @@ namespace PEMIRA.Controllers;
 public class AuthController : BaseController
 {
 
-    public IActionResult Index() => (_cookie.Identity?.IsAuthenticated == true) ? RedirectToAction("Index", "Home") : View(new AuthViewModel());
+    public IActionResult Index() => (Cookie.Identity?.IsAuthenticated == true) ? RedirectToAction("Index", "Home") : View(new AuthViewModel()
+    {
+        Elections = new AuthService(_context).GetElections()
+    });
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(AuthViewModel input)
     {
         AuthService service = new(_context);
-        AuthRequest requestValidator = new(input, service);
+        AuthRequest requestValidator = new(ModelState, input, service);
 
-        List<string> errorMessages = requestValidator.GetErrorMessages();
-        if (errorMessages.Count > 0)
+        if (!requestValidator.Validate())
         {
-            TempData["ErrorMessages"] = errorMessages;
+            input.Elections = service.GetElections();
             return View("Index", input);
         }
 
-        var validatedData = (AuthRequest.ValidatedDataObject)requestValidator.ValidatedData;
+        Dictionary<string, dynamic> derivedData = requestValidator.DerivedData;
 
         List<Claim> claims = [
             // simpan id election ke cookie
             new Claim("ElectionId", input.ElectionId.ToString()),
-            new Claim("UserId", validatedData.User.Id.ToString()),
-            new Claim(ClaimTypes.Role, validatedData.RoleId.ToString())
+            new Claim("UserId",derivedData["UserId"].ToString() ),
+            new Claim(ClaimTypes.Role, derivedData["RoleId"].ToString())
         ];
 
         ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);

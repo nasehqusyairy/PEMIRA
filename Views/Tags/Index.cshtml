@@ -1,0 +1,49 @@
+﻿@model TagsViewModel
+@{
+    ViewBag.PageTitle = "Penanda";
+    List<string> errors = TempData["Errors"] as List<string> ?? new List<string>();
+}
+@{
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="mb-3">
+                        <form asp-action="Index" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="input-group">
+                                <input type="text" class="form-control" asp-for="Name" placeholder="Penanda Baru">
+                                <button class="btn btn-primary" type="submit">Tambah</button>
+                            </div>
+                            <small><span class="text-danger form-text" asp-validation-for="Name"></span></small>
+                        </form>
+                    </div>
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var tag in Model.Tags)
+                            {
+                                <tr>
+                                    <td>@tag.Id</td>
+                                    <td>@tag.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

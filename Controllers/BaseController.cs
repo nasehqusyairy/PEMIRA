@@ -8,7 +8,7 @@ namespace PEMIRA.Controllers
 	{
 		protected readonly DatabaseContext _context;
 
-		protected ClaimsPrincipal _cookie => HttpContext.User;
+		protected ClaimsPrincipal Cookie => HttpContext.User;
 
 		public BaseController()
 		{

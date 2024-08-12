@@ -1,36 +1,37 @@
 @model ProfileViewModel
 @{
   ViewBag.PageTitle = "Profil";
+  string successMessage = TempData["SuccessMessage"] as string ?? string.Empty;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+  <div class="alert alert-success alert-dismissible">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    @successMessage
+  </div>
 }
 
 <div class="row">
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <form asp-action="Edit" method="post">
+        <form asp-action="Index" method="post">
+          @Html.AntiForgeryToken()
+          <input type="hidden" asp-for="Id">
           <div class="row">
             <div class="col-12 col-md-6">
               <div class="mb-3">
                 <label class="form-label" asp-for="Code">ID</label>
                 <input type="text" class="form-control" asp-for="Code" required>
+                <small class="text-danger"><span asp-validation-for="Code"></span></small>
               </div>
             </div>
             <div class="col-12 col-md-6">
               <div class="mb-3">
                 <label class="form-label" asp-for="Name">Nama</label>
                 <input type="text" class="form-control" asp-for="Name" required>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="mb-3">
-                <label class="form-label" asp-for="Password">Kata Sandi</label>
-                <input type="password" class="form-control" asp-for="Password" required>
-              </div>
-            </div>
-            <div class="col-12 col-md-6">
-              <div class="mb-3">
-                <label class="form-label" asp-for="ConfirmPassword">Konfirmasi Kata Sandi</label>
-                <input type="password" class="form-control" asp-for="ConfirmPassword" required>
+                <small class="text-danger"><span asp-validation-for="Name"></span></small>
               </div>
             </div>
             <div class="col-12">
@@ -41,6 +42,21 @@
                   <option value="false">Laki-Laki</option>
                   <option value="true">Perempuan</option>
                 </select>
+                <small class="text-danger"><span asp-validation-for="Gender"></span></small>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="Password">Kata Sandi</label>
+                <input type="password" class="form-control" asp-for="Password">
+                <small class="text-danger"><span asp-validation-for="Password"></span></small>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label class="form-label" asp-for="ConfirmPassword">Konfirmasi Kata Sandi</label>
+                <input type="password" class="form-control" asp-for="ConfirmPassword">
+                <small class="text-danger"><span asp-validation-for="ConfirmPassword"></span></small>
               </div>
             </div>
           </div>

@@ -15,8 +15,8 @@ namespace PEMIRA.Controllers
 		[Authorize]
 		public IActionResult Index()
 		{
-			long id = Convert.ToInt64(_cookie.FindFirst("UserId")?.Value);
-			User user = new DatabaseContext().Users.First(u => u.Id == id);
+			long id = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
+			User user = _context.Users.First(u => u.Id == id);
 
 			return View(user);
 		}

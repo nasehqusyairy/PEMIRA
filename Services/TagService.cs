@@ -8,6 +8,8 @@ namespace PEMIRA.Services
 
     public List<Tag> GetTags() => [.. _context.Tags];
 
+    public Tag? GetTagByName(string name) => _context.Tags.FirstOrDefault(tag => tag.Name == name);
+
     public void Store(Tag tag)
     {
       _context.Tags.Add(tag);

@@ -43,9 +43,9 @@ namespace PEMIRA.Seeders
                     MenusegmentId = menusegments[1].Id
                 },
                 new() {
-                    Name = "Organisasi",
-                    Icon = "buildings",
-                    Url = "/Organization/",
+                    Name = "Penanda",
+                    Icon = "tag",
+                    Url = "/Tags/",
                     MenusegmentId = menusegments[1].Id
                 },
                 new() {
@@ -58,13 +58,13 @@ namespace PEMIRA.Seeders
                     Name = "Token",
                     Icon = "shield-exclamation",
                     Url = "/Token/Index",
-                    MenusegmentId = menusegments[1].Id 
+                    MenusegmentId = menusegments[1].Id
                 },
                 new() {
                     Name = "Menu Setting",
                     Icon = "gear",
                     Url = "/MenuSetting/Index",
-                    MenusegmentId = menusegments[2].Id 
+                    MenusegmentId = menusegments[2].Id
                 }
             ];
             DBContext.Menus.AddRange(menus);
