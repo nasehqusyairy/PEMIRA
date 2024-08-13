@@ -2,24 +2,24 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace PEMIRA.Commands
 {
-  public class CreateViewModelCommand
+  public class CreateControllerCommand
   {
     public static void Register(CommandLineApplication app)
     {
-      app.Command("create:view-model", (command) =>
+      app.Command("create:controller", (command) =>
       {
-        command.Description = "Create a view model file with the specified class name";
+        command.Description = "Create a view model file with the specified controller name";
 
         command.OnExecute(() =>
           {
-            var className = Prompt.GetString("Enter class name: ");
-            if (string.IsNullOrEmpty(className))
+            var controllerName = Prompt.GetString("Enter controller name: ");
+            if (string.IsNullOrEmpty(controllerName))
             {
-              Console.WriteLine("Class name is required.");
+              Console.WriteLine("Controller name is required.");
               return 1;
             }
 
-            var templateFilePath = Path.Combine("Commands/Templates", "ViewModelTemplate.txt");
+            var templateFilePath = Path.Combine("Commands/Templates", "ControllerTemplate.txt");
             if (!File.Exists(templateFilePath))
             {
               Console.WriteLine($"Template file not found: {templateFilePath}");
@@ -27,9 +27,9 @@ namespace PEMIRA.Commands
             }
 
             var template = File.ReadAllText(templateFilePath);
-            template = template.Replace("{ClassName}", className);
+            template = template.Replace("{ControllerName}", controllerName);
 
-            var filePath = Path.Combine("ViewModels", $"{className}.cs");
+            var filePath = Path.Combine("Controllers", $"{controllerName}Controller.cs");
 
             if (File.Exists(filePath))
             {
@@ -44,7 +44,7 @@ namespace PEMIRA.Commands
             Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
             File.WriteAllText(filePath, template);
 
-            Console.WriteLine($"{className} class has been created successfully at {filePath}");
+            Console.WriteLine($"{controllerName}Controller class has been created successfully at {filePath}");
             return 0;
           });
       });

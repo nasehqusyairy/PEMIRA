@@ -1,0 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
+
+namespace PEMIRA.Controllers
+{
+    public class {ControllerName} : BaseController
+    {
+        public IActionResult Index() => View();
+    }
+}

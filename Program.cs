@@ -11,6 +11,8 @@ app.HelpOption("-?|-h|--help");
 CreateSeederCommand.Register(app);
 CreateRequestCommand.Register(app);
 CreateViewModelCommand.Register(app);
+CreateControllerCommand.Register(app);
+CreateServiceCommand.Register(app);
 
 app.OnExecute(() =>
 {

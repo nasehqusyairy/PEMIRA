@@ -1,0 +1,9 @@
+using PEMIRA.Models;
+
+namespace PEMIRA.Services
+{
+  public class {ClassName}(DatabaseContext context)
+  {
+    private readonly DatabaseContext _context = context;
+  }
+}

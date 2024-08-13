@@ -2,13 +2,13 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace PEMIRA.Commands
 {
-  public class CreateViewModelCommand
+  public class CreateServiceCommand
   {
     public static void Register(CommandLineApplication app)
     {
-      app.Command("create:view-model", (command) =>
+      app.Command("create:service", (command) =>
       {
-        command.Description = "Create a view model file with the specified class name";
+        command.Description = "Create a service file with the specified class name";
 
         command.OnExecute(() =>
           {
@@ -19,7 +19,7 @@ namespace PEMIRA.Commands
               return 1;
             }
 
-            var templateFilePath = Path.Combine("Commands/Templates", "ViewModelTemplate.txt");
+            var templateFilePath = Path.Combine("Commands/Templates", "ServiceTemplate.txt");
             if (!File.Exists(templateFilePath))
             {
               Console.WriteLine($"Template file not found: {templateFilePath}");
@@ -29,7 +29,7 @@ namespace PEMIRA.Commands
             var template = File.ReadAllText(templateFilePath);
             template = template.Replace("{ClassName}", className);
 
-            var filePath = Path.Combine("ViewModels", $"{className}.cs");
+            var filePath = Path.Combine("Services", $"{className}.cs");
 
             if (File.Exists(filePath))
             {
