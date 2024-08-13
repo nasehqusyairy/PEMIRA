@@ -73,7 +73,7 @@ Update-Database
 Press `F5` to start debugging the project.
 
 ## Commands CLI
-We recommend using the terminal instead of the Package Manager Console. Theese commmands are created using `McMaster.Extensions.CommandLineUtils` library. You can modify the commands in the `Commands` Folder. You can also use the `--no-build` option at the end of each command to prevent the terminal from building the project and avoid unnecessary errors.
+We recommend using the terminal instead of the Package Manager Console. Theese commmands are created using [CommandLineUtils](https://github.com/natemcmaster/CommandLineUtils) library. You can modify the commands in the `Commands` Folder. You can also use the `--no-build` option at the end of each command to prevent the terminal from building the project and avoid unnecessary errors.
 
 ### Create Seeder
 Seeder class is used to provide data automatically to the database. It will represent a table in the database and requires a model to access the table. Once a seeder has been created, you must add it to the `Seeder` array in the `DatabaseSeeder` class in the `Seeder` folder.

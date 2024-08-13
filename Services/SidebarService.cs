@@ -14,7 +14,7 @@ namespace PEMIRA.Services
     {
       _context = new DatabaseContext();
       long UserId = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
-      _roleId = Convert.ToInt64(Cookie.FindFirst(ClaimTypes.Role)?.Value);
+      _roleId = Convert.ToInt64(Cookie.FindFirst("RoleId")?.Value);
       _currentUser = _context.Users.First(u => u.Id == UserId);
     }
 

@@ -31,10 +31,9 @@ public class AuthController : BaseController
         Dictionary<string, dynamic> derivedData = requestValidator.DerivedData;
 
         List<Claim> claims = [
-            // simpan id election ke cookie
             new Claim("ElectionId", input.ElectionId.ToString()),
             new Claim("UserId",derivedData["UserId"].ToString() ),
-            new Claim(ClaimTypes.Role, derivedData["RoleId"].ToString())
+            new Claim("RoleId", derivedData["RoleId"].ToString())
         ];
 
         ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -49,7 +48,7 @@ public class AuthController : BaseController
         return RedirectToAction("Index", "Home");
     }
 
-    public ActionResult Logout()
+    public IActionResult Logout()
     {
         HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         return RedirectToAction("Index", "Auth"); // Redirect to login page after logout
