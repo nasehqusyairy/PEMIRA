@@ -78,10 +78,11 @@ We recommend using the terminal instead of the Package Manager Console. Theese c
 ### Create Seeder
 Seeder class is used to provide data automatically to the database. It will represent a table in the database and requires a model to access the table. Once a seeder has been created, you must add it to the `Seeder` array in the `DatabaseSeeder` class in the `Seeder` folder.
 
-You also need to uncomment this line in the `Program.cs` file
+You also need to uncomment theese line in the `Program.cs` file
 ```c#
-// Uncomment this line to revert the database
 // seeder.Revert();
+
+// seeder.Seed();
 ```
 Once everything is ready, do a build on the project to empty the data in the table and fill it again with data from the seeder that has been created
 

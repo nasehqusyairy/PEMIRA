@@ -1,9 +1,6 @@
 using McMaster.Extensions.CommandLineUtils;
 using PEMIRA.Commands;
 using PEMIRA.Seeders;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
 var app = new CommandLineApplication
 {
@@ -13,6 +10,7 @@ app.HelpOption("-?|-h|--help");
 
 CreateSeederCommand.Register(app);
 CreateRequestCommand.Register(app);
+CreateViewModelCommand.Register(app);
 
 app.OnExecute(() =>
 {
@@ -25,8 +23,8 @@ app.OnExecute(() =>
     builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Auth/"; // Redirect to Login action on unauthorized access
-        options.LogoutPath = "/Login/Logout";
+        options.LoginPath = "/Auth"; // Redirect to Login action on unauthorized access
+        options.LogoutPath = "/Auth/Logout";
         options.AccessDeniedPath = "/AccessDenied"; // Redirect on forbidden actions
         options.ExpireTimeSpan = TimeSpan.FromMinutes(10); // Set cookie expiration
 
