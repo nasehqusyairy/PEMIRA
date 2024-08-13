@@ -1,7 +1,5 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PEMIRA.Helpers;
 using PEMIRA.Models;
 using PEMIRA.Requests;
@@ -16,8 +14,8 @@ namespace PEMIRA.Controllers
 
     public IActionResult Index()
     {
-      string userId = Cookie.FindFirst("UserId")?.Value ?? string.Empty;
-      ProfileViewModel model = ModelHelper.MapProperties<User, ProfileViewModel>(new ProfileService(_context).GetUser(long.Parse(userId)));
+      long id = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
+      ProfileViewModel model = ModelHelper.MapProperties<User, ProfileViewModel>(new ProfileService(_context).GetUser(id));
       return View(model);
     }
 

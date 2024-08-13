@@ -40,7 +40,7 @@
         <!-- END OF HEADER -->
 
         <!-- SIDEBAR -->
-        @await Html.PartialAsync("_Sidebar", new SidebarViewModel())
+        @await Html.PartialAsync("_Sidebar", new SidebarViewModel(Context.User))
         <!-- END OF SIDEBAR -->
 
         <!-- MAIN -->

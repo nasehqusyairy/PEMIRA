@@ -16,7 +16,7 @@ public class ProfileViewModel
   public string? Code { get; set; }
 
   [Required(ErrorMessage = "Jenis Kelamin harus diisi")]
-  public bool Gender { get; set; }
+  public bool? Gender { get; set; }
 
   public string? Password { get; set; }
 

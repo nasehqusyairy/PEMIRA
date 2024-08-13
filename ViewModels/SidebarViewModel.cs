@@ -1,19 +1,23 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using PEMIRA.Models;
 using PEMIRA.Services;
+using System.Security.Claims;
 
 namespace PEMIRA.ViewModels;
 
 public class SidebarViewModel
 {
-
-  public SidebarViewModel()
+  public SidebarViewModel(ClaimsPrincipal Cookie)
   {
-    _menuService = new MenuService(new DatabaseContext());
-    AdminMenus = _menuService.GetMenusByRole("Admin");
+    SidebarService service = new(Cookie);
+    Menus = service.GetMenusByRole();
+    UserName = service.Getusername();
+    ProfilePicture = service.GetProfilePicture();
   }
-  private readonly MenuService _menuService;
 
-  public List<Menu> AdminMenus { get; set; }
+  public List<Menu> Menus { get; set; }
+
+  public string UserName { get; set; }
+
+  public string ProfilePicture { get; set; }
 
 }

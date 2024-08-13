@@ -1,6 +1,6 @@
 @model SidebarViewModel
 @{
-  List<Menusegment> segments = Model.AdminMenus.Select(m => m.Menusegment).Distinct().ToList();
+  List<Menusegment> segments = Model.Menus.Select(m => m.Menusegment).Distinct().ToList();
 }
 <style>
   #sidebar .list-group-item {
@@ -64,7 +64,7 @@
             <div id="submenu-@(segment.Id)" class="accordion-collapse collapse show">
               <div class="accordion-body p-0 px-3">
                 <div class="list-group list-group-flush">
-                  @foreach (Menu menu in Model.AdminMenus.Where(m => m.MenusegmentId == segment.Id))
+                  @foreach (Menu menu in Model.Menus.Where(m => m.MenusegmentId == segment.Id))
                   {
                     <a href="@(menu.Url)"
                       class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark @(Context.Request.Path == menu.Url ? "active" : "")"
@@ -105,8 +105,8 @@
                 <a asp-controller="Profile"
                   class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark @(isActive ? "active" : "")"
                   data-bs-placement="right" data-bs-title="Profile">
-                  <img src="~/img/LOGO_LIGHT MODE.png" alt="" width="16" class="me-3 rounded-circle">
-                  <span class="submenu-title">Mohammad...</span>
+                  <img src="@(Model.ProfilePicture)" alt="" width="16" class="me-3 rounded-circle">
+                  <span class="submenu-title">@(Model.UserName)</span>
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark"

@@ -10,6 +10,7 @@ namespace PEMIRA.Controllers
 
 		protected ClaimsPrincipal Cookie => HttpContext.User;
 
+
 		public BaseController()
 		{
 			_context = new DatabaseContext();
