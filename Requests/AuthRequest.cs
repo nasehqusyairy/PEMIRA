@@ -27,6 +27,10 @@ public class AuthRequest(ModelStateDictionary modelState, AuthViewModel input, A
         {
             ModelState.AddModelError("Code", "User tidak ditemukan");
         }
+        else if(user.DeletedAt != null)
+        {
+            ModelState.AddModelError("Code", "User Sudah Tidak Aktif");
+        }
         else if (user.Password != UserInput.Password)
         {
             ModelState.AddModelError("Password", "Password salah");
