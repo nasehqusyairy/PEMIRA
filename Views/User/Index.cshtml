@@ -2,6 +2,7 @@
 @model UserViewModel
 @{
     ViewBag.PageTitle = "User";
+    string namepage = "User";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -21,7 +22,7 @@
                     <i class="bi-person-add me-2"></i>Peserta Baru
                 </a>
                 <form>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", namepage))
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
