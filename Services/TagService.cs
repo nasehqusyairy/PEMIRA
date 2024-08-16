@@ -5,13 +5,12 @@ using PEMIRA.ViewModels;
 
 namespace PEMIRA.Services
 {
-  public class TagService(DatabaseContext context, int limit = 10)
+  public class TagService(DatabaseContext context, int limit = 10) : TableService<Tag>(limit)
   {
-    public int LimitEntry { get; set; } = limit;
 
     private readonly DatabaseContext _context = context;
 
-    public List<Tag> GetTags(string search, int page, string orderBy, bool isAsc)
+    public override List<Tag> GetEntries(string search, int page, string orderBy, bool isAsc)
     {
       if (!ModelHelper.IsPropertyExist<Tag>(orderBy))
       {
@@ -26,10 +25,7 @@ namespace PEMIRA.Services
       return [.. query];
     }
 
-    public int GetPageCount(string search)
-    {
-      return (int)Math.Ceiling(_context.Tags.Count(tag => tag.DeletedAt == null && tag.Name.Contains(search)) / (double)LimitEntry);
-    }
+    public override int GetTotalEntry(string search) => _context.Tags.Count(tag => tag.DeletedAt == null && tag.Name.Contains(search));
 
     public Tag? IsTagUnique(string name, long id) => _context.Tags.FirstOrDefault(tag => tag.Name == name && tag.DeletedAt == null && tag.Id != id);
 

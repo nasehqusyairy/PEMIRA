@@ -2,7 +2,7 @@ using PEMIRA.Models;
 using System.ComponentModel.DataAnnotations;
 namespace PEMIRA.ViewModels
 {
-    public class UserViewModel : TableViewModel
+    public class UserViewModel : TableViewModel<User>
     {
         public long Id { get; set; }
 

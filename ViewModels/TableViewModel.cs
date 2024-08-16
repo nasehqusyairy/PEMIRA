@@ -2,7 +2,7 @@ using PEMIRA.Interfaces;
 
 namespace PEMIRA.ViewModels
 {
-  public abstract class TableViewModel : ITableViewModel
+  public abstract class TableViewModel<T> : ITableViewModel<T>
   {
     public int PageCount { get; set; } = 1;
 
@@ -15,5 +15,11 @@ namespace PEMIRA.ViewModels
     public abstract string OrderBy { get; set; }
 
     public bool IsAsc { get; set; } = true;
+
+    public int TotalFilteredEntries { get; set; } = 0;
+
+    public int TotalEntries { get; set; } = 0;
+
+    public List<T> Entries { get; set; } = [];
   }
 }

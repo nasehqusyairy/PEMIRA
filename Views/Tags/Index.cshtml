@@ -20,6 +20,10 @@
                 <a asp-action="Create" class="btn btn-primary mb-3"><i class="bi bi-plus"></i> Penanda Baru</a>
                 <form>
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
+                    <p>
+                        Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
+                        @(Model.TotalFilteredEntries))
+                    </p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -34,7 +38,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var tag in Model.Tags)
+                                @foreach (var tag in Model.Entries)
                                 {
                                     <tr>
                                         <td>@(startNumber++)</td>
@@ -46,14 +50,14 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             <a asp-action="Delete" asp-route-id="@tag.Id" class="btn btn-danger rounded"
-                                               onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </td>
                                     </tr>
                                 }
 
-                                @if (Model.Tags.Count == 0)
+                                @if (Model.Entries.Count == 0)
                                 {
                                     @(ViewHelper.GenerateNoDataRow(3))
                                 }

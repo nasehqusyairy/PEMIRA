@@ -5,17 +5,6 @@ namespace PEMIRA.Helpers
 {
   public static class ModelHelper
   {
-
-    public static int SetLimitEntry(int limit, int max = 100)
-    {
-      return limit < 1 ? 1 : limit > max ? max : limit;
-    }
-
-    public static int SetCurrentPage(int currentPage, int pageCount)
-    {
-      return currentPage < 1 ? 1 : currentPage > pageCount ? pageCount : currentPage;
-    }
-
     public static TDestination MapProperties<TSource, TDestination>(TSource source)
         where TDestination : new()
     {
