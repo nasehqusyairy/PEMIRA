@@ -1,4 +1,7 @@
+using PEMIRA.Helpers;
+using PEMIRA.Migrations;
 using PEMIRA.Models;
+using PEMIRA.ViewModels;
 
 namespace PEMIRA.Services
 {
@@ -6,10 +9,18 @@ namespace PEMIRA.Services
     {
         private readonly DatabaseContext _context = context;
         public List<User> GetUsers() => [.. _context.Users];
-        public User? GetUserByCode(string userCode) => _context.Users.Where(code => code.Code == userCode).FirstOrDefault();
+        public User? GetUserById(long userId) => _context.Users.First(id =>id.Id == userId);
+        public User? GetUserByCode(string codeUser) => _context.Users.Where(code => code.Code == codeUser).FirstOrDefault();
         public void Store(User user)
         {
             _context.Users.Add(user);
+            _context.SaveChanges();
+        }
+        public void Update(UserViewModel input)
+        {
+            User user = _context.Users.First(u => u.Id == input.Id);
+            ModelHelper.UpdateProperties(input, user);
+            _context.Users.Update(user);
             _context.SaveChanges();
         }
     }

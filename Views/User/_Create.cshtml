@@ -1,0 +1,50 @@
+﻿@model UserViewModel
+@{
+    ViewBag.PageTitle = "Create User";
+}
+<div class="row">
+    <div class="col-12 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    <div class="row">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(id => id.Id)
+                        <div class="col-6 mb-3">
+                            @Html.LabelFor(code => code.Code, "Kode", new { @class = "form-label" })
+                            @Html.TextBoxFor(code => code.Code, new { @class = "form-control"})
+                            <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.Code)</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            @Html.LabelFor(name => name.Name, "Nama Lengkap", new { @class = "form-label" })
+                            @Html.TextBoxFor(name => name.Name, new { @class = "form-control"})
+                            <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.Name)</small>
+                        </div>
+                        <div class="col-12 mb-3">
+                            @Html.LabelFor(gender => gender.Gender, "Jenis Kelamin", new { @class = "form-label" })
+                            @Html.DropDownListFor(gender => gender.Gender, new List<SelectListItem>
+                            {
+                            new SelectListItem { Text = "Pilih Jenis Kelamin", Value = "", Disabled = true, Selected = true },
+                            new SelectListItem { Text = "Laki Laki", Value = "false" },
+                            new SelectListItem { Text = "Perempuan", Value = "true" }
+                            }, new { @class = "form-select" })
+                            <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.Gender)</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            @Html.LabelFor(pw => pw.Password, "Kata Sandi", new { @class = "form-label" })
+                            @Html.TextBoxFor(pw => pw.Password, new { @class = "form-control", @type = "password" })
+                            <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.Password)</small>
+                        </div>
+                        <div class="col-6 mb-3">
+                            @Html.LabelFor(pw => pw.ConfirmPassword, "Konfirmasi Kata Sandi ", new { @class = "form-label" })
+                            @Html.TextBoxFor(pw => pw.ConfirmPassword, new { @class = "form-control", @type = "password" })
+                            <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.ConfirmPassword)</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

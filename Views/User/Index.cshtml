@@ -1,118 +1,50 @@
 ﻿@{
-    ViewBag.PageTitle = "Peserta";
+    ViewBag.PageTitle = "User";
 }
 @model UserViewModel
-<div class="row">
-    <div class="col">
+<div class="container">
+    <div class="row">
         <div class="card mt-2 p-3 rounded-3">
-            <a class="card-body">
-                <a href="#" class="input-group mb-3 d-flex"
-                   data-bs-toggle="modal" data-bs-target="#AddModal" data-bs-placement="right"
-                   data-bs-title="Tambah Peserta">
+            <div class="card-body">
+                <a href="@Url.Action("Create", "User")" class="input-group mb-3 d-flex">
                     <button class="btn btn-primary">
                         <i class="bi-person-add me-2"></i>Peserta Baru
                     </button>
                 </a>
-                <!-- Striped Rows -->
                 <div class="table-responsive">
-                    <table id="tbl" class="table table-hover table-bordered table-striped align-middle w-100">
+                    <table id="tbl" class="table">
                         <thead>
                             <tr>
-                                <th class="text-center" scope="col">No</th>
-                                <th class="text-center" scope="col">Nama Lengkap</th>
-                                <th class="text-center" scope="col">Kode</th>
-                                <th class="text-center" scope="col">Jenis Kelamin</th>
-                                <th class="text-center" scope="col">Keterangan</th>
-                                <th class="text-center" scope="col">Action</th>
+                                <th>No</th>
+                                <th>Nama Lengkap</th>
+                                <th>Kode</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-
-                            @{
-                                int no = 1;
-                            }
                             @foreach (var user in Model.Users)
                             {
                                 <tr>
-                                    <td class="text-center">@no</td>
+                                    <td>@user.Id</td>
                                     <td>@user.Name</td>
-                                    <td class="text-center">@user.Code</td>
-                                    <td class="text-center">@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
-                                    <td class="text-center">@user.More</td>
-                                    <td></td>
+                                    <td>@user.Code</td>
+                                    <td>@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning">
+                                            <i class="bi bi-pencil-square" style="color: white;"></i>
+                                        </a>
+                                        <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger">
+                                            <i class="bi bi-trash" style="color: white;"></i>
+                                        </a>
+                                    </td>
                                 </tr>
-                                no++;
                             }
-
                         </tbody>
                     </table>
                 </div>
-        </div>
-    </div>
-</div>
-</div>
-<!-- Static Backdrop Large -->
-<div class="modal fade" id="AddModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLargeLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content border-0">
-            <div class="modal-header p-3 bg-soft-info">
-                <h5 class="modal-title" id="modal-title">Tambah Peserta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-            </div>
-            <div class="modal-body p-4">
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        <form asp-action="Index" method="post">
-                            <div class="row">
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(id => id.Id)
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(code => code.Code, "Kode", new { @class = "form-label" })
-                                    @Html.TextBoxFor(code => code.Code, new { @class = "form-control", @placeholder = "Masukkan Kode" })
-                                </div>
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(name => name.Name, "Nama Lengkap", new { @class = "form-label" })
-                                    @Html.TextBoxFor(name => name.Name, new { @class = "form-control", @placeholder = "Masukkan Nama Lengkap" })
-                                </div>
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(gender => gender.Gender, "Pilih Jenis Kelamin", new { @class = "form-label" })
-                                    @Html.DropDownListFor(gender => gender.Gender, new List<SelectListItem>
-                                    {
-                                    new SelectListItem { Text = "Harap Pilih Jenis Kelamin", Value = "", Disabled = true, Selected = true },
-                                    new SelectListItem { Text = "Laki Laki", Value = "false" },
-                                    new SelectListItem { Text = "Perempuan", Value = "true" }
-                                    }, new { @class = "form-select" })
-                                </div>
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(more => more.More, "Pilih Tingkatan", new { @class = "form-label" })
-                                    @Html.DropDownListFor(more => more.More, new List<SelectListItem>
-                                    {
-                                    new SelectListItem { Text = "Harap Pilih Tingkatan", Value = "", Disabled = true, Selected = true },
-                                    new SelectListItem { Text = "VII - SMP", Value = "VII - SMP" },
-                                    new SelectListItem { Text = "VII - SMP QS", Value = "VII - SMP QS" },
-                                    new SelectListItem { Text = "VIII - SMP", Value = "VIII - SMP" },
-                                    new SelectListItem { Text = "VIII - SMP QS", Value = "VIII - SMP QS" },
-                                    new SelectListItem { Text = "IX - SMP", Value = "IX - SMP" },
-                                    new SelectListItem { Text = "IX - SMP QS", Value = "IX - SMP QS" },
-                                    new SelectListItem { Text = "X - SMA", Value = "X - SMA" },
-                                    new SelectListItem { Text = "XI - SMA", Value = "XI - SMA" },
-                                    new SelectListItem { Text = "XII - SMA", Value = "XII - SMA" }
-                                    }, new { @class = "form-select" })
-                                </div>
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(pw => pw.Password, "Masukkan Password", new { @class = "form-label" })
-                                    @Html.TextBoxFor(pw => pw.Password, new { @class = "form-control", @placeholder = "Masukkan Password", @type = "password" })
-                                </div>
-                                <div class="col-6 mb-3">
-                                    @Html.LabelFor(pw => pw.ConfirmPassword, "Konfirmasi Password ", new { @class = "form-label" })
-                                    @Html.TextBoxFor(pw => pw.ConfirmPassword, new { @class = "form-control", @placeholder = "Konfirmasi Password", @type = "password" })
-                                </div>
-                            </div>
-                            <button class="btn btn-primary" type="submit">Simpan</button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 </div>
+

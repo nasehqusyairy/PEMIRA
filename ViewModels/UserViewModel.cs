@@ -15,15 +15,15 @@ namespace PEMIRA.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "ID hanya boleh berisi huruf dan angka")]
         public string? Code { get; set; }
 
-        [Required(ErrorMessage = "Jenis Kelamin harus diisi")]
+        [Required(ErrorMessage = "Jenis Kelamin Harus diisi")]
         public bool? Gender { get; set; }
 
         public string? More { get; set; }
 
-        [Required(ErrorMessage = "Password harus diisi")]
+        [Required(ErrorMessage = "Kata Sandi Harus Diisi")]
         public string? Password { get; set; }
 
-        [Compare("Password", ErrorMessage = "Konfirmasi Password tidak sama dengan Password")]
+        [Compare("Password", ErrorMessage = "Konfirmasi Kata Sandi Tidak Sama")]
         public string? ConfirmPassword { get; set; }
         public List<User> Users { get; set; } = [];
 

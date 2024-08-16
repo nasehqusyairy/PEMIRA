@@ -49,7 +49,7 @@ namespace PEMIRA.Seeders
                     MenusegmentId = menusegments[1].Id
                 },
                 new() {
-                    Name = "Peserta",
+                    Name = "User",
                     Icon = "person-gear",
                     Url = "/User/",
                     MenusegmentId = menusegments[1].Id
