@@ -15,12 +15,14 @@ namespace PEMIRA.Controllers
         {
             input.LimitEntry = input.LimitEntry < 1 ? 1 : input.LimitEntry > 100 ? 100 : input.LimitEntry;
 
-            int pageCount = ModelHelper.GetPageCount<Tag>(_context, input.Search ?? "", input.LimitEntry);
+            TagService service = new(_context, input.LimitEntry);
+
+            int pageCount = service.GetPageCount(input.Search ?? "");
 
             input.PageCount = pageCount;
             input.CurrentPage = input.CurrentPage < 1 ? 1 : input.CurrentPage > pageCount ? pageCount : input.CurrentPage;
 
-            input.Tags = ModelHelper.GetEntities<Tag>(_context, "Name", input.OrderBy, input.Search ?? "", input.CurrentPage, input.IsAsc, input.LimitEntry);
+            input.Tags = service.GetTags(input.Search ?? "", input.CurrentPage, input.OrderBy, input.IsAsc);
             return View("Index", input);
         }
 
