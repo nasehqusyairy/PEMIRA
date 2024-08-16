@@ -37,6 +37,8 @@ namespace PEMIRA.Services
 
     public void Store(Tag tag)
     {
+      tag.CreatedAt = DateTime.Now;
+      tag.UpdatedAt = DateTime.Now;
       _context.Tags.Add(tag);
       _context.SaveChanges();
     }
@@ -44,6 +46,7 @@ namespace PEMIRA.Services
     public void Update(TagsViewModel input, Tag tag)
     {
       ModelHelper.UpdateProperties(input, tag);
+      tag.UpdatedAt = DateTime.Now;
       _context.Tags.Update(tag);
       _context.SaveChanges();
     }
