@@ -2,6 +2,7 @@
 @model UserViewModel
 @{
     ViewBag.PageTitle = "User";
+    string namepage = "User";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -21,7 +22,7 @@
                     <i class="bi-person-add me-2"></i>Peserta Baru
                 </a>
                 <form>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", namepage))
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -47,7 +48,7 @@
                                         <td>@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
                                         <td>
                                             <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning">
-                                                <i class="bi bi-pencil-square" style="color: white;"></i>
+                                                <i class="bi bi-pencil" style="color: white;"></i>
                                             </a>
                                             <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger">
                                                 <i class="bi bi-trash" style="color: white;"></i>

@@ -4,14 +4,14 @@ namespace PEMIRA.Helpers;
 
 public class ViewHelper
 {
-  public static IHtmlContent GenerateSearchAndLimitForm(int limitEntry, string searchQuery)
+  public static IHtmlContent GenerateSearchAndLimitForm(int limitEntry, string searchQuery, string namepage)
   {
     var htmlContent = $@"
             <div class='input-group mb-3'>
                 <input type='number' class='form-control' name='LimitEntry' value='{limitEntry}'
                     placeholder='Jumlah baris per halaman...(max 100)' max='100'>
                 <input type='text' class='form-control' name='Search' value='{searchQuery}' 
-                    placeholder='Cari penanda...'>
+                    placeholder='Cari {namepage}....'>
                 <button class='btn btn-primary' type='submit'><i class='bi bi-search'></i></button>
             </div>";
 

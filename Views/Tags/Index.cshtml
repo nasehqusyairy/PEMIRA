@@ -2,6 +2,7 @@
 @model TagsViewModel
 @{
     ViewBag.PageTitle = "Penanda";
+    string namepage = "Penanda";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -47,7 +48,7 @@
                                         </td>
                                         <td>
                                             <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning rounded">
-                                                <i class="bi bi-pencil"></i>
+                                                <i class="bi bi-pencil" style="color: white;"></i>
                                             </a>
                                             <a asp-action="Delete" asp-route-id="@tag.Id" class="btn btn-danger rounded"
                                                 onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
