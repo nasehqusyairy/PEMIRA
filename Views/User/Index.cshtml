@@ -1,48 +1,69 @@
-﻿@{
-    ViewBag.PageTitle = "User";
-}
+﻿@using Microsoft.AspNetCore.Http.Extensions
 @model UserViewModel
-<div class="container">
-    <div class="row">
-        <div class="card mt-2 p-3 rounded-3">
+@{
+    ViewBag.PageTitle = "User";
+    string currentUrl = Context.Request.GetDisplayUrl();
+    var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+}
+@* alert success *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
             <div class="card-body">
-                <a href="@Url.Action("Create", "User")" class="input-group mb-3 d-flex">
-                    <button class="btn btn-primary">
-                        <i class="bi-person-add me-2"></i>Peserta Baru
-                    </button>
+                <a href="@Url.Action("Create", "User")" class="btn btn-primary mb-3">
+                    <i class="bi-person-add me-2"></i>Peserta Baru
                 </a>
-                <div class="table-responsive">
-                    <table id="tbl" class="table">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Kode</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model.Users)
-                            {
+                <form>
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
                                 <tr>
-                                    <td>@user.Id</td>
-                                    <td>@user.Name</td>
-                                    <td>@user.Code</td>
-                                    <td>@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
-                                    <td>
-                                        <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning">
-                                            <i class="bi bi-pencil-square" style="color: white;"></i>
+                                    <th>No</th>
+                                    <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
+                                            Nama
                                         </a>
-                                        <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger">
-                                            <i class="bi bi-trash" style="color: white;"></i>
-                                        </a>
-                                    </td>
+                                    </th>
+                                    <th>Kode</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Aksi</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <tr>
+                                        <td>@(startNumber++)</td>
+                                        <td>@user.Name</td>
+                                        <td>@user.Code</td>
+                                        <td>@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
+                                        <td>
+                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning">
+                                                <i class="bi bi-pencil-square" style="color: white;"></i>
+                                            </a>
+                                            <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger">
+                                                <i class="bi bi-trash" style="color: white;"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Users.Count == 0)
+                                {
+                                    @(ViewHelper.GenerateNoDataRow(3))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
+                </form>
             </div>
         </div>
     </div>
