@@ -17,15 +17,9 @@ public class TagsRequest(ModelStateDictionary modelState, TagsViewModel input, T
   public bool Validate()
   {
     // logic here
-    if (Service.GetTagByName(UserInput.Name) != null)
+    if (Service.IsTagUnique(UserInput.Name, UserInput.Id) != null)
     {
       ModelState.AddModelError("Name", "Nama penanda sudah pernah ada");
-    }
-
-    // set validated data
-    if (ModelState.IsValid)
-    {
-      DerivedData["Tag"] = ModelHelper.MapProperties<TagsViewModel, Tag>(UserInput);
     }
 
     return ModelState.IsValid;

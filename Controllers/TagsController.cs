@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PEMIRA.Helpers;
 using PEMIRA.Models;
 using PEMIRA.Requests;
@@ -7,31 +8,101 @@ using PEMIRA.ViewModels;
 
 namespace PEMIRA.Controllers
 {
+    [Authorize]
     public class TagsController : BaseController
     {
-        public IActionResult Index()
+        public ViewResult Index(TagsViewModel input)
         {
-            return View(new TagsViewModel()
-            {
-                Tags = new TagService(_context).GetTags()
-            });
+            input.LimitEntry = input.LimitEntry < 1 ? 1 : input.LimitEntry > 100 ? 100 : input.LimitEntry;
+
+            int pageCount = ModelHelper.GetPageCount<Tag>(_context, input.Search ?? "", input.LimitEntry);
+
+            input.PageCount = pageCount;
+            input.CurrentPage = input.CurrentPage < 1 ? 1 : input.CurrentPage > pageCount ? pageCount : input.CurrentPage;
+
+            input.Tags = ModelHelper.GetEntities<Tag>(_context, "Name", input.OrderBy, input.Search ?? "", input.CurrentPage, input.IsAsc, input.LimitEntry);
+            return View("Index", input);
+        }
+
+        public IActionResult Create()
+        {
+            return ViewCreatePage(new TagsViewModel());
+        }
+
+        private ViewResult ViewCreatePage(TagsViewModel input)
+        {
+            return View("Create", input);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(TagsViewModel input)
+        public IActionResult Create(TagsViewModel input)
         {
             TagService service = new(_context);
             TagsRequest requestValidator = new(ModelState, input, service);
 
             if (!requestValidator.Validate())
             {
-                input.Tags = service.GetTags();
-                return View("Index", input);
+                return ViewCreatePage(input);
             }
 
-            service.Store(requestValidator.DerivedData["Tag"]);
+            service.Store(ModelHelper.MapProperties<TagsViewModel, Tag>(input));
+            TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
+            return RedirectToAction("Index");
+        }
 
+        public IActionResult Edit(long id)
+        {
+            TagService service = new(_context);
+            Tag? tag = service.GetTag(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            TagsViewModel input = ModelHelper.MapProperties<Tag, TagsViewModel>(tag);
+            return View("Edit", input);
+        }
+
+        private IActionResult ViewEditPage(TagsViewModel input)
+        {
+            return Edit(input.Id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(TagsViewModel input)
+        {
+            TagService service = new(_context);
+            TagsRequest requestValidator = new(ModelState, input, service);
+
+            if (!requestValidator.Validate())
+            {
+                return ViewEditPage(input);
+            }
+
+            Tag? tag = service.GetTag(input.Id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            service.Update(input, tag);
+            TempData["SuccessMessage"] = "Penanda berhasil diubah";
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(long id)
+        {
+            TagService service = new(_context);
+            Tag? tag = service.GetTag(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            service.SoftDelete(tag);
+            TempData["SuccessMessage"] = "Penanda berhasil dihapus";
             return RedirectToAction("Index");
         }
 

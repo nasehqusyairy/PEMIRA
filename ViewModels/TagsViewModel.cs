@@ -3,13 +3,14 @@ using PEMIRA.Models;
 
 namespace PEMIRA.ViewModels
 {
-  public class TagsViewModel
+  public class TagsViewModel : TableViewModel
   {
-    [MinLength(3, ErrorMessage = "Nama tag minimal 3 karakter")]
-    [Required(ErrorMessage = "Nama tag harus diisi")]
+    public long Id { get; set; }
+
+    [Required(ErrorMessage = "Nama Penanda harus diisi")]
     public string Name { get; set; } = "";
 
     public List<Tag> Tags { get; set; } = [];
-
+    public override string OrderBy { get; set; } = "Name";
   }
 }
