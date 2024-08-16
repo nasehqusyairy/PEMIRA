@@ -13,14 +13,14 @@ namespace PEMIRA.Controllers
     {
         public ViewResult Index(TagsViewModel input)
         {
-            input.LimitEntry = input.LimitEntry < 1 ? 1 : input.LimitEntry > 100 ? 100 : input.LimitEntry;
+            input.LimitEntry = ModelHelper.SetLimitEntry(input.LimitEntry);
 
             TagService service = new(_context, input.LimitEntry);
 
             int pageCount = service.GetPageCount(input.Search ?? "");
 
             input.PageCount = pageCount;
-            input.CurrentPage = input.CurrentPage < 1 ? 1 : input.CurrentPage > pageCount ? pageCount : input.CurrentPage;
+            input.CurrentPage = ModelHelper.SetCurrentPage(input.CurrentPage, pageCount);
 
             input.Tags = service.GetTags(input.Search ?? "", input.CurrentPage, input.OrderBy, input.IsAsc);
             return View("Index", input);
