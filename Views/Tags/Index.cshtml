@@ -22,7 +22,7 @@
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
-                        @(Model.TotalFilteredEntries))
+                        @(Model.TotalEntries))
                     </p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -43,7 +43,9 @@
                                     <tr>
                                         <td>@(startNumber++)</td>
                                         <td>
-                                            @(tag.Name)
+                                            <span class="badge text-bg-secondary">
+                                                @(tag.Name)
+                                            </span>
                                         </td>
                                         <td>
                                             <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning rounded">

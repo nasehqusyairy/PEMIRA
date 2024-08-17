@@ -1,8 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @model UserViewModel
 @{
-    ViewBag.PageTitle = "User";
-    string namepage = "User";
+    ViewBag.PageTitle = "Pengguna";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -19,13 +18,13 @@
         <div class="card">
             <div class="card-body">
                 <a href="@Url.Action("Create", "User")" class="btn btn-primary mb-3">
-                    <i class="bi-person-add me-2"></i>Peserta Baru
+                    <i class="bi bi-plus"></i> Pengguna Baru
                 </a>
                 <form>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", namepage))
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
-                        @(Model.TotalFilteredEntries))
+                        @(Model.TotalEntries))
                     </p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -39,6 +38,7 @@
                                     </th>
                                     <th>Kode</th>
                                     <th>Jenis Kelamin</th>
+                                    <th>Penanda</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -49,13 +49,27 @@
                                         <td>@(startNumber++)</td>
                                         <td>@user.Name</td>
                                         <td>@user.Code</td>
-                                        <td>@(user.Gender == false ? "Laki Laki" : "Perempuan")</td>
+                                        <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
+                                        <td style="max-width: 100px;">
+                                            <span class="badge bg-secondary">Lorem</span>
+                                            <span class="badge bg-secondary">Ipsum</span>
+                                            <span class="badge bg-secondary">Dolor</span>
+                                            <span class="badge bg-secondary">Sit</span>
+                                            <span class="badge bg-secondary">Amet</span>
+                                        </td>
                                         <td>
-                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning">
-                                                <i class="bi bi-pencil" style="color: white;"></i>
+                                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="Penanda"
+                                                data-bs-placement="bottom">
+                                                <i class="bi bi-tags"></i>
+                                            </button>
+                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })"
+                                                class="btn btn-warning">
+                                                <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a href="@Url.Action("Delete", "User", new { id = user.Id })" class="btn btn-danger">
-                                                <i class="bi bi-trash" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"></i>
+                                            <a href="@Url.Action("Delete", "User", new { id = user.Id })"
+                                                class="btn btn-danger">
+                                                <i class="bi bi-trash"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -73,4 +87,3 @@
         </div>
     </div>
 </div>
-
