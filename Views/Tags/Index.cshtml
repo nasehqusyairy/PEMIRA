@@ -20,7 +20,7 @@
             <div class="card-body">
                 <a asp-action="Create" class="btn btn-primary mb-3"><i class="bi bi-plus"></i> Penanda Baru</a>
                 <form>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? ""))
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari penanda..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
                         @(Model.TotalEntries))
