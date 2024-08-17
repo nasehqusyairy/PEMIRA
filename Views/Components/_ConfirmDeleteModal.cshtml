@@ -1,0 +1,25 @@
+<div class="modal fade" tabindex="-1" id="deleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Hapus Data</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Data mungkin akan hilang untuk selamanya. Anda yakin?</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-secondary">Ya</a>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Batal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openConfirmDeleteModal(url) {
+    const deleteModal = document.getElementById("deleteModal");
+    const deleteModalYesButton = deleteModal.querySelector("a.btn-secondary");
+    deleteModalYesButton.href = url;
+  }
+</script>

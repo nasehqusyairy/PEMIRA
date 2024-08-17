@@ -59,5 +59,15 @@ public class ViewHelper
         return new HtmlString(htmlContent);
     }
 
+    public static IHtmlContent GenerateDeleteButton(string? deleteUrl)
+    {
+        var htmlContent = $@"
+        <button type=""button"" class=""btn btn-danger"" data-bs-toggle=""modal""
+                data-bs-target=""#deleteModal"" data-bs-title=""Hapus""
+                data-bs-placement=""bottom"" onclick=""openConfirmDeleteModal('{deleteUrl}')"">
+            <i class=""bi bi-trash""></i>
+        </button>";
 
+        return new HtmlString(htmlContent);
+    }
 }

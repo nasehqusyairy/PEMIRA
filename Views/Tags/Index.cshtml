@@ -5,6 +5,7 @@
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
+
 @* alert success *@
 @if (TempData["SuccessMessage"] != null)
 {
@@ -48,13 +49,11 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning rounded">
+                                            <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning"
+                                                data-bs-title="Ubah" data-bs-placement="bottom">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a asp-action="Delete" asp-route-id="@tag.Id" class="btn btn-danger rounded"
-                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = tag.Id })))
                                         </td>
                                     </tr>
                                 }
@@ -72,3 +71,5 @@
         </div>
     </div>
 </div>
+
+<partial name="~/Views/Components/_ConfirmDeleteModal.cshtml" />
