@@ -10,16 +10,12 @@ namespace PEMIRA.Controllers
     {
         public IActionResult Index(UserViewModel input)
         {
-            input.LimitEntry = ModelHelper.SetLimitEntry(input.LimitEntry);
+            input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
 
             UserService service = new (_context, input.LimitEntry);
 
-            int pageCount = service.GetPageCount(input.Search ?? "");
+            TableHelper.SetTableViewModel(service, input);
 
-            input.PageCount = pageCount;
-            input.CurrentPage = ModelHelper.SetCurrentPage(input.CurrentPage, pageCount);
-
-            input.Users = service.GetUsers(input.Search ?? "", input.CurrentPage, input.OrderBy, input.IsAsc);
             return View("Index", input);
         }
 
@@ -37,7 +33,7 @@ namespace PEMIRA.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(UserViewModel input)
         {
-            long id = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
+            
             UserService service = new(_context);
             UserRequest requestValidator = new(ModelState, input, service);
             if (!requestValidator.Validate())
@@ -45,7 +41,7 @@ namespace PEMIRA.Controllers
                 return ViewCreatePage(input);
             }
             User user = ModelHelper.MapProperties<UserViewModel, User>(input);
-            service.Store(user, id);
+            service.Store(user, UserId);
             TempData["SuccessMessage"] = "User berhasil ditambahkan";
             return RedirectToAction("Index");
         }
@@ -71,7 +67,6 @@ namespace PEMIRA.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(UserViewModel input) 
         {
-            long id = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
             UserService service = new(_context);
             UserRequest requestValidator = new(ModelState, input, service);
             if (!requestValidator.Validate()) 
@@ -83,21 +78,20 @@ namespace PEMIRA.Controllers
             {
                 return NotFound();
             }
-            service.Update(input, user, id);
+            service.Update(input, user, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil diubah";
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(long id)
         {
-            long idUser = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
             UserService service = new(_context);
             User? user = service.GetUserById(id);
             if (user == null)
             {
                 return NotFound();
             }
-            service.SoftDelete(user, idUser);
+            service.SoftDelete(user, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil dihapus";
             return RedirectToAction("Index");
         }

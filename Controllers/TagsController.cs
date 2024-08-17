@@ -42,8 +42,8 @@ namespace PEMIRA.Controllers
             {
                 return ViewCreatePage(input);
             }
-
-            service.Store(ModelHelper.MapProperties<TagsViewModel, Tag>(input));
+            Tag tag = ModelHelper.MapProperties<TagsViewModel, Tag>(input);
+            service.Store(tag, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
             return RedirectToAction("Index");
         }
@@ -84,7 +84,7 @@ namespace PEMIRA.Controllers
                 return NotFound();
             }
 
-            service.Update(input, tag);
+            service.Update(input, tag, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil diubah";
             return RedirectToAction("Index");
         }
@@ -98,7 +98,7 @@ namespace PEMIRA.Controllers
                 return NotFound();
             }
 
-            service.SoftDelete(tag);
+            service.SoftDelete(tag, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil dihapus";
             return RedirectToAction("Index");
         }

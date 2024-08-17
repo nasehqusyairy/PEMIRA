@@ -1,18 +1,27 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using PEMIRA.Models;
 namespace PEMIRA.Controllers
 {
-	public class BaseController : Controller
-	{
-		protected readonly DatabaseContext _context;
+    public class BaseController : Controller
+    {
+        protected readonly DatabaseContext _context;
 
-		protected ClaimsPrincipal Cookie => HttpContext.User;
+        protected ClaimsPrincipal Cookie => HttpContext.User;
 
+        protected long UserId;
 
-		public BaseController()
-		{
-			_context = new DatabaseContext();
-		}
-	}
+        public BaseController()
+        {
+            _context = new DatabaseContext();
+
+        }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            UserId = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
+        }
+    }
 }

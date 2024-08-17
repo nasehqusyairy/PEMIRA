@@ -4,15 +4,14 @@ using PEMIRA.Migrations;
 using PEMIRA.Models;
 using PEMIRA.ViewModels;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
+
 
 namespace PEMIRA.Services
 {
-    public class UserService(DatabaseContext context, int limit = 10)
+    public class UserService(DatabaseContext context, int limit = 10) : TableService<User>(limit)
     {
-        public int LimitEntry { get; set; } = limit;
         private readonly DatabaseContext _context = context;
-        public List<User> GetUsers(string search, int page, string orderBy, bool isAsc)
+        public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
             if (!ModelHelper.IsPropertyExist<User>(orderBy))
             {
@@ -25,7 +24,7 @@ namespace PEMIRA.Services
             query = query.Skip((page - 1) * LimitEntry).Take(LimitEntry);
             return [.. query];
         }
-
+        public override int GetTotalEntry(string search) => _context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search));
         public int GetPageCount(string search)
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search)) / (double)LimitEntry);
