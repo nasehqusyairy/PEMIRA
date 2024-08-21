@@ -25,6 +25,7 @@ namespace PEMIRA.ViewModels
         [Compare("Password", ErrorMessage = "Konfirmasi Kata Sandi Tidak Sama")]
         public string? ConfirmPassword { get; set; }
         public override string OrderBy { get; set; } = "Name";
+        public List<TagUser> TagUsers { get; set; } = new List<TagUser>();
 
+        }
     }
-}

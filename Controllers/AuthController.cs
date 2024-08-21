@@ -36,7 +36,7 @@ public class AuthController : BaseController
             new Claim("RoleId", derivedData["RoleId"].ToString())
         ];
 
-        ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, "RoleId");
         ClaimsPrincipal principal = new(identity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 

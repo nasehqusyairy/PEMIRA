@@ -25,6 +25,7 @@ namespace PEMIRA.Services
             return [.. query];
         }
         public override int GetTotalEntry(string search) => _context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search));
+        public List<TagUser> TagUserList() => _context.TagUsers.Include(tag => tag.Tag).ToList();
         public int GetPageCount(string search)
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search)) / (double)LimitEntry);

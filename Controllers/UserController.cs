@@ -4,18 +4,20 @@ using PEMIRA.Services;
 using PEMIRA.Requests;
 using PEMIRA.Helpers;
 using PEMIRA.Models;
+using Microsoft.AspNetCore.Authorization;
 namespace PEMIRA.Controllers
 {
     public class UserController : BaseController
     {
+        [Authorize(Policy = "Admin")]
         public IActionResult Index(UserViewModel input)
         {
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
 
-            UserService service = new (_context, input.LimitEntry);
+            UserService service = new(_context, input.LimitEntry);
 
             TableHelper.SetTableViewModel(service, input);
-
+            input.TagUsers = service.TagUserList();
             return View("Index", input);
         }
 
@@ -33,7 +35,7 @@ namespace PEMIRA.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(UserViewModel input)
         {
-            
+
             UserService service = new(_context);
             UserRequest requestValidator = new(ModelState, input, service);
             if (!requestValidator.Validate())
@@ -54,7 +56,10 @@ namespace PEMIRA.Controllers
             {
                 return NotFound();
             }
-
+            else if (id == 1)
+            {
+                return Forbid();
+            }
             UserViewModel input = ModelHelper.MapProperties<User, UserViewModel>(user);
             return View("Edit", input);
         }
@@ -65,11 +70,11 @@ namespace PEMIRA.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(UserViewModel input) 
+        public IActionResult Edit(UserViewModel input)
         {
             UserService service = new(_context);
             UserRequest requestValidator = new(ModelState, input, service);
-            if (!requestValidator.Validate()) 
+            if (!requestValidator.Validate())
             {
                 return ViewEditPage(input);
             }
@@ -90,6 +95,10 @@ namespace PEMIRA.Controllers
             if (user == null)
             {
                 return NotFound();
+            }
+            else if (id == 1) 
+            {
+                return Forbid();
             }
             service.SoftDelete(user, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil dihapus";
