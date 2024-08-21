@@ -24,7 +24,8 @@
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
-                        @(Model.TotalFilteredEntries))
+                        @(Model.TotalEntries) data)
+
                     </p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">

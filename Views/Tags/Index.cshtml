@@ -23,13 +23,14 @@
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari penanda..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
-                        @(Model.TotalFilteredEntries))
+                        @(Model.TotalEntries) data)
+
                     </p>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>No</th>
                                     <th>
                                         <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
                                             Nama
