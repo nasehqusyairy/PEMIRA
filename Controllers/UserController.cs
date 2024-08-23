@@ -18,6 +18,7 @@ namespace PEMIRA.Controllers
 
             TableHelper.SetTableViewModel(service, input);
             input.TagUsers = service.TagUserList();
+            input.Tags = service.GetTags();
             return View("Index", input);
         }
 
@@ -96,7 +97,7 @@ namespace PEMIRA.Controllers
             {
                 return NotFound();
             }
-            else if (id == 1) 
+            else if (id == 1)
             {
                 return Forbid();
             }

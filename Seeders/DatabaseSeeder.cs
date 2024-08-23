@@ -18,6 +18,7 @@ namespace PEMIRA.Seeders
         new MenuSeeder(DBContext),
         new MenuRoleSeeder(DBContext),
         new UserSeeder(DBContext),
+        new TagUserSeeder(DBContext),
         new ElectionSeeder(DBContext),
         new RoleUserSeeder(DBContext),
       ];

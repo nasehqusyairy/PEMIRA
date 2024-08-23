@@ -32,8 +32,8 @@ public class AuthController : BaseController
 
         List<Claim> claims = [
             new Claim("ElectionId", input.ElectionId.ToString()),
-            new Claim("UserId",derivedData["UserId"].ToString() ),
-            new Claim(ClaimTypes.Role, derivedData["RoleId"].ToString())
+            new Claim("UserId",derivedData["UserId"].ToString()),
+            new Claim("RoleId", derivedData["RoleId"].ToString())
         ];
 
         ClaimsIdentity identity = new(claims, CookieAuthenticationDefaults.AuthenticationScheme, ClaimTypes.Name, "RoleId");

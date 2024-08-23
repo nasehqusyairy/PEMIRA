@@ -11,10 +11,23 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.TagUsers.Any()) return;
 
-            List<TagUser> items = new List<TagUser>
+            List<User> users = [.. DBContext.Users];
+            List<Tag> tags = [.. DBContext.Tags];
+
+            List<TagUser> items = [];
+
+            foreach (User user in users)
             {
-                new TagUser() { }
-            };
+                foreach (Tag tag in tags)
+                {
+                    items.Add(new TagUser
+                    {
+                        UserId = user.Id,
+                        TagId = tag.Id
+                    });
+                }
+            }
+
             DBContext.TagUsers.AddRange(items);
             DBContext.SaveChanges();
         }
