@@ -18,41 +18,46 @@
         <div class="card">
             <div class="card-body">
                 <form>
-               <div class="mb-3 d-grid gap-2 d-md-block">
-                    <a href="@Url.Action("Create", "User")" class="btn btn-primary">
-                        <i class="bi bi-plus"></i> Pengguna Baru
-                    </a>
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#tagsModal"><i class="bi bi-filter-left"></i> Saring Penanda</button>
-               </div>
+                    <div class="mb-3 d-grid gap-2 d-md-block">
+                        <a href="@Url.Action("Create", "User")" class="btn btn-primary">
+                            <i class="bi bi-plus"></i> Pengguna Baru
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#tagsModal"><i class="bi bi-filter-left"></i> Saring Penanda</button>
+                    </div>
                     <div class="modal fade" tabindex="-1" id="tagsModal">
                         <div class="modal-dialog modal-dialog-scrollable">
                             <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Saring Penanda</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                               <ul class="list-group">
-                                @foreach (var tag in Model.Tags)
-                                {
-                                    <li class="list-group-item">
-                                        <div class="form-check">
-                                            <input class="form-check-input" name="SelectedTags[]" type="checkbox" value="@(tag.Id)" id="tag@(tag.Id)" @(Model.SelectedTags.Contains(tag.Id)?"checked":"")>
-                                            <label class="form-check-label" for="tag@(tag.Id)">
-                                                @(tag.Name)
-                                            </label>
-                                        </div>
-                                    </li>
-                                }
-                               </ul> 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                <button class="btn btn-primary">Terapkan</button>
-                            </div>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Saring Penanda</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-group">
+                                        @foreach (var tag in Model.Tags)
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="SelectedTags[]" type="checkbox"
+                                                        value="@(tag.Id)" id="tag@(tag.Id)"
+                                                    @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
+                                                    <label class="form-check-label" for="tag@(tag.Id)">
+                                                        @(tag.Name)
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Tutup</button>
+                                    <button class="btn btn-primary">Terapkan</button>
+                                </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
@@ -83,7 +88,7 @@
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody> 
+                            <tbody>
                                 @foreach (var user in Model.Entries.Where(id => id.Id != 1))
                                 {
                                     <tr>
@@ -92,11 +97,12 @@
                                         <td>@user.Name</td>
                                         <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">
-                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId == user.Id))
-                                            {         
-                                            <span class="badge bg-secondary">@taguser.Tag.Name</span>
+                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
+                                           user.Id))
+                                            {
+                                                <span class="badge bg-secondary">@taguser.Tag.Name</span>
                                             }
-                                            
+
                                         </td>
                                         <td>
                                             <button class="btn btn-primary" data-bs-title="Penanda"
@@ -104,8 +110,7 @@
                                                 <i class="bi bi-tags"></i>
                                             </button>
                                             <a href="@Url.Action("Edit", "User", new { id = user.Id })"
-                                               class="btn btn-warning" data-bs-title="Edit"
-                                               data-bs-placement="bottom">
+                                                class="btn btn-warning" data-bs-title="Edit" data-bs-placement="bottom">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
