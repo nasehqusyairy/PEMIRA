@@ -11,6 +11,7 @@ namespace PEMIRA.Controllers
     [Authorize]
     public class TagsController : BaseController
     {
+        [Authorize(Policy = "Admin")]
         public ViewResult Index(TagsViewModel input)
         {
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);

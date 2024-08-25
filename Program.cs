@@ -35,13 +35,13 @@ app.OnExecute(() =>
     builder.Services.AddAuthorization(options =>
     {
         options.AddPolicy("Admin",
-            policy => policy.RequireClaim("RoleId", "1"));
+            policy => policy.RequireRole("1"));
         options.AddPolicy("Pembina",
-            policy => policy.RequireClaim("RoleId", "2"));
+            policy => policy.RequireRole("2"));
         options.AddPolicy("Panitia",
-            policy => policy.RequireClaim("RoleId", "3"));
+            policy => policy.RequireRole("3"));
         options.AddPolicy("Peserta",
-            policy => policy.RequireClaim("RoleId", "4"));
+            policy => policy.RequireRole("4"));
     });
     builder.Services.AddSession(options =>
     {

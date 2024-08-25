@@ -10,11 +10,21 @@ namespace PEMIRA.Seeders
         public override void Seed()
         {
             if (DBContext.TagUsers.Any()) return;
+            List<User> UserList = [.. DBContext.Users];
+            List<Tag> TagList = [.. DBContext.Tags];
+            List<TagUser> items = [
+                new () 
+                { 
+                    UserId = 12,
+                    TagId = 1,
 
-            List<TagUser> items = new List<TagUser>
-            {
-                new TagUser() { }
-            };
+                },
+                new()
+                {
+                    UserId = 12,
+                    TagId = 4,
+                }
+            ];
             DBContext.TagUsers.AddRange(items);
             DBContext.SaveChanges();
         }
