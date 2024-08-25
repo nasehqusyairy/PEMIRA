@@ -58,5 +58,7 @@ namespace PEMIRA.Services
             _context.Users.Update(user);
             _context.SaveChanges();
         }
+
+        public List<Tag> GetTags() => [.. _context.Tags];
     }
 }
