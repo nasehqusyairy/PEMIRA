@@ -5,6 +5,7 @@ using PEMIRA.Requests;
 using PEMIRA.Helpers;
 using PEMIRA.Models;
 using Microsoft.AspNetCore.Authorization;
+using PEMIRA.Migrations;
 namespace PEMIRA.Controllers
 {
     public class UserController : BaseController
@@ -14,10 +15,10 @@ namespace PEMIRA.Controllers
         {
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
 
-            UserService service = new(_context, input.LimitEntry);
+            UserService service = new(_context, input.LimitEntry, input.SelectedTags);
 
             TableHelper.SetTableViewModel(service, input);
-            input.TagUsers = service.TagUserList();
+            input.TagUsers = service.GetTagUsers();
             input.Tags = service.GetTags();
             return View("Index", input);
         }
@@ -47,6 +48,37 @@ namespace PEMIRA.Controllers
             service.Store(user, UserId);
             TempData["SuccessMessage"] = "User berhasil ditambahkan";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult TagUser(TagUserViewModel input, long id)
+        {
+            input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
+            TagUserService service = new(_context, id, input.LimitEntry);
+            if (id == 1)
+            {
+                return Forbid();
+            }
+            TableHelper.SetTableViewModel(service, input);
+            input.UserId = id;
+            input.Tags = service.GetTags();
+            return View("TagUser", input);
+        }
+        public IActionResult AddTagUser(TagUserViewModel input)
+        {
+            TagUserService service = new(_context, input.UserId);
+            if (service.IsTagUnique(input.Name))
+            {
+                Tag tag = ModelHelper.MapProperties<TagUserViewModel, Tag>(input);
+                service.Store(tag, UserId, input.UserId);
+                TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
+            }
+            else
+            {
+                service.StoreTagUser(input.Name, input.UserId);
+                TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
+            }
+            return RedirectToAction("TagUser", new { id = input.UserId });
+
         }
 
         public IActionResult Edit(long id)
@@ -104,6 +136,23 @@ namespace PEMIRA.Controllers
             service.SoftDelete(user, UserId);
             TempData["SuccessMessage"] = "Penanda berhasil dihapus";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteTagUser(long tagId, long userId)
+        {
+            TagUserService service = new(_context, userId);
+            TagUser? taguser = service.GetTagUserById(tagId);
+            if (taguser == null)
+            {
+                return NotFound();
+            }
+            else if (userId == 1)
+            {
+                return Forbid();
+            }
+            service.Delete(tagId);
+            TempData["SuccessMessage"] = "Penanda berhasil dihapus";
+            return RedirectToAction("TagUser", new { id = userId });
         }
 
     }

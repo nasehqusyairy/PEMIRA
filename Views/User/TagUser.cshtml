@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model TagUserViewModel
+@{
+    ViewBag.PageTitle = "Penanda Pengguna";
+    string currentUrl = Context.Request.GetDisplayUrl();
+    var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div class="col-12 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="AddTagUser" method="post">
+                    <div class="mb-3">
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(user => user.UserId)
+                        <label for="exampleDataList" class="form-label">Penanda Pengguna</label>
+                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search..." asp-for="Name">
+                        <datalist id="datalistOptions">
+                            <datalist id="datalistOptions">
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <option value="@tag.Name"></option>
+                                }
+                            </datalist>
+                        </datalist>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Simpan</button>
+                    <a asp-action="Index" class="btn btn-secondary">Kembali</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari penanda..."))
+                    <p>
+                        Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
+                        @(Model.TotalEntries) data)
+
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
+                                            Nama
+                                        </a>
+                                    </th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var tag in Model.Entries)
+                                {
+                                    <tr>
+                                        <td>@(startNumber++)</td>
+                                        <td>
+                                            <span class="badge text-bg-secondary">
+                                                @(tag.Tag.Name)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("DeleteTagUser", new { tagId = tag.TagId, userId = Model.UserId })))
+                                        </td>
+                                    </tr>
+                                }
+
+                                @if (Model.Entries.Count == 0)
+                                {
+                                    @(ViewHelper.GenerateNoDataRow(3))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="~/Views/Components/_ConfirmDeleteModal.cshtml" />

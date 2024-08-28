@@ -8,24 +8,56 @@ using System.Net;
 
 namespace PEMIRA.Services
 {
-    public class UserService(DatabaseContext context, int limit = 10) : TableService<User>(limit)
+    public class UserService : TableService<User>
     {
-        private readonly DatabaseContext _context = context;
+        private readonly DatabaseContext _context;
+        private readonly List<long> _selectedTags;
+
+        public UserService(DatabaseContext context, int limit = 10, List<long> selectedTags = null) : base(limit)
+        {
+            _context = context;
+            _selectedTags = selectedTags ?? new List<long>(); 
+        }
+        private bool FilterUser(User user, string search)
+        {
+            return user.DeletedAt == null && user.Name.Contains(search);
+        }
         public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
             if (!ModelHelper.IsPropertyExist<User>(orderBy))
             {
                 orderBy = "Name";
             }
+
             page = page < 1 ? 1 : page;
-            IQueryable<User> query = _context.Users.
-                Where(User => User.DeletedAt == null && User.Name.Contains(search));
-            query = isAsc ? query.OrderBy(user => EF.Property<object>(user, orderBy)) : query.OrderByDescending(user => EF.Property<object>(user, orderBy));
+
+            IQueryable<User> query = _context.Users;
+            if (_selectedTags == null || _selectedTags.Count == 0)
+            {
+                query = query.Where(user => user.DeletedAt == null && user.Name.Contains(search));
+            }
+            
+            else
+            {
+                query = from user in query
+                        join tagUser in _context.TagUsers on user.Id equals tagUser.UserId
+                        where _selectedTags.Contains(tagUser.TagId) && user.DeletedAt == null && user.Name.Contains(search)
+                        select user;
+            }
+
+            query = isAsc
+                ? query.OrderBy(user => EF.Property<object>(user, orderBy))
+                : query.OrderByDescending(user => EF.Property<object>(user, orderBy));
             query = query.Skip((page - 1) * LimitEntry).Take(LimitEntry);
-            return [.. query];
+           
+            IEnumerable<User> result = query
+                .AsEnumerable()
+                .Where(user => FilterUser(user, search));
+
+            return result.ToList();
         }
         public override int GetTotalEntry(string search) => _context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search));
-        public List<TagUser> TagUserList() => _context.TagUsers.Include(tag => tag.Tag).ToList();
+        public List<TagUser> GetTagUsers() => _context.TagUsers.Include(tag => tag.Tag).ToList();
         public int GetPageCount(string search)
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && user.Name.Contains(search)) / (double)LimitEntry);

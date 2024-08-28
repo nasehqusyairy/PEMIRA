@@ -12,6 +12,8 @@ namespace PEMIRA.Controllers
 
         protected long UserId;
 
+        protected long RoleId;
+
         public BaseController()
         {
             _context = new DatabaseContext();
@@ -22,6 +24,7 @@ namespace PEMIRA.Controllers
             base.OnActionExecuting(context);
 
             UserId = Convert.ToInt64(Cookie.FindFirst("UserId")?.Value);
+            RoleId = Convert.ToInt64(Cookie.FindFirst("RoleId")?.Value);
         }
     }
 }
