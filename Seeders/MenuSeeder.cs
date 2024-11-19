@@ -37,6 +37,12 @@ namespace PEMIRA.Seeders
                     MenusegmentId = menusegments[1].Id
                 },
                 new() {
+                    Name = "Pemilihan",
+                    Icon = "clipboard-check",
+                    Url = "/Elections/",
+                    MenusegmentId = menusegments[1].Id
+                },
+                new() {
                     Name = "Kandidat",
                     Icon = "person-badge",
                     Url = "/Candidate/",

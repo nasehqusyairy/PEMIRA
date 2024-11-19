@@ -51,6 +51,6 @@ public class AuthController : BaseController
     public IActionResult Logout()
     {
         HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return RedirectToAction("Index", "Auth"); // Redirect to login page after logout
+        return RedirectToAction("Index", "Auth"); 
     }
 }

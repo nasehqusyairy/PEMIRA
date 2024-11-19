@@ -66,7 +66,7 @@ app.OnExecute(() =>
         var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
 
         // Uncomment this line to revert the database
-        seeder.Revert();
+        //seeder.Revert();
 
         seeder.Seed();
     }

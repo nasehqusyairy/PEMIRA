@@ -1,25 +1,17 @@
+using PEMIRA.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace PEMIRA.ViewModels
 {
-  public class CandidateViewModel
-  {
-
-    public CandidateViewModel()
+    public class CandidateViewModel : TableViewModel<Candidate>
     {
-      // fill example data
-      ExampleItems = [
-        "Item 1",
-        "Item 2",
-        "Item 3"
-      ];
+        public long Id { get; set; }
+        public override string OrderBy { get; set; } = "Name";
+        public long UserId { get; set; }
+
+        public long ElectionId { get; set; }
+
+        public string Img { get; set; } = null!;
+        public IFormFile Image { get; set; } = null!;
     }
-
-    [Required(ErrorMessage = "This field is required")]
-    [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "This field can only contain letters and numbers")]
-    public string? ExampleField { get; set; }
-
-    public List<string> ExampleItems { get; set; }
-
-  }
 }

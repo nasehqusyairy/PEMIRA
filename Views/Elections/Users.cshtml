@@ -1,0 +1,128 @@
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model ElectionUserViewModel
+@{
+    ViewBag.PageTitle = "Peserta Pemilihan";
+    string currentUrl = Context.Request.GetDisplayUrl();
+    var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+}
+@* alert success *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form asp-action="Users" method="post">
+                    <div class="mb-3 d-grid gap-2 d-md-block"> 
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                data-bs-target="#tagsModal">
+                            <i class="bi bi-filter-left"></i> Filter Penanda
+                        </button>
+                    </div>
+                    <div class="modal fade" tabindex="-1" id="tagsModal">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Saring Penanda</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul class="list-group">
+                                        @foreach (var tag in Model.Tags)
+                                        {
+                                            <li class="list-group-item">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" name="SelectedTags[]" type="checkbox"
+                                                           value="@(tag.Id)" id="tag@(tag.Id)"
+                                                    @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
+                                                    <label class="form-check-label" for="tag@(tag.Id)">
+                                                        @(tag.Name)
+                                                    </label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">
+                                        Tutup
+                                    </button>
+                                    <button class="btn btn-primary" type="submit">Terapkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
+                    <p>
+                        Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
+                        @(Model.TotalEntries) data)
+
+                    </p>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        No
+                                    </th>
+                                    <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Code"))" class="text-dark">
+                                            ID
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
+                                            Nama
+                                        </a>
+                                    </th>
+                                    <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Gender"))" class="text-dark">
+                                            Jenis Kelamin
+                                        </a>
+                                    </th>
+                                    <th>Penanda</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var user in Model.Entries.Where(id => id.Id != 1))
+                                {
+                                    <tr>
+                                        <td>@(startNumber++)</td>
+                                        <td>@user.Code</td>
+                                        <td>@user.Name</td>
+                                        <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
+                                        <td style="max-width: 100px;">
+                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
+                                           user.Id))
+                                            {
+                                                <span class="badge bg-secondary">@taguser.Tag.Name</span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
+                                        </td>
+                                    </tr>
+                                }
+                                @if (Model.Entries.Count == 0)
+                                {
+                                    @(ViewHelper.GenerateNoDataRow(6))
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<partial name="~/Views/Components/_ConfirmDeleteModal.cshtml" />
