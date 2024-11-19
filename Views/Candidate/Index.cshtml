@@ -16,7 +16,7 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <a asp-action="Create" class="btn btn-primary mb-3"><i class="bi bi-plus"></i> Kandidate Baru</a>
+                <a asp-action="Create" class="btn btn-primary mb-3"><i class="bi bi-plus"></i> Kandidat Baru</a>
                 <form>
                     @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari Kandidat..."))
                     <p>
@@ -46,8 +46,9 @@
                                         <td>@(startNumber++)</td>
                                         <td>
                                             <img src="@(candidate.Img == "nophoto.jpg" ? Url.Content("/img/placeholder.jpg") : candidate.Img)"
-                                                alt="Candidate Photo"
-                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+                                                alt="Candidate Photo" width="50" height="50"
+                                                class="img-thumbnail rounded-circle"
+                                                style="border-color: #@candidate.Color;border-width: 2px;" />
 
                                         </td>
                                         <td>

@@ -38,13 +38,16 @@ namespace PEMIRA.Services
         public void StoreTagUser(string name, long id)
         {
             Tag? tag = _context.Tags.FirstOrDefault(tag => tag.Name == name);
-            _context.TagUsers.Add(
-                new TagUser
-                {
-                    UserId = id,
-                    TagId = tag.Id
-                }
-            );
+            if (tag != null)
+            {
+                _context.TagUsers.Add(
+                    new TagUser
+                    {
+                        UserId = id,
+                        TagId = tag.Id
+                    }
+                );
+            }
             _context.SaveChanges();
         }
         public void Delete(long id)

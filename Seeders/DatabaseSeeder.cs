@@ -21,6 +21,7 @@ namespace PEMIRA.Seeders
         new TagUserSeeder(DBContext),
         new ElectionSeeder(DBContext),
         new RoleUserSeeder(DBContext),
+        new CandidateSeeder(DBContext),
       ];
     }
     private readonly List<ISeeder> Seeders;

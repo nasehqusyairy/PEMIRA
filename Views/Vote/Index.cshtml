@@ -1,3 +1,40 @@
 ﻿@{
     ViewBag.PageTitle = "Vote Page";
 }
+<div class="text-end">
+    <button class="btn btn-primary">
+        <i class="bi bi-send"></i> Selesaikan
+    </button>
+</div>
+<hr>
+@* alert warning *@
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Perhatian!</strong> Pemilihan hanya bisa dilakukan satu kali. Pilihlah kandidat dengan bijak!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+@* <div class="alert alert-success" role="alert">
+<strong>Selesai!</strong> Pemilihan sudah dilakukan, terima kasih atas partisipasinya! Anda bisa log out sekarang.
+</div> *@
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <div class="text-center">
+                        <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3 img-thumbnail"
+                            width="125" height="125" alt="Kandidat 1" style="border-color: #986734;border-width: 2px;">
+                        <h5 class="card-title">Mohammad Nasyikh Al-Qusyairy</h5>
+                        <p>
+                            <span class="badge text-bg-secondary">XI</span>
+                            <span class="badge text-bg-secondary">MIA</span>
+                            <span class="badge text-bg-secondary">Putra</span>
+                        </p>
+                    </div>
+                    <a href="@Url.Action("Create", "Vote")" class="btn btn-primary">
+                        Pilih
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,8 +14,9 @@ namespace PEMIRA.Seeders
             List<Candidate> items =
             [
                 new() {
-                    UserId = 1,
+                    UserId = 12,
                     ElectionId = 1,
+                    Color="982578"
                  }
             ];
             DBContext.Candidates.AddRange(items);
