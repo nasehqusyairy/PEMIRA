@@ -15,7 +15,7 @@ namespace PEMIRA.Seeders
             [
                 new() {
                     UserId = 12,
-                    ElectionId = 1,
+                    ElectionId = 70536,
                     Color="982578"
                  }
             ];

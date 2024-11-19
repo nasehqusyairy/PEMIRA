@@ -25,12 +25,10 @@ namespace PEMIRA.Services
         public override int GetTotalEntry(string search) => _context.Elections.Count(election => election.DeletedAt == null && election.Name.Contains(search));
         public Election? GetElection(long id) => _context.Elections.FirstOrDefault(el => el.Id == id);
         public Election? IsElectionUnique(string name, long id) => _context.Elections.FirstOrDefault(el => el.Name == name && el.DeletedAt == null && el.Id != id);
-        public bool IsEnrolled(long userid, long electionid) => _context.ElectionUsers.Any(eluser => eluser.UserId == userid && eluser.ElectionId == electionid);   
+        public bool IsEnrolled(long userid, long electionid) => _context.ElectionUsers.Any(eluser => eluser.UserId == userid && eluser.ElectionId == electionid);
         public void Store(Election election, long UserId)
         {
             election.CreatedBy = UserId;
-            election.CreatedAt = DateTime.Now;
-            election.UpdatedAt = DateTime.Now;
             _context.Elections.Add(election);
             _context.SaveChanges();
         }

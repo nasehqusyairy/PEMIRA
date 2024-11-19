@@ -13,9 +13,11 @@ namespace PEMIRA.Seeders
 
             List<Election> items = [
                 new(){
+                    Id = 70536,
                     Name = "Pemira 2021"
                 },
                 new(){
+                    Id=70537,
                     Name = "Pemira 2022"
                 },
             ];

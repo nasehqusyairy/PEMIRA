@@ -8,7 +8,7 @@
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
+        <strong>Berhasil!</strong> @TempData["SuccessMessage"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
@@ -30,6 +30,11 @@
                                 <tr>
                                     <th>No</th>
                                     <th>
+                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Id"))" class="text-dark">
+                                            ID
+                                        </a>
+                                    </th>
+                                    <th>
                                         <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
                                             Nama
                                         </a>
@@ -42,16 +47,17 @@
                                 {
                                     <tr>
                                         <td>@(startNumber++)</td>
+                                        <td>@(tag.Id)</td>
                                         <td>
                                             @(tag.Name)
                                         </td>
                                         <td>
                                             <a asp-action="Users" asp-route-id="@tag.Id" class="btn btn-primary"
-                                               data-bs-title="Peserta" data-bs-placement="bottom">
+                                                data-bs-title="Peserta" data-bs-placement="bottom">
                                                 <i class="bi bi-person-gear"></i>
                                             </a>
                                             <a asp-action="Edit" asp-route-id="@tag.Id" class="btn btn-warning"
-                                               data-bs-title="Ubah" data-bs-placement="bottom">
+                                                data-bs-title="Ubah" data-bs-placement="bottom">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                             @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = tag.Id })))
@@ -61,7 +67,7 @@
 
                                 @if (Model.Entries.Count == 0)
                                 {
-                                    @(ViewHelper.GenerateNoDataRow(3))
+                                    @(ViewHelper.GenerateNoDataRow(4))
                                 }
                             </tbody>
                         </table>
