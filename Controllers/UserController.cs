@@ -150,7 +150,7 @@ namespace PEMIRA.Controllers
             {
                 return Forbid();
             }
-            service.Delete(tagId);
+            service.Delete(taguser.Id);
             TempData["SuccessMessage"] = "Penanda berhasil dihapus";
             return RedirectToAction("TagUser", new { id = userId });
         }

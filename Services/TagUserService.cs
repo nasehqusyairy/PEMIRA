@@ -1,4 +1,4 @@
-    using PEMIRA.Models;
+using PEMIRA.Models;
 using Microsoft.EntityFrameworkCore;
 using PEMIRA.Helpers;
 using PEMIRA.ViewModels;
@@ -49,7 +49,12 @@ namespace PEMIRA.Services
         }
         public void Delete(long id)
         {
-
+            TagUser? tagUser = _context.TagUsers.FirstOrDefault(tag => tag.Id == id);
+            if (tagUser != null)
+            {
+                _context.TagUsers.Remove(tagUser);
+                _context.SaveChanges();
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ app.OnExecute(() =>
     builder.Services.AddAuthorization(options =>
     {
         options.AddPolicy("Admin",
-            policy => policy.RequireClaim("RoleId","1"));
+            policy => policy.RequireClaim("RoleId", "1"));
         options.AddPolicy("Pembina",
             policy => policy.RequireClaim("RoleId", "2"));
         options.AddPolicy("Panitia",
@@ -66,7 +66,7 @@ app.OnExecute(() =>
         var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
 
         // Uncomment this line to revert the database
-        //seeder.Revert();
+        seeder.Revert();
 
         seeder.Seed();
     }

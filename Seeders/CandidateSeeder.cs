@@ -11,10 +11,13 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.Candidates.Any()) return;
 
-            List<Candidate> items = new List<Candidate>
-            {
-                new Candidate() { }
-            };
+            List<Candidate> items =
+            [
+                new() {
+                    UserId = 1,
+                    ElectionId = 1,
+                 }
+            ];
             DBContext.Candidates.AddRange(items);
             DBContext.SaveChanges();
         }

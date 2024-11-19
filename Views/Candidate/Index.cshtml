@@ -46,8 +46,8 @@
                                         <td>@(startNumber++)</td>
                                         <td>
                                             <img src="@(candidate.Img == "nophoto.jpg" ? Url.Content("/img/placeholder.jpg") : candidate.Img)"
-                                                 alt="Candidate Photo"
-                                                 style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
+                                                alt="Candidate Photo"
+                                                style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;" />
 
                                         </td>
                                         <td>
@@ -58,17 +58,20 @@
                                         </td>
                                         <td>
                                             <a asp-action="Edit" asp-route-id="@candidate.Id" class="btn btn-warning"
-                                               data-bs-title="Ubah" data-bs-placement="bottom">
+                                                data-bs-title="Ubah" data-bs-placement="bottom">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = candidate.Id })))
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new
+                                            {
+                                                id = candidate.Id
+                                            })))
                                         </td>
                                     </tr>
                                 }
 
                                 @if (Model.Entries.Count == 0)
                                 {
-                                    @(ViewHelper.GenerateNoDataRow(3))
+                                    @(ViewHelper.GenerateNoDataRow(5))
                                 }
                             </tbody>
                         </table>
