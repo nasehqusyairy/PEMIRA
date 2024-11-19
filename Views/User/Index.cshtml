@@ -93,7 +93,7 @@
                                 {
                                     <tr>
                                         <td>@(startNumber++)</td>
-                                        <td>@user.Code</td>
+                                        <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
                                         <td>@user.Name</td>
                                         <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">

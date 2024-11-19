@@ -37,10 +37,10 @@ namespace PEMIRA.Controllers
             CandidateService service = new(_context);
             CandidateRequest requestValidator = new(ModelState, input, service);
 
-            if (!requestValidator.Validate())
-            {
-                return ViewCreatePage(input);
-            }
+            // if (!requestValidator.Validate())
+            // {
+            //     return ViewCreatePage(input);
+            // }
             Candidate candidate = ModelHelper.MapProperties<CandidateViewModel, Candidate>(input);
             service.Store(candidate, UserId);
             TempData["SuccessMessage"] = "Kandidat berhasil ditambahkan";

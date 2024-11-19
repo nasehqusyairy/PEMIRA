@@ -11,3 +11,13 @@ document.getElementById('sidebar-toggler').addEventListener('click', () => {
 });
 const tooltipTriggerList = document.querySelectorAll('[data-bs-title]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+const copyText = (evt) => {
+  evt.preventDefault()
+  navigator.clipboard.writeText(evt.target.textContent)
+  const el = tooltipList.filter(el => el._element == evt.target)[0]
+  el.setContent({ '.tooltip-inner': 'Berhasil disalin!' })
+  setTimeout(() => {
+    el.setContent({ '.tooltip-inner': 'Salin' })
+  }, 1000)
+}

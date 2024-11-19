@@ -52,8 +52,6 @@ namespace PEMIRA.Services
         public void Store(Candidate candidate, long UserId)
         {
             candidate.CreatedBy = UserId;
-            candidate.CreatedAt = DateTime.Now;
-            candidate.UpdatedAt = DateTime.Now;
             _context.Candidates.Add(candidate);
             _context.SaveChanges();
         }
