@@ -96,9 +96,9 @@
                                 {
                                     <tr>
                                         <td>@(startNumber++)</td>
-                                        <td>@user.Code</td>
-                                        <td>@user.Name</td>
-                                        <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
+                                        <td>@user.User.Code</td>
+                                        <td>@user.User.Name</td>
+                                        <td>@(user.User.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">
                                             @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
                                            user.Id))
