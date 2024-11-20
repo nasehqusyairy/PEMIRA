@@ -1,5 +1,6 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using PEMIRA.Models;
-using System.ComponentModel.DataAnnotations;
 
 namespace PEMIRA.ViewModels
 {
@@ -9,7 +10,10 @@ namespace PEMIRA.ViewModels
         public override string OrderBy { get; set; } = "Name";
         public long UserId { get; set; }
 
+        public string? Code { get; set; }
+
         public long ElectionId { get; set; }
+        public string Color { get; set; } = "#00bcd4";
 
         public string Img { get; set; } = null!;
         public IFormFile Image { get; set; } = null!;
