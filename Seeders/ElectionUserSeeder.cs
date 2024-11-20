@@ -11,11 +11,25 @@ namespace PEMIRA.Seeders
         {
             if (DBContext.ElectionUsers.Any()) return;
 
-            List<ElectionUser> items = new List<ElectionUser>
-            {
-                new ElectionUser() { }
-            };
-            DBContext.ElectionUsers.AddRange(items);
+            List<ElectionUser> electionusers =
+            [
+                new()
+                {
+                    UserId = 12,
+                    ElectionId = 70536,
+                },
+                new()
+                {
+                    UserId = 2,
+                    ElectionId = 70537,
+                },
+                new()
+                {
+                    UserId = 3,
+                    ElectionId = 70537,
+                }
+            ];
+            DBContext.ElectionUsers.AddRange(electionusers);
             DBContext.SaveChanges();
         }
     }

@@ -117,7 +117,7 @@ namespace PEMIRA.Controllers
             };
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
 
-            ElectionUserService electionuserservice = new(_context, input.LimitEntry, input.SelectedTags);
+            ElectionUserService electionuserservice = new(_context, input.LimitEntry, input.SelectedTags, id);
 
             TableHelper.SetTableViewModel<ElectionUser>(electionuserservice, input);
             input.TagUsers = electionuserservice.GetTagUsers();

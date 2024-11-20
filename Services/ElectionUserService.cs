@@ -7,32 +7,49 @@ namespace PEMIRA.Services
     {
         private readonly DatabaseContext _context;
         private readonly List<long> _selectedTags;
-
-        public ElectionUserService(DatabaseContext context, int limit = 10, List<long> selectedTags = null) : base(limit)
+        private long ElectionId;
+        public ElectionUserService(DatabaseContext context, int limit = 10, List<long> selectedTags = null, long electionId = 0) : base(limit)
         {
             _context = context;
             _selectedTags = selectedTags ?? new List<long>();
+            ElectionId = electionId;
         }
         public override List<ElectionUser> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
-            if (!ModelHelper.IsPropertyExist<ElectionUser>(orderBy))
+            orderBy = "User.Name";
+            if (!ModelHelper.IsPropertyExist<ElectionUser>(orderBy) && orderBy != "User.Name")
             {
-                orderBy = "User.Name"; 
+                orderBy = "User.Name";
             }
+
             page = page < 1 ? 1 : page;
+
             IQueryable<ElectionUser> query = _context.ElectionUsers
-                .Where(electionUser => electionUser.User.Name.Contains(search));  
+                .Include(eu => eu.User)
+                .Include(eu => eu.Election)
+                .Where(eu => eu.User.Name.Contains(search) && eu.ElectionId == ElectionId);
 
             if (_selectedTags != null && _selectedTags.Count > 0)
             {
-                query = from electionUser in query
-                        join tagUser in _context.TagUsers on electionUser.UserId equals tagUser.UserId
-                        where _selectedTags.Contains(tagUser.TagId)
-                        select electionUser;
+                query = from eu in query
+                        join tu in _context.TagUsers on eu.UserId equals tu.UserId
+                        where _selectedTags.Contains(tu.TagId)
+                        select eu;
             }
-            query = isAsc
-                ? query.OrderBy(electionUser => EF.Property<object>(electionUser, orderBy))
-                : query.OrderByDescending(electionUser => EF.Property<object>(electionUser, orderBy));
+
+            if (orderBy == "User.Name")
+            {
+                query = isAsc
+                    ? query.OrderBy(eu => eu.User.Name)
+                    : query.OrderByDescending(eu => eu.User.Name);
+            }
+            else
+            {
+                query = isAsc
+                    ? query.OrderBy(eu => EF.Property<object>(eu, orderBy))
+                    : query.OrderByDescending(eu => EF.Property<object>(eu, orderBy));
+            }
+
             query = query.Skip((page - 1) * LimitEntry).Take(LimitEntry);
 
             return query.ToList();

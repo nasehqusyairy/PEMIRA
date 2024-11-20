@@ -20,7 +20,7 @@
                 <form asp-action="Users" method="post">
                     <div class="mb-3 d-grid gap-2 d-md-block">
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#tagsModal">
+                                data-bs-target="#tagsModal">
                             <i class="bi bi-filter-left"></i> Filter Penanda
                         </button>
                     </div>
@@ -30,7 +30,7 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title">Saring Penanda</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <ul class="list-group">
@@ -39,7 +39,7 @@
                                             <li class="list-group-item">
                                                 <div class="form-check">
                                                     <input class="form-check-input" name="SelectedTags[]" type="checkbox"
-                                                        value="@(tag.Id)" id="tag@(tag.Id)"
+                                                           value="@(tag.Id)" id="tag@(tag.Id)"
                                                     @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
                                                     <label class="form-check-label" for="tag@(tag.Id)">
                                                         @(tag.Name)
@@ -100,7 +100,7 @@
                                         <td>@(user.User.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">
                                             @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
-                                           user.Id))
+                                           user.UserId))
                                             {
                                                 <span class="badge bg-secondary">@taguser.Tag.Name</span>
                                             }
