@@ -32,7 +32,7 @@ namespace PEMIRA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CandidateViewModel input)
+        public IActionResult Create(CandidateViewModel input, [FromServices] IWebHostEnvironment webHostEnvironment)
         {
             CandidateService service = new(_context);
             CandidateRequest requestValidator = new(ModelState, input, service);
@@ -42,8 +42,28 @@ namespace PEMIRA.Controllers
             //     return ViewCreatePage(input);
             // }
             Candidate candidate = ModelHelper.MapProperties<CandidateViewModel, Candidate>(input);
-            service.Store(candidate, UserId);
-            TempData["SuccessMessage"] = "Kandidat berhasil ditambahkan";
+            User? usercandidate = service.GetCandidatebyCode(input.Code);
+            if (usercandidate != null)
+            {
+                if (input.Image != null && input.Image.Length > 0)
+                {
+                    var fileName = $"{input.Code}{Path.GetExtension(input.Image.FileName)}";
+                    var uploadPath = Path.Combine(webHostEnvironment.WebRootPath, "img/candidates");
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+                    var filePath = Path.Combine(uploadPath, fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        input.Image.CopyTo(stream);
+                    }
+                    candidate.Img = $"/img/candidates/{fileName}";
+                }
+                candidate.Color = input.Color.Substring(1);
+                service.Store(candidate, UserId, usercandidate.Id);
+                TempData["SuccessMessage"] = "Kandidat berhasil ditambahkan";
+            }
             return RedirectToAction("Index");
         }
 

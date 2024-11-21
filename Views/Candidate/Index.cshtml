@@ -45,12 +45,13 @@
                                     <tr>
                                         <td>@(startNumber++)</td>
                                         <td>
-                                            <img src="@(candidate.Img == "nophoto.jpg" ? Url.Content("/img/placeholder.jpg") : candidate.Img)"
-                                                alt="Candidate Photo" width="50" height="50"
-                                                class="img-thumbnail rounded-circle"
-                                                style="border-color: #@candidate.Color;border-width: 2px;" />
-
+                                            <div style="width: 50px; height: 50px; border: 2px solid #@candidate.Color; border-radius: 50%; overflow: hidden;">
+                                                <img src="@(candidate.Img == "nophoto.jpg" ? Url.Content("/img/placeholder.jpg") : candidate.Img)"
+                                                     alt="Candidate Photo"
+                                                     style="width: 100%; height: 100%; object-fit: cover;" />
+                                            </div>
                                         </td>
+
                                         <td>
                                             @(candidate.User.Name)
                                         </td>

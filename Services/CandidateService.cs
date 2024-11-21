@@ -48,10 +48,12 @@ namespace PEMIRA.Services
         public Candidate? IsCandidateUnique(string name, long id) => _context.Candidates.FirstOrDefault(candidate => candidate.User.Name == name && candidate.DeletedAt == null && candidate.Id != id);
 
         public Candidate? GetCandidate(long id) => _context.Candidates.FirstOrDefault(candidate => candidate.Id == id && candidate.DeletedAt == null);
+        public User? GetCandidatebyCode(string code) => _context.Users.FirstOrDefault(candidate => candidate.Code == code);
 
-        public void Store(Candidate candidate, long UserId)
+        public void Store(Candidate candidate, long UserId, long IdUser)
         {
             candidate.CreatedBy = UserId;
+            candidate.UserId = IdUser;
             _context.Candidates.Add(candidate);
             _context.SaveChanges();
         }
