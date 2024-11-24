@@ -28,6 +28,8 @@ namespace PEMIRA.ViewModels
         public List<TagUser> TagUsers { get; set; } = [];
         public List<Tag> Tags { get; set; } = [];
         public List<long> SelectedTags { get; set; } = [];
+        public List<long> SelectedUsers { get; set; } = [];
+        public long ElectionId { get; set; }
 
     }
 }

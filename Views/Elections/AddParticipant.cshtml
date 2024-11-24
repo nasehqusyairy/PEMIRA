@@ -1,30 +1,39 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
-@model ElectionUserViewModel
+@model UserViewModel
 @{
-    ViewBag.PageTitle = "Peserta Pemilihan";
+    ViewBag.PageTitle = "Tambah Peserta";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Berhasil!</strong> @TempData["SuccessMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+@* alert success *@
+@{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Peringatan!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 }
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form asp-action="Users" method="post">
+                <form asp-action="AddParticipant" method="post">
                     <div class="mb-3 d-grid gap-2 d-md-block">
-                        <a asp-action="AddParticipant" asp-route-id="@Model.Election.Id" class="btn btn-primary">
-                            <i class="bi bi-plus"></i>
-                            Tambah Peserta
-                        </a>
+                        <button type="submit" class="btn btn-primary" formaction="/Elections/Store/@Model.ElectionId">
+                            <i class="bi bi-plus"></i> Tambahkan
+                        </button>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                                 data-bs-target="#tagsModal">
-                            <i class="bi bi-filter-left"></i> Filter Penanda
+                            <i class="bi bi-filter-left"></i> Saring Penanda
                         </button>
                     </div>
                     <div class="modal fade" tabindex="-1" id="tagsModal">
@@ -53,7 +62,8 @@
                                     </ul>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">
                                         Tutup
                                     </button>
                                     <button class="btn btn-primary" type="submit">Terapkan</button>
@@ -72,7 +82,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        No
+                                        <input type="checkbox" id="checkAll" />
                                     </th>
                                     <th>
                                         <a href="@(UrlHelper.SetOrderBy(currentUrl,"Code"))" class="text-dark">
@@ -94,22 +104,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var user in Model.Entries)
+                                @foreach (var user in Model.Entries.Where(id => id.Id != 1))
                                 {
                                     <tr>
-                                        <td>@(startNumber++)</td>
-                                        <td>@user.User.Code</td>
-                                        <td>@user.User.Name</td>
-                                        <td>@(user.User.Gender == false ? "Laki-laki" : "Perempuan")</td>
+                                        <td>
+                                            <input type="checkbox" class="user-checkbox" value="@user.Id" name="SelectedUsers[]" @(Model.SelectedUsers.Contains(user.Id) ? "checked" : "")>
+                                        </td>
+                                        <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
+                                        <td>@user.Name</td>
+                                        <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">
-                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
-                                           user.UserId))
+                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId == user.Id))
                                             {
                                                 <span class="badge bg-secondary">@taguser.Tag.Name</span>
                                             }
-
                                         </td>
                                         <td>
+                                            <a href="@Url.Action("TagUser", "User", new { id = user.Id })" class="btn btn-primary" data-bs-title="Penanda" data-bs-placement="bottom">
+                                                <i class="bi bi-tags"></i>
+                                            </a>
+                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning" data-bs-title="Edit" data-bs-placement="bottom">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
                                             @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
                                         </td>
                                     </tr>
@@ -119,6 +135,7 @@
                                     @(ViewHelper.GenerateNoDataRow(6))
                                 }
                             </tbody>
+
                         </table>
                     </div>
                     @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
@@ -128,3 +145,21 @@
     </div>
 </div>
 <partial name="~/Views/Components/_ConfirmDeleteModal.cshtml" />
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkAllBox = document.getElementById("checkAll");
+        const userCheckboxes = document.querySelectorAll(".user-checkbox");
+
+        checkAllBox.addEventListener("change", function () {
+            const isChecked = this.checked;
+            userCheckboxes.forEach(cb => cb.checked = isChecked);
+        });
+
+        userCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                checkAllBox.checked = Array.from(userCheckboxes).every(cb => cb.checked);
+            });
+        });
+    });
+
+</script>

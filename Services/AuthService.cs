@@ -16,7 +16,7 @@ namespace PEMIRA.Services
         public User? GetUserByCode(string code, long electionId) => _context.Users
         .Include(user => user.RoleUsers.Where(roleUser => roleUser.ElectionId == electionId))
         .ThenInclude(roleUser => roleUser.Role)
-        .FirstOrDefault(user => user.Code == code);
+        .FirstOrDefault(user => user.Code.Contains(code));
 
         public List<Election> GetElections() => [.. _context.Elections];
     }

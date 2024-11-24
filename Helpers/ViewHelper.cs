@@ -4,7 +4,7 @@ namespace PEMIRA.Helpers;
 
 public class ViewHelper
 {
-    public static IHtmlContent GenerateSearchAndLimitForm(int limitEntry, string searchQuery, string placeholder = "Find...")
+    public static IHtmlContent GenerateSearchAndLimitForm(int limitEntry, string searchQuery, string placeholder = "Cari...")
     {
         var htmlContent = $@"
             <div class='input-group mb-3'>

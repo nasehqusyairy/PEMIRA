@@ -11,12 +11,12 @@ namespace PEMIRA.Controllers
 {
     [Authorize(Policy = "Admin")]
     public class ElectionsController : BaseController
-    { 
+    {
         public IActionResult Index(ElectionViewModel input)
         {
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
 
-            ElectionService service = new (_context, input.LimitEntry);
+            ElectionService service = new(_context, input.LimitEntry);
 
             TableHelper.SetTableViewModel(service, input);
 
@@ -111,12 +111,8 @@ namespace PEMIRA.Controllers
             {
                 return NotFound();
             }
-            ElectionUserViewModel electionViewModel = new ElectionUserViewModel
-            {
-                Election = election,
-            };
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
-
+            input.Election = election;
             ElectionUserService electionuserservice = new(_context, input.LimitEntry, input.SelectedTags, id);
 
             TableHelper.SetTableViewModel<ElectionUser>(electionuserservice, input);
@@ -125,5 +121,32 @@ namespace PEMIRA.Controllers
             return View(input);
         }
 
+        public IActionResult AddParticipant(long id, UserViewModel input)
+        {
+            ElectionService service = new(_context);
+            input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
+            UserService userService = new(_context, input.LimitEntry, input.SelectedTags);
+            Election? election = service.GetElection(id);
+            if (election == null)
+            {
+                return NotFound();
+            }
+            TableHelper.SetTableViewModel(userService, input);
+            input.TagUsers = userService.GetTagUsers();
+            input.Tags = userService.GetTags();
+            input.ElectionId = id;
+            return View(input);
+        }
+        public IActionResult Store (long id, UserViewModel input)
+        {
+            if (input.SelectedUsers.Count <= 0)
+            {
+                TempData["ErrorMessage"] = "Pilih Minimal Satu User";
+                return RedirectToAction("AddParticipant", new { id = id });
+            }
+            return View(input);
+        }
     }
+
 }
+

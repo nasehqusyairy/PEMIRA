@@ -34,14 +34,14 @@ namespace PEMIRA.Services
             IQueryable<User> query = _context.Users;
             if (_selectedTags == null || _selectedTags.Count == 0)
             {
-                query = query.Where(user => user.DeletedAt == null && user.Name.Contains(search));
+                query = query.Where(user => user.DeletedAt == null && user.Name.Contains(search.ToUpper()));
             }
             
             else
             {
                 query = from user in query
                         join tagUser in _context.TagUsers on user.Id equals tagUser.UserId
-                        where _selectedTags.Contains(tagUser.TagId) && user.DeletedAt == null && user.Name.Contains(search)
+                        where _selectedTags.Contains(tagUser.TagId) && user.DeletedAt == null && user.Name.Contains(search.ToUpper())
                         select user;
             }
 
@@ -52,7 +52,7 @@ namespace PEMIRA.Services
            
             IEnumerable<User> result = query
                 .AsEnumerable()
-                .Where(user => FilterUser(user, search));
+                .Where(user => FilterUser(user, search.ToUpper()));
 
             return result.ToList();
         }
