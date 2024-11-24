@@ -21,6 +21,19 @@ namespace PEMIRA.Seeders
                     Name = "Pemira 2022"
                 },
             ];
+
+            // looping untuk menambahkan item dengan id urut
+            // int count = 100;
+            // long lastId = items.Last().Id;
+            // for (long i = lastId; i < lastId + count; i++)
+            // {
+            //     items.Add(new Election
+            //     {
+            //         Id = i + 1,
+            //         Name = $"Pemira {i}"
+            //     });
+            // }
+
             DBContext.Elections.AddRange(items);
             DBContext.SaveChanges();
         }

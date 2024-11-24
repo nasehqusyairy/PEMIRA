@@ -1,0 +1,74 @@
+@using Microsoft.AspNetCore.Http.Extensions
+@model ElectionViewModel
+@{
+  ViewBag.PageTitle = "Kandidat Baru";
+  string currentUrl = Context.Request.GetDisplayUrl();
+  var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+}
+
+<div class="alert alert-info alert-dismissible fade show" role="alert">
+  <strong>Info!</strong> Pilih pemilihan yang akan diikuti oleh calon kandidat terlebih dahulu!
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <a asp-action="Index" class="btn btn-secondary mb-3"><i class="bi bi-arrow-left"></i> Kembali</a>
+        <form>
+          @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari Pemilihan..."))
+          <p>
+            Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
+            @(Model.TotalEntries) data)
+
+          </p>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>
+                    <a href="@(UrlHelper.SetOrderBy(currentUrl,"Id"))" class="text-dark">
+                      ID
+                    </a>
+                  </th>
+                  <th>
+                    <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
+                      Nama
+                    </a>
+                  </th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach (var election in Model.Entries)
+                {
+                  <tr>
+                    <td>@(startNumber++)</td>
+                    <td>@election.Id</td>
+                    <td>
+                      @(election.Name)
+                    </td>
+                    <td>
+                      <a asp-action="Create" asp-route-ElectionId="@election.Id" class="btn btn-primary"
+                        data-bs-placement="bottom">
+                        Pilih
+                      </a>
+                    </td>
+                  </tr>
+                }
+
+                @if (Model.Entries.Count == 0)
+                {
+                  @(ViewHelper.GenerateNoDataRow(4))
+                }
+              </tbody>
+            </table>
+          </div>
+          @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

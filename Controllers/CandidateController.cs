@@ -20,9 +20,13 @@ namespace PEMIRA.Controllers
             TableHelper.SetTableViewModel(service, input);
             return View(input);
         }
-        public IActionResult Create()
+        public IActionResult Create(long ElectionId)
         {
-            return ViewCreatePage(new CandidateViewModel());
+            CandidateViewModel input = new()
+            {
+                ElectionId = ElectionId
+            };
+            return ViewCreatePage(input);
         }
 
         private ViewResult ViewCreatePage(CandidateViewModel input)
@@ -37,10 +41,12 @@ namespace PEMIRA.Controllers
             CandidateService service = new(_context);
             CandidateRequest requestValidator = new(ModelState, input, service);
 
-            // if (!requestValidator.Validate())
-            // {
-            //     return ViewCreatePage(input);
-            // }
+            var stat = !requestValidator.Validate();
+
+            if (stat)
+            {
+                return ViewCreatePage(input);
+            }
             Candidate candidate = ModelHelper.MapProperties<CandidateViewModel, Candidate>(input);
             User? usercandidate = service.GetCandidatebyCode(input.Code);
             if (usercandidate != null)
@@ -60,7 +66,7 @@ namespace PEMIRA.Controllers
                     }
                     candidate.Img = $"/img/candidates/{fileName}";
                 }
-                candidate.Color = input.Color.Substring(1);
+                candidate.Color = input.Color[1..];
                 service.Store(candidate, UserId, usercandidate.Id);
                 TempData["SuccessMessage"] = "Kandidat berhasil ditambahkan";
             }
@@ -120,6 +126,13 @@ namespace PEMIRA.Controllers
             service.SoftDelete(candidate, UserId);
             TempData["SuccessMessage"] = "Kandidat berhasil dihapus";
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ChooseElection(ElectionViewModel input)
+        {
+            ElectionService electionService = new(_context, input.LimitEntry);
+            TableHelper.SetTableViewModel(electionService, input);
+            return View(input);
         }
     }
 

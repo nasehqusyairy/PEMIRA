@@ -21,3 +21,11 @@ const copyText = (evt) => {
     el.setContent({ '.tooltip-inner': 'Salin' })
   }, 1000)
 }
+
+const previewImage = (evt, elId) => {
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    document.getElementById(elId).src = e.target.result
+  }
+  reader.readAsDataURL(evt.target.files[0])
+}

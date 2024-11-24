@@ -26,14 +26,14 @@
             @* form untuk gambar *@
             <div class="mb-3">
                 <label class="form-label" asp-for="Image">Gambar</label>
-                <input type="file" class="form-control" asp-for="Image">
+                <input type="file" class="form-control" asp-for="Image" onchange="previewImage(event,'preview')">
                 <small class="text-danger form-text"><span asp-validation-for="Image"></span></small>
             </div>
             @* preview *@
             <div class="mb-3">
                 @* gambar placeholder *@
                 <img class="img-thumbnail" src="@(Url.Content("/img/placeholder.jpg"))" id="preview"
-                     style="width: 100px; height: 100px;">
+                    style="width: 100px; height: 100px;">
             </div>
             <button class="btn btn-primary" type="submit">Simpan</button>
             <a asp-action="Index" class="btn btn-secondary">Kembali</a>

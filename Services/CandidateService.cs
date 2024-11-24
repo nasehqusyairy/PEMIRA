@@ -74,5 +74,17 @@ namespace PEMIRA.Services
             _context.Candidates.Update(candidate);
             _context.SaveChanges();
         }
+
+        // fungsi untuk memeriksa apakah ada election dengan id parameter dan deleted at tidak null
+        public bool IsElectionExists(long id)
+        {
+            return _context.Elections.FirstOrDefault(election => election.Id == id && election.DeletedAt == null) != null;
+        }
+
+        public bool IsUserExists(string code)
+        {
+            return _context.Users.FirstOrDefault(user => user.Code == code && user.DeletedAt == null) != null;
+        }
+
     }
 }

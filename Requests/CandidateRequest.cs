@@ -17,10 +17,19 @@ public class CandidateRequest(ModelStateDictionary modelState, CandidateViewMode
   public bool Validate()
   {
     // Logic here
-    // if (condition)
-    // {
-    //  ModelState.AddModelError("Keyname", "Message here...");
-    // }
+
+    // periksa apakah ID pengguna sudah ada
+    if (!Service.IsUserExists(UserInput.Code))
+    {
+      ModelState.AddModelError("Code", "ID pengguna tidak ditemukan");
+    }
+
+    // periksa apakah ID pemilihan sudah ada
+    if (!Service.IsElectionExists(UserInput.ElectionId))
+    {
+      ModelState.AddModelError("ElectionId", "ID pemilihan tidak ditemukan");
+    }
+
 
     // Set derived data if exist
     // if (ModelState.IsValid)
