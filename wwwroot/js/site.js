@@ -29,3 +29,20 @@ const previewImage = (evt, elId) => {
   }
   reader.readAsDataURL(evt.target.files[0])
 }
+
+const showPassword = () => {
+  const passwordInput = document.getElementById('Password');
+  const showPasswordButton = document.getElementById('show-password');
+  const icon = showPasswordButton.querySelector('i');
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    icon.classList.remove('bi-eye');
+    icon.classList.add('bi-eye-slash');
+    showPasswordButton.title = 'Sembunyikan Kata Sandi';
+  } else {
+    passwordInput.type = 'password';
+    icon.classList.remove('bi-eye-slash');
+    icon.classList.add('bi-eye');
+    showPasswordButton.title = 'Tampilkan Kata Sandi';
+  }
+}
