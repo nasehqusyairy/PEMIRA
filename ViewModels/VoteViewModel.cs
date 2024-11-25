@@ -15,5 +15,9 @@ namespace PEMIRA.ViewModels
 
     public SelectList Elections { get; set; } = new(new Election[] { }, "Id", "Name");
 
+    public List<Candidate> Candidates { get; set; } = [];
+
+    public long? SelectedCandidateId { get; set; }
+
   }
 }

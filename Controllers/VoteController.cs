@@ -17,13 +17,15 @@ namespace PEMIRA.Controllers
 
         public IActionResult Index()
         {
-            List<Election> elections = new VoteService(_context).GetElections();
+            VoteService service = new(_context);
+            List<Election> elections = service.GetElections();
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
             string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
             VoteViewModel model = new()
             {
                 ElectionId = selectedElectionId,
-                Elections = new SelectList(elections, "Id", "Name", selectedElectionId)
+                Elections = new SelectList(elections, "Id", "Name", selectedElectionId),
+                Candidates = selectedElectionId != null ? service.GetCandidates(long.Parse(selectedElectionId)) : []
             };
             return View(model);
         }
@@ -42,6 +44,14 @@ namespace PEMIRA.Controllers
             identity.AddClaim(new Claim("ElectionId", ElectionId.ToString()));
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Choose(long SelectedCandidateId)
+        {
 
             return RedirectToAction("Index");
         }
