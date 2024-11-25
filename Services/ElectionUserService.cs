@@ -3,17 +3,12 @@ using PEMIRA.Helpers;
 using PEMIRA.Models;
 namespace PEMIRA.Services
 {
-    public class ElectionUserService : TableService<ElectionUser>
+    public class ElectionUserService(DatabaseContext context, int limit = 10, List<long>? selectedTags = null, long electionId = 0) : TableService<ElectionUser>(limit)
     {
-        private readonly DatabaseContext _context;
-        private readonly List<long> _selectedTags;
-        private long ElectionId;
-        public ElectionUserService(DatabaseContext context, int limit = 10, List<long> selectedTags = null, long electionId = 0) : base(limit)
-        {
-            _context = context;
-            _selectedTags = selectedTags ?? new List<long>();
-            ElectionId = electionId;
-        }
+        private readonly DatabaseContext _context = context;
+        private readonly List<long> _selectedTags = selectedTags ?? [];
+        private readonly long ElectionId = electionId;
+
         public override List<ElectionUser> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
             orderBy = "User.Name";
