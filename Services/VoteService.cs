@@ -9,7 +9,7 @@ namespace PEMIRA.Services
 
     public List<Election> GetElections()
     {
-      return [.. _context.Elections];
+      return [.. _context.Elections.Where(e => e.DeletedAt == null)];
     }
 
     public List<Candidate> GetCandidates(long ElectionId)

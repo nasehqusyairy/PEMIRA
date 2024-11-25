@@ -18,9 +18,12 @@ namespace PEMIRA.Controllers
         public IActionResult Index()
         {
             VoteService service = new(_context);
+
             List<Election> elections = service.GetElections();
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
+
             string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
+
             VoteViewModel model = new()
             {
                 ElectionId = selectedElectionId,
