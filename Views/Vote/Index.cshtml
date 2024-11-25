@@ -1,8 +1,15 @@
-﻿@{
+﻿@model VoteViewModel
+@{
     ViewBag.PageTitle = "Vote Page";
 }
-<div class="text-end">
-    <button class="btn btn-primary">
+<div class="d-grid gap-2 d-lg-flex justify-content-lg-end">
+    <form asp-action="ChangeElection">
+        <div class="input-group">
+            <select asp-for="ElectionId" class="form-select" asp-items="Model.Elections"></select>
+            <button class="btn btn-primary">Ganti</button>
+        </div>
+    </form>
+    <button class="btn btn-primary" disabled>
         <i class="bi bi-send"></i> Selesaikan
     </button>
 </div>
