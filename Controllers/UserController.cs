@@ -66,16 +66,21 @@ namespace PEMIRA.Controllers
         public IActionResult AddTagUser(TagUserViewModel input)
         {
             TagUserService service = new(_context, input.UserId);
-            if (service.IsTagUnique(input.Name))
+            Tag? existtag = service.IsTagExist(input.Name);
+            if (existtag == null)
             {
                 Tag tag = ModelHelper.MapProperties<TagUserViewModel, Tag>(input);
                 service.Store(tag, UserId, input.UserId);
                 TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
             }
+            else if(service.IsTagUserExist(existtag.Id, input.UserId))
+            {
+                TempData["ErrorMessage"] = "Penanda sudah Ada dalam Pengguna";
+            }
             else
             {
-                service.StoreTagUser(input.Name, input.UserId);
                 TempData["SuccessMessage"] = "Penanda berhasil ditambahkan";
+                service.StoreTagUser(input.Name, input.UserId);
             }
             return RedirectToAction("TagUser", new { id = input.UserId });
 

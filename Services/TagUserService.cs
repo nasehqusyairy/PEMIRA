@@ -22,10 +22,11 @@ namespace PEMIRA.Services
         public override int GetTotalEntry(string search) => _context.Tags.Count(tag => tag.DeletedAt == null && tag.Name.Contains(search));
         public List<Tag> GetTags() => [.. _context.Tags.Where(tag => tag.DeletedAt == null)];
         public TagUser? GetTagUserById(long tagId) => _context.TagUsers.FirstOrDefault(tag => tag.TagId == tagId && tag.UserId == id);
-        public bool IsTagUnique(string name)
+        public Tag? IsTagExist(string name)
         {
-            return _context.Tags.FirstOrDefault(tag => tag.Name == name && tag.DeletedAt == null) == null;
+            return _context.Tags.FirstOrDefault(tag => tag.Name == name && tag.DeletedAt == null);
         }
+        public bool IsTagUserExist(long id, long user) => _context.TagUsers.Any(tag => tag.TagId == id && tag.UserId == user);
         public void Store(Tag tag, long UserId, long id)
         {
             tag.CreatedBy = UserId;
