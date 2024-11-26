@@ -30,6 +30,11 @@ namespace PEMIRA.Controllers
                 Elections = new SelectList(elections, "Id", "Name", selectedElectionId),
                 Candidates = selectedElectionId != null ? service.GetCandidates(long.Parse(selectedElectionId)) : []
             };
+            if(service.IsUserHasVoted(UserId, Convert.ToInt64(model.ElectionId)))
+            {
+                var election = service.GetElection(Convert.ToInt64(model.ElectionId));
+                TempData["HasVoted"] = "Pemilihan " + election?.Name + " Telah Selesai";
+            }
             return View(model);
         }
 
@@ -55,9 +60,10 @@ namespace PEMIRA.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Choose(long SelectedCandidateId)
         {
-
+            VoteService service = new(_context);
+            service.Store(UserId, SelectedCandidateId);
             return RedirectToAction("Index");
         }
-
+        
     }
 }
