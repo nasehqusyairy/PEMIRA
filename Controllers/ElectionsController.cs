@@ -112,14 +112,15 @@ namespace PEMIRA.Controllers
                 return NotFound();
             }
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
-            input.Election = election;
-            ElectionUserService electionuserservice = new(_context, input.LimitEntry, input.SelectedTags, id);
+            input.ElectionId = id;
+            ElectionUserService electionuserservice = new(_context, id, input.LimitEntry, input.SelectedTags);
 
-            TableHelper.SetTableViewModel<ElectionUser>(electionuserservice, input);
+            TableHelper.SetTableViewModel(electionuserservice, input);
             input.TagUsers = electionuserservice.GetTagUsers();
             input.Tags = electionuserservice.GetTags();
             return View(input);
         }
+
 
         public IActionResult AddParticipant(long id, UserViewModel input)
         {
@@ -137,14 +138,23 @@ namespace PEMIRA.Controllers
             input.ElectionId = id;
             return View(input);
         }
-        public IActionResult Store (long id, UserViewModel input)
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult StoreParticipant(long ElectionId, long[] selectedUsers)
         {
-            if (input.SelectedUsers.Count <= 0)
-            {
-                TempData["ErrorMessage"] = "Pilih Minimal Satu User";
-                return RedirectToAction("AddParticipant", new { id = id });
-            }
-            return View(input);
+            ElectionUserService service = new(_context, ElectionId);
+            service.AddParticipants(selectedUsers);
+            TempData["SuccessMessage"] = "Peserta berhasil ditambahkan";
+            return RedirectToAction("Users", new { id = ElectionId });
+        }
+
+        public IActionResult RemoveParticipant(long id, long ElectionId)
+        {
+            ElectionUserService service = new(_context, ElectionId);
+            service.RemoveParticipant(id);
+            TempData["SuccessMessage"] = "Peserta berhasil dihapus";
+            return RedirectToAction("Users", new { id = ElectionId });
         }
     }
 

@@ -16,9 +16,9 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form asp-action="Users" method="post">
+                <form method="post">
                     <div class="mb-3 d-grid gap-2 d-md-block">
-                        <a asp-action="AddParticipant" asp-route-id="@Model.Election.Id" class="btn btn-primary">
+                        <a asp-action="AddParticipant" asp-route-id="@(Model.ElectionId)" class="btn btn-primary">
                             <i class="bi bi-plus"></i>
                             Tambah Peserta
                         </a>
@@ -113,7 +113,11 @@
 
                                         </td>
                                         <td>
-                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("RemoveParticipant", new
+                                            {
+                                                id = user.Id,
+                                                ElectionId = Model.ElectionId
+                                            })))
                                         </td>
                                     </tr>
                                 }

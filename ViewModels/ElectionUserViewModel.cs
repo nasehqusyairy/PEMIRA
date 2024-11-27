@@ -5,7 +5,7 @@ namespace PEMIRA.ViewModels
 {
     public class ElectionUserViewModel : TableViewModel<ElectionUser>
     {
-        public Election? Election { get; set; }
+        public required long ElectionId { get; set; }
         public List<long> SelectedUsers { get; set; } = [];
         public bool? IsEnroled { get; set; }
         public List<ElectionUser> ElectionUsers { get; set; } = new List<ElectionUser>();
