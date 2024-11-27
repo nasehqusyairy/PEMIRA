@@ -1,17 +1,10 @@
 ﻿@model CandidateViewModel
 @{
-    ViewBag.PageTitle = "Kandidat Baru";
-}
-@if (TempData["ErrorMessage"] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Hmmmm 🗿 !</strong> @TempData["ErrorMessage"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    ViewBag.PageTitle = "Edit Kandidat";
 }
 <div class="card">
     <div class="card-body">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             <div class="mb-3">
                 <label class="form-label" asp-for="ElectionId">ID Pemilihan</label>
@@ -20,7 +13,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label" asp-for="Code">ID Pengguna</label>
-                <input type="text" class="form-control" asp-for="Code" asp-list="Fruits" />
+                <input type="text" class="form-control" asp-for="Code" readonly="true" asp-list="Fruits" />
                 <datalist asp-items="Fruits"></datalist>
                 <small class="text-danger form-text"><span asp-validation-for="Code"></span></small>
             </div>
@@ -38,9 +31,10 @@
             </div>
             @* preview *@
             <div class="mb-3">
-                @* gambar placeholder *@
-                <img class="img-thumbnail" src="@(Url.Content("/img/placeholder.jpg"))" id="preview"
-                    style="width: 100px; height: 100px;">
+                <img class="img-thumbnail"
+                     src="@(Model.Img != "nophoto.jpg" ? Url.Content(@Model.Img) : Url.Content("/img/placeholder.jpg"))"
+                     id="preview"
+                     style="width: 100px; height: 100px;">
             </div>
             <button class="btn btn-primary" type="submit">Simpan</button>
             <a asp-action="Index" class="btn btn-secondary">Kembali</a>

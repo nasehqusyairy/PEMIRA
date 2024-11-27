@@ -160,5 +160,15 @@ namespace PEMIRA.Controllers
             return RedirectToAction("TagUser", new { id = userId });
         }
 
+        public IActionResult Print()
+        {
+            UserService service = new(_context);
+            UserViewModel userViewModel = new UserViewModel
+            {
+                Users = service.GetUsers()
+            };
+            return View(userViewModel);
+        }
+
     }
 }

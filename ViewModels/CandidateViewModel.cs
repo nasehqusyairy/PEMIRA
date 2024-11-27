@@ -20,6 +20,7 @@ namespace PEMIRA.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "ID hanya boleh berisi huruf dan angka")]
         public long ElectionId { get; set; }
         public string Color { get; set; } = "#00bcd4";
+        public string? Img { get; set; }
 
         [Required(ErrorMessage = "Gambar tidak boleh kosong")]
         public IFormFile Image { get; set; } = null!;

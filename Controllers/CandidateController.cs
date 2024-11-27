@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using PEMIRA.Helpers;
 using PEMIRA.Models;
@@ -41,10 +42,9 @@ namespace PEMIRA.Controllers
             CandidateService service = new(_context);
             CandidateRequest requestValidator = new(ModelState, input, service);
 
-            var stat = !requestValidator.Validate();
-
-            if (stat)
+            if (requestValidator.Validate() == false)
             {
+                TempData["ErrorMessage"] = requestValidator.ErrorMessage;
                 return ViewCreatePage(input);
             }
             Candidate candidate = ModelHelper.MapProperties<CandidateViewModel, Candidate>(input);
@@ -53,12 +53,14 @@ namespace PEMIRA.Controllers
             {
                 if (input.Image != null && input.Image.Length > 0)
                 {
-                    var fileName = $"{input.Code}{Path.GetExtension(input.Image.FileName)}";
+                    var timeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                    var fileName = $"{input.Code}-{timeStamp}{Path.GetExtension(input.Image.FileName)}";
                     var uploadPath = Path.Combine(webHostEnvironment.WebRootPath, "img/candidates");
                     if (!Directory.Exists(uploadPath))
                     {
                         Directory.CreateDirectory(uploadPath);
                     }
+
                     var filePath = Path.Combine(uploadPath, fileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -81,8 +83,9 @@ namespace PEMIRA.Controllers
             {
                 return NotFound();
             }
-
             CandidateViewModel input = ModelHelper.MapProperties<Candidate, CandidateViewModel>(candidate);
+            input.Code = candidate.User.Code;
+            input.Color = candidate.Color.StartsWith("#") ? candidate.Color : $"#{candidate.Color}";
             return View("Edit", input);
         }
 
@@ -93,22 +96,46 @@ namespace PEMIRA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(CandidateViewModel input)
+        public IActionResult Edit(CandidateViewModel input, [FromServices] IWebHostEnvironment webHostEnvironment)
         {
             CandidateService service = new(_context);
             CandidateRequest requestValidator = new(ModelState, input, service);
-
-            if (!requestValidator.Validate())
-            {
-                return ViewEditPage(input);
-            }
-
             Candidate? candidate = service.GetCandidate(input.Id);
             if (candidate == null)
             {
                 return NotFound();
             }
 
+            if (input.Image != null && input.Image.Length > 0)
+            {
+                var timeStamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                var fileName = $"{input.Code}-{timeStamp}{Path.GetExtension(input.Image.FileName)}";
+                var uploadPath = Path.Combine(webHostEnvironment.WebRootPath, "img/candidates");
+                var filePath = Path.Combine(uploadPath, fileName);
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                if (!string.IsNullOrEmpty(candidate.Img))
+                {
+                    var oldFilePath = Path.Combine(webHostEnvironment.WebRootPath, candidate.Img.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    input.Image.CopyTo(stream);
+                }
+
+                input.Img = $"/img/candidates/{fileName}";
+            }
+
+            input.UserId = candidate.UserId;
             service.Update(input, candidate, UserId);
             TempData["SuccessMessage"] = "Kandidat berhasil diubah";
             return RedirectToAction("Index");

@@ -1,0 +1,57 @@
+﻿@model UserViewModel
+@{
+    Layout = null;
+}
+<
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cetak Pengguna</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <style>
+        @@media print {
+            @@page {
+                size: landscape;
+            }
+        }
+    </style>
+    <div class="mt-4">
+        <h1 class="mb-3 text-center">Daftar Pengguna Aplikasi</h1>
+        <button onclick="printPage()" class="btn btn-secondary mb-3 ms-5"><i class="bi bi-printer me-2"></i>Cetak</button>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users.Where(user => user.Id != 1))
+                {
+                    <tr>
+                        <td>@Model.Users.ToList().IndexOf(user)</td>
+                        <td>@user.Name</td>
+                        <td>@user.Password</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function printPage() {
+            const printButton = document.querySelector('button');
+            printButton.style.display = 'none'; // Sembunyikan tombol cetak
+            window.print();
+            printButton.style.display = ''; // Tampilkan kembali tombol cetak setelah selesai
+        }
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

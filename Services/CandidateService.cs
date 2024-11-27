@@ -47,9 +47,10 @@ namespace PEMIRA.Services
 
         public Candidate? IsCandidateUnique(string name, long id) => _context.Candidates.FirstOrDefault(candidate => candidate.User.Name == name && candidate.DeletedAt == null && candidate.Id != id);
 
-        public Candidate? GetCandidate(long id) => _context.Candidates.FirstOrDefault(candidate => candidate.Id == id && candidate.DeletedAt == null);
+        public Candidate? GetCandidate(long id) => _context.Candidates.Include(user => user.User).Include(el => el.Election).FirstOrDefault(candidate => candidate.Id == id && candidate.DeletedAt == null);
+        public Candidate? GetCandidatebyUserId(long id) => _context.Candidates.Include(user => user.User).Include(el => el.Election).FirstOrDefault(candidate => candidate.UserId == id && candidate.DeletedAt == null);
         public User? GetCandidatebyCode(string code) => _context.Users.FirstOrDefault(candidate => candidate.Code == code);
-
+ 
         public void Store(Candidate candidate, long UserId, long IdUser)
         {
             candidate.CreatedBy = UserId;
@@ -63,6 +64,8 @@ namespace PEMIRA.Services
             ModelHelper.UpdateProperties(input, candidate);
             candidate.UpdatedBy = UserId;
             candidate.UpdatedAt = DateTime.Now;
+            candidate.Color = input.Color[1..];
+            candidate.UserId = input.UserId;
             _context.Candidates.Update(candidate);
             _context.SaveChanges();
         }
