@@ -91,19 +91,26 @@
     }
     else
     {
-        <div class="justify-content-center align-items-center bg-light text-center">
-            <h1 class="fw-bold">@TempData["HasVoted"]</h1>
-            <iframe src="/img/done-animate.svg" style="border: none; width: 550px; height: 550px;"></iframe>
-            <h2 class="fw-bold mb-3">Pilihan Anda Terkirim!</h2>
-            <p class="fs-5 mb-4">
-                Terima kasih sudah memilih! Anda bisa melanjutkan pemilihan lainnya, atau jika sudah selesai, silakan
-                <a href="#"
-                   data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right"
-                   data-bs-title="Log Out">
-                    <span class="submenu-title">Keluar</span>
-                </a>
-            </p>
-            <a href="https://storyset.com/work">Work illustrations by Storyset</a>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil!</strong> @TempData["HasVoted"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-6 text-center">
+                    <iframe src="/img/done-animate.svg" style="border: none; width: 100%; height: 550px;"></iframe>
+                    <h2 class="fw-bold mb-3 text-dark">Pilihan Anda Terkirim!</h2>
+                    <p class="fs-5 mb-4 text-justify">
+                        Terima kasih sudah memilih! Anda bisa melanjutkan pemilihan lainnya, atau jika sudah selesai, silakan
+                        <a href="#"
+                           data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right"
+                           data-bs-title="Log Out">
+                            <span class="submenu-title">Keluar</span>
+                        </a>
+                    </p>
+                    <a href="https://storyset.com/work">Work illustrations by Storyset</a>
+                </div>
+            </div>
         </div>
 
     }
