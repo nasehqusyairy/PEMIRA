@@ -22,19 +22,27 @@
         </div>
     }
 }
+
+<form class="d-none" id="usersForm">
+</form>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <form asp-action="AddParticipant" method="post">
+                @* <form asp-action="AddParticipant" method="post"> *@
+                <form>
                     <div class="mb-3 d-grid gap-2 d-md-block">
-                        <button type="submit" class="btn btn-primary" formaction="/Elections/Store/@Model.ElectionId">
+                        <button type="button" class="btn btn-primary" formaction="/Elections/Store/@Model.ElectionId">
                             <i class="bi bi-plus"></i> Tambahkan
                         </button>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#tagsModal">
+                            data-bs-target="#tagsModal">
                             <i class="bi bi-filter-left"></i> Saring Penanda
                         </button>
+                        <a asp-action="Users" asp-route-id="@(Model.ElectionId)" class="btn btn-secondary">
+                            <i class="bi bi-arrow-return-left"></i> Kembali
+                        </a>
                     </div>
                     <div class="modal fade" tabindex="-1" id="tagsModal">
                         <div class="modal-dialog modal-dialog-scrollable">
@@ -42,7 +50,7 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title">Saring Penanda</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <ul class="list-group">
@@ -51,7 +59,7 @@
                                             <li class="list-group-item">
                                                 <div class="form-check">
                                                     <input class="form-check-input" name="SelectedTags[]" type="checkbox"
-                                                           value="@(tag.Id)" id="tag@(tag.Id)"
+                                                        value="@(tag.Id)" id="tag@(tag.Id)"
                                                     @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
                                                     <label class="form-check-label" for="tag@(tag.Id)">
                                                         @(tag.Name)
@@ -62,8 +70,7 @@
                                     </ul>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                         Tutup
                                     </button>
                                     <button class="btn btn-primary" type="submit">Terapkan</button>
@@ -82,7 +89,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <input type="checkbox" id="checkAll" />
+                                        <input type="checkbox" id="checkAll" class="form-check-input" />
                                     </th>
                                     <th>
                                         <a href="@(UrlHelper.SetOrderBy(currentUrl,"Code"))" class="text-dark">
@@ -100,7 +107,6 @@
                                         </a>
                                     </th>
                                     <th>Penanda</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,25 +114,19 @@
                                 {
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="user-checkbox" value="@user.Id" name="SelectedUsers[]" @(Model.SelectedUsers.Contains(user.Id) ? "checked" : "")>
+                                            <input type="checkbox" class="user-checkbox form-check-input" value="@user.Id"
+                                                name="SelectedUsers[]" @(Model.SelectedUsers.Contains(user.Id) ? "checked" :
+                                            "")>
                                         </td>
                                         <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
                                         <td>@user.Name</td>
                                         <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
                                         <td style="max-width: 100px;">
-                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId == user.Id))
+                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
+                                           user.Id))
                                             {
                                                 <span class="badge bg-secondary">@taguser.Tag.Name</span>
                                             }
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("TagUser", "User", new { id = user.Id })" class="btn btn-primary" data-bs-title="Penanda" data-bs-placement="bottom">
-                                                <i class="bi bi-tags"></i>
-                                            </a>
-                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })" class="btn btn-warning" data-bs-title="Edit" data-bs-placement="bottom">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
                                         </td>
                                     </tr>
                                 }
@@ -144,21 +144,30 @@
         </div>
     </div>
 </div>
-<partial name="~/Views/Components/_ConfirmDeleteModal.cshtml" />
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkAllBox = document.getElementById("checkAll");
-        const userCheckboxes = document.querySelectorAll(".user-checkbox");
+    const checkAllBox = document.getElementById("checkAll");
+    const userCheckboxes = document.querySelectorAll(".user-checkbox");
+    const usersForm = document.getElementById("usersForm");
 
-        checkAllBox.addEventListener("change", function () {
-            const isChecked = this.checked;
-            userCheckboxes.forEach(cb => cb.checked = isChecked);
+    checkAllBox.addEventListener("change", function () {
+        const isChecked = this.checked;
+        userCheckboxes.forEach(cb => {
+            cb.checked = isChecked;
+            cb.dispatchEvent(new Event("change"));
         });
+    });
 
-        userCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", function () {
-                checkAllBox.checked = Array.from(userCheckboxes).every(cb => cb.checked);
-            });
+    userCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener("change", function () {
+            checkAllBox.checked = Array.from(userCheckboxes).every(cb => cb.checked);
+
+            if (this.checked) {
+                usersForm.insertAdjacentHTML("beforeend", `<input type="checkbox" class="user-checkbox" value="${this.value}" name="SelectedUsers[]">`);
+            } else {
+                const input = usersForm.querySelector(`input[value="${this.value}"]`);
+                input.remove();
+            }
+
         });
     });
 
