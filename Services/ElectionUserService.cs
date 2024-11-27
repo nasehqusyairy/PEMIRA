@@ -11,10 +11,9 @@ namespace PEMIRA.Services
 
         public override List<ElectionUser> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
-            orderBy = "User.Name";
-            if (!ModelHelper.IsPropertyExist<ElectionUser>(orderBy) && orderBy != "User.Name")
+            if (!ModelHelper.IsPropertyExist<User>(orderBy))
             {
-                orderBy = "User.Name";
+                orderBy = "Name";
             }
 
             page = page < 1 ? 1 : page;
@@ -26,13 +25,12 @@ namespace PEMIRA.Services
 
             if (_selectedTags != null && _selectedTags.Count > 0)
             {
-                query = from eu in query
-                        join tu in _context.TagUsers on eu.UserId equals tu.UserId
-                        where _selectedTags.Contains(tu.TagId)
-                        select eu;
+                query = query
+                    .Include(eu => eu.User.TagUsers)
+                    .Where(eu => _selectedTags.Contains(eu.User.TagUsers.Select(tu => tu.TagId).FirstOrDefault()));
             }
 
-            if (orderBy == "User.Name")
+            if (orderBy == "Name")
             {
                 query = isAsc
                     ? query.OrderBy(eu => eu.User.Name)
@@ -41,8 +39,8 @@ namespace PEMIRA.Services
             else
             {
                 query = isAsc
-                    ? query.OrderBy(eu => EF.Property<object>(eu, orderBy))
-                    : query.OrderByDescending(eu => EF.Property<object>(eu, orderBy));
+                    ? query.OrderBy(eu => EF.Property<object>(eu.User, orderBy))
+                    : query.OrderByDescending(eu => EF.Property<object>(eu.User, orderBy));
             }
 
             query = query.Skip((page - 1) * LimitEntry).Take(LimitEntry);
