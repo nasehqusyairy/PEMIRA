@@ -47,20 +47,24 @@
                                 {
                                     <tr>
                                         <td>@(startNumber++)</td>
-                                        <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@election.Id</a></td>
+                                        <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@election.Id</a>
+                                        </td>
                                         <td>
                                             @(election.Name)
                                         </td>
                                         <td>
                                             <a asp-action="Users" asp-route-id="@election.Id" class="btn btn-primary"
-                                                data-bs-title="Peserta" data-bs-placement="bottom">
+                                                data-bs-title="Daftar Peserta" data-bs-placement="bottom">
                                                 <i class="bi bi-person-gear"></i>
                                             </a>
                                             <a asp-action="Edit" asp-route-id="@election.Id" class="btn btn-warning"
                                                 data-bs-title="Ubah" data-bs-placement="bottom">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = election.Id })))
+                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new
+                                            {
+                                                id = election.Id
+                                            })))
                                         </td>
                                     </tr>
                                 }

@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @model UserViewModel
 @{
-    ViewBag.PageTitle = "Tambah Peserta";
+    ViewBag.PageTitle = "Peserta Baru";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -33,7 +33,7 @@
                 <form method="post">
                     <div class="mb-3 d-grid gap-2 d-md-block">
                         <button type="button" class="btn btn-primary" onclick="handleAddParticipantOnclick()">
-                            <i class="bi bi-plus"></i> Tambahkan
+                            <i class="bi bi-check"></i> Tambahkan
                         </button>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#tagsModal">
