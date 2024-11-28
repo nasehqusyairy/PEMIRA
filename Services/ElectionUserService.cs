@@ -27,7 +27,8 @@ namespace PEMIRA.Services
             {
                 query = query
                     .Include(eu => eu.User.TagUsers)
-                    .Where(eu => _selectedTags.Contains(eu.User.TagUsers.Select(tu => tu.TagId).FirstOrDefault()));
+                    // .Where(eu => _selectedTags.Contains(eu.User.TagUsers.Select(tu => tu.TagId).FirstOrDefault()));
+                    .Where(eu => eu.User.TagUsers.Any(tu => _selectedTags.Contains(tu.TagId)));
             }
 
             if (orderBy == "Name")

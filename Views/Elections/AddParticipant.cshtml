@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
-@model UserViewModel
+@model AddParticipantViewModel
 @{
     ViewBag.PageTitle = "Peserta Baru";
     string currentUrl = Context.Request.GetDisplayUrl();
@@ -113,9 +113,17 @@
                                 {
                                     <tr>
                                         <td>
-                                            <input type="checkbox" class="user-checkbox form-check-input" value="@user.Id"
-                                                name="SelectedUsers[]" @(Model.SelectedUsers.Contains(user.Id) ? "checked" :
-                                            "")>
+                                            @if (Model.Participants.Contains(user.Id))
+                                            {
+                                                <input type="checkbox" class="form-check-input" value="@user.Id" ) checked
+                                                    disabled>
+
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" class="user-checkbox form-check-input" value="@user.Id"
+                                                    name="SelectedUsers[]" )>
+                                            }
                                         </td>
                                         <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
                                         <td>@user.Name</td>

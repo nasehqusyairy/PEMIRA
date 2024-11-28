@@ -122,7 +122,7 @@ namespace PEMIRA.Controllers
         }
 
 
-        public IActionResult AddParticipant(long id, UserViewModel input)
+        public IActionResult AddParticipant(long id, AddParticipantViewModel input)
         {
             ElectionService service = new(_context);
             input.LimitEntry = TableHelper.SetLimitEntry(input.LimitEntry);
@@ -136,6 +136,7 @@ namespace PEMIRA.Controllers
             input.TagUsers = userService.GetTagUsers();
             input.Tags = userService.GetTags();
             input.ElectionId = id;
+            input.Participants = new ElectionUserService(_context, id).GetEntries(input.Search ?? string.Empty, input.CurrentPage, input.OrderBy, input.IsAsc).Select(eu => eu.UserId).ToList();
             return View(input);
         }
 
