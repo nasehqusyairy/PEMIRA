@@ -3,7 +3,7 @@
     ViewBag.PageTitle = "Voting";
 }
 <style>
-    input.btn-check:checked + .btn-primary {
+    input.btn-check:checked+.btn-primary {
         border-color: var(--bs-secondary);
         background-color: var(--bs-secondary);
     }
@@ -12,7 +12,7 @@
         content: "Pilih";
     }
 
-    input.btn-check:checked + .btn-primary::before {
+    input.btn-check:checked+.btn-primary::before {
         content: "Dipilih";
     }
 </style>
@@ -43,73 +43,77 @@
     if (TempData["HasVoted"] == null)
     {
 
-        @* alert warning *@
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Perhatian!</strong> Pemilihan hanya bisa dilakukan satu kali. Pilihlah kandidat dengan bijak!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
 
-        @* <div class="alert alert-success" role="alert">
-    <strong>Selesai!</strong> Pemilihan sudah dilakukan, terima kasih atas partisipasinya! Anda bisa log out sekarang.
-</div> *@
-
-        @* alert saat null *@
-        <div class="alert alert-danger alert-dismissible fade show d-none" role="alert" id="nullAlert">
-            <strong>Kesalahan!</strong> Pilih salah satu kandidat terlebih dahulu!
-            <button type="button" class="btn-close"
-                    onclick="document.getElementById('nullAlert').classList.add('d-none')"></button>
-        </div>
-
-        <form id="candidatesForm" class="row" asp-action="Choose" method="post">
-            @foreach (var candidate in Model.Candidates)
-            {
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="d-grid gap-2">
-                                <div class="text-center">
-                                    <img src="@(candidate.Img)" class="rounded-circle mb-3 img-thumbnail"
-                                         alt="Foto @(candidate.User.Name)"
-                                         style="border-color: #@(candidate.Color);border-width: 3px;width: 125px;height:125px">
-                                    <h5 class="card-title">@(candidate.User.Name)</h5>
-                                    <p>
-                                        @foreach (var tag in candidate.User.TagUsers.Select(t => t.Tag))
-                                        {
-                                            <span class="badge bg-secondary">@(tag.Name)</span>
-                                        }
-                                    </p>
-                                </div>
-                                <input type="radio" class="btn-check" name="SelectedCandidateId"
-                                       id="SelectedCandidateId@(candidate.Id)" autocomplete="off" value="@(candidate.Id)" required>
-                                <label class="btn btn-primary" for="SelectedCandidateId@(candidate.Id)"></label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </form>
-    }
-    else
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Berhasil!</strong> @TempData["HasVoted"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        <div class="container">
+        if (Model.Candidates.Count == 0)
+        {
             <div class="row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-6 text-center">
-                    <iframe src="/img/done-animate.svg" style="border: none; width: 100%; height: 550px;"></iframe>
-                    <h2 class="fw-bold mb-3 text-dark">Pilihan Anda Terkirim!</h2>
-                    <p class="fs-5 mb-4 text-justify">
-                        Terima kasih sudah memilih! Anda bisa melanjutkan pemilihan lainnya, atau jika sudah selesai, silakan
-                        <a href="#"
-                           data-bs-toggle="modal" data-bs-target="#logoutModal" data-bs-placement="right"
-                           data-bs-title="Log Out">
-                            <span class="submenu-title">Keluar</span>
-                        </a>
+                <div class="col-12 col-md-6 col-lg-4 text-center">
+                    <img src="/img/empty-animate.svg" class="img-fluid">
+                    <h2 class="fw-bold mb-3 text-dark">
+                        Pemilihan tidak Tersedia
+                    </h2>
+                    <p class="text-justify text-lg-center">
+                        Pemilihan tidak tersedia saat ini, silahkan coba lagi nanti.
                     </p>
                     <a href="https://storyset.com/work">Work illustrations by Storyset</a>
                 </div>
+            </div>
+        }
+        else
+        {
+            @* alert warning *@
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Perhatian!</strong> Pemilihan hanya bisa dilakukan satu kali. Pilihlah kandidat dengan bijak!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            @* alert saat null *@
+            <div class="alert alert-danger alert-dismissible fade show d-none" role="alert" id="nullAlert">
+                <strong>Kesalahan!</strong> Pilih salah satu kandidat terlebih dahulu!
+                <button type="button" class="btn-close"
+                    onclick="document.getElementById('nullAlert').classList.add('d-none')"></button>
+            </div>
+            <form id="candidatesForm" class="row" asp-action="Choose" method="post">
+                @foreach (var candidate in Model.Candidates)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <div class="text-center">
+                                        <img src="@(candidate.Img)" class="rounded-circle mb-3 img-thumbnail"
+                                            alt="Foto @(candidate.User.Name)"
+                                            style="border-color: #@(candidate.Color);border-width: 3px;width: 125px;height:125px">
+                                        <h5 class="card-title">@(candidate.User.Name)</h5>
+                                        <p>
+                                            @foreach (var tag in candidate.User.TagUsers.Select(t => t.Tag))
+                                            {
+                                                <span class="badge bg-secondary">@(tag.Name)</span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <input type="radio" class="btn-check" name="SelectedCandidateId"
+                                        id="SelectedCandidateId@(candidate.Id)" autocomplete="off" value="@(candidate.Id)" required>
+                                    <label class="btn btn-primary" for="SelectedCandidateId@(candidate.Id)"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </form>
+        }
+    }
+    else
+    {
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 text-center">
+                <img src="/img/done-animate.svg" class="img-fluid">
+                <h2 class="fw-bold mb-3 text-dark">Pilihan Anda Terkirim!</h2>
+                <p class="text-justify text-lg-center">
+                    Terima kasih sudah memilih! Anda bisa melanjutkan pemilihan lainnya atau Anda bisa
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">keluar</a> jika sudah selesai.
+                </p>
+                <a href="https://storyset.com/work">Work illustrations by Storyset</a>
             </div>
         </div>
 
