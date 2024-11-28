@@ -4,7 +4,7 @@
 }
 
 @* jumbotron *@
-<div class="card rounded-3 mb-3">
+@* <div class="card rounded-3 mb-3">
     <div class="card-body p-5">
         <h1 class="display-4">Selamat Datang, @Model.Name!</h1>
         <p class="lead">
@@ -13,5 +13,26 @@
         </p>
         <hr class="my-4">
         <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Vote")" role="button">Mulai Voting</a>
+    </div>
+</div> *@
+<div class="card rounded-3">
+    <div class="card-body p-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-12 col-md-4 text-center">
+                <img src="/img/welcome-animate.svg" class="img-fluid border-end">
+            </div>
+            <div class="col-12 col-md-8">
+                <h1 class="display-4">Selamat Datang, @Model.Name!</h1>
+                <p class="lead">
+                    Silakan memulai voting dengan pergi ke halaman voting melalui menu di sisi kiri atau klik tombol di
+                    bawah
+                    ini.
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="@Url.Action("Index", "Vote")" role="button">Mulai Voting</a>
+                </p>
+                <a href="https://storyset.com/people">People illustrations by Storyset</a>
+            </div>
+        </div>
     </div>
 </div>
