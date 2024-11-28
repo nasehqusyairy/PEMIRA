@@ -59,20 +59,32 @@ namespace PEMIRA.Services
             return (int)Math.Ceiling(_context.ElectionUsers.Count(electionUser => electionUser.User.Name.Contains(search)) / (double)LimitEntry);
         }
         public List<Tag> GetTags() => [.. _context.Tags];
-
         public void AddParticipants(long[] selectedIds)
         {
-            List<ElectionUser> electionUsers = [];
+            var enrolledUserIds = _context.ElectionUsers
+                                          .Where(eu => eu.ElectionId == ElectionId)
+                                          .Select(eu => eu.UserId)
+                                          .ToHashSet();
+
+            List<ElectionUser> electionUsers = new List<ElectionUser>();
+
             foreach (long id in selectedIds)
             {
-                electionUsers.Add(new ElectionUser
+                if (!enrolledUserIds.Contains(id))
                 {
-                    UserId = id,
-                    ElectionId = ElectionId
-                });
+                    electionUsers.Add(new ElectionUser
+                    {
+                        UserId = id,
+                        ElectionId = ElectionId
+                    });
+                }
             }
-            _context.ElectionUsers.AddRange(electionUsers);
-            _context.SaveChanges();
+
+            if (electionUsers.Count > 0)
+            {
+                _context.ElectionUsers.AddRange(electionUsers);
+                _context.SaveChanges();
+            }
         }
 
         public void RemoveParticipant(long id)

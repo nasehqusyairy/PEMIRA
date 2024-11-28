@@ -12,7 +12,7 @@ namespace PEMIRA.Controllers
 {
     public class MonitoringController : BaseController
     {
-        [Authorize]
+        [Authorize(Policy = "Admin")]
         public IActionResult Index()
         {
             MonitoringService service = new(_context);
