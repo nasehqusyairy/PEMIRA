@@ -136,7 +136,7 @@ namespace PEMIRA.Controllers
             input.TagUsers = userService.GetTagUsers();
             input.Tags = userService.GetTags();
             input.ElectionId = id;
-            input.Participants = new ElectionUserService(_context, id).GetEntries(input.Search ?? string.Empty, input.CurrentPage, input.OrderBy, input.IsAsc).Select(eu => eu.UserId).ToList();
+            input.Participants = service.GetParticipantIds(id);
             return View(input);
         }
 

@@ -48,5 +48,10 @@ namespace PEMIRA.Services
             _context.Elections.Update(election);
             _context.SaveChanges();
         }
+
+        public List<long> GetParticipantIds(long electionId)
+        {
+            return [.. _context.ElectionUsers.Where(eluser => eluser.ElectionId == electionId).Select(eluser => eluser.UserId)];
+        }
     }
 }
