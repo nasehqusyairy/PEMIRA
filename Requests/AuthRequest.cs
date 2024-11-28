@@ -22,12 +22,12 @@ public class AuthRequest(ModelStateDictionary modelState, AuthViewModel input, A
     public bool Validate()
     {
         // periksa apakah user ditemukan, password benar, dan memiliki akses ke pemilihan
-        User? user = UserInput.Code != null ? Service.GetUserByCode(UserInput.Code, UserInput.ElectionId) : null;
+        User? user = UserInput.Code != null ? Service.GetUserByCode(UserInput.Code) : null;
         if (user == null)
         {
             ModelState.AddModelError("Code", "User tidak ditemukan");
         }
-        else if(user.DeletedAt != null)
+        else if (user.DeletedAt != null)
         {
             ModelState.AddModelError("Code", "User Sudah Tidak Aktif");
         }
@@ -37,15 +37,23 @@ public class AuthRequest(ModelStateDictionary modelState, AuthViewModel input, A
         }
         else if (user.Id != 1)
         {
-            RoleUser? roleUser = user.RoleUsers.FirstOrDefault(ru => ru.ElectionId == UserInput.ElectionId);
-            if (roleUser == null)
+            ElectionUser? participant = Service.GetParticipant(user.Id, UserInput.ElectionId);
+            RoleUser? roleUser = user.RoleUsers.FirstOrDefault(ru => ru.UserId == user.Id);
+            if (participant == null)
             {
                 ModelState.AddModelError("ElectionId", "Anda tidak memiliki akses ke pemilihan ini");
             }
             else
             {
                 DerivedData["UserId"] = user.Id;
-                DerivedData["RoleId"] = roleUser.RoleId;
+                if (roleUser != null)
+                {
+                    DerivedData["RoleId"] = roleUser.RoleId;
+                }
+                else
+                {
+                    DerivedData["RoleId"] = 4;
+                }
             }
         }
         else

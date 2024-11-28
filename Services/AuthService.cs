@@ -13,10 +13,11 @@ namespace PEMIRA.Services
 
         private readonly DatabaseContext _context;
 
-        public User? GetUserByCode(string code, long electionId) => _context.Users
-        .Include(user => user.RoleUsers.Where(roleUser => roleUser.ElectionId == electionId))
+        public User? GetUserByCode(string code) => _context.Users
+        .Include(user => user.RoleUsers)
         .ThenInclude(roleUser => roleUser.Role)
         .FirstOrDefault(user => user.Code.Contains(code));
+        public ElectionUser? GetParticipant(long userId, long electionId) => _context.ElectionUsers.FirstOrDefault(eu => eu.UserId == userId && eu.ElectionId == electionId);
 
         public List<Election> GetElections() => [.. _context.Elections];
     }

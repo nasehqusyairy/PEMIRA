@@ -54,7 +54,7 @@ namespace PEMIRA.Services
 
             return query.ToList();
         }
-        public List<User> GetUsers() => [.._context.Users];
+        public List<User> GetUsers() => [.. _context.Users];
         public override int GetTotalEntry(string search) => _context.Users.Count(user => user.DeletedAt == null && (user.Name.Contains(search) || user.Code.Contains(search)));
         public List<TagUser> GetTagUsers() => [.. _context.TagUsers.Include(tag => tag.Tag)];
         public int GetPageCount(string search)
@@ -67,8 +67,20 @@ namespace PEMIRA.Services
         {
             user.CreatedBy = idUserNow;
             user.UpdatedBy = idUserNow;
+            user.Name = user.Name.ToUpper();
             _context.Users.Add(user);
             _context.SaveChanges();
+            User? newuser = _context.Users.FirstOrDefault(u => u.Code == user.Code);
+            if (newuser != null)
+            {
+                _context.RoleUsers.Add(new RoleUser
+                {
+                    UserId = newuser.Id,
+                    RoleId = 4
+                    
+                });
+                _context.SaveChanges();
+            }
         }
         public void Update(UserViewModel input, User user, long idUserNow)
         {
