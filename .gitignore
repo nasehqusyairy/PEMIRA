@@ -155,3 +155,6 @@ $RECYCLE.BIN/
 
 # DotNet git
 .terraform.lock.hcl
+
+# ignore uploaded files
+wwwroot/img/candidates/*

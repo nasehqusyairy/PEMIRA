@@ -26,7 +26,8 @@ namespace PEMIRA.Controllers
             {
                 ElectionId = selectedElectionId,
                 Elections = new SelectList(elections, "Id", "Name", selectedElectionId),
-                Election = selectedElectionId != null ? service.GetElection(long.Parse(selectedElectionId)) : null
+                Election = selectedElectionId != null ? service.GetElection(long.Parse(selectedElectionId)) : null,
+                GolputUsers = selectedElectionId != null ? service.GetGolputUsers(long.Parse(selectedElectionId)) : []
             };
 
             return View(model);

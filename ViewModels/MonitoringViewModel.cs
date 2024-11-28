@@ -18,6 +18,7 @@ namespace PEMIRA.ViewModels
 
     public SelectList Elections { get; set; } = new(new Election[] { }, "Id", "Name");
 
+    public List<User> GolputUsers { get; set; } = [];
 
 
   }
