@@ -9,19 +9,15 @@ namespace PEMIRA.ViewModels
 
     public MonitoringViewModel()
     {
-      // fill example data
-      ExampleItems = [
-        "Item 1",
-        "Item 2",
-        "Item 3"
-      ];
+      // 
     }
 
-    public List<string> ExampleItems { get; set; }
+    public Election? Election { get; set; }
 
     public string? ElectionId { get; set; }
 
     public SelectList Elections { get; set; } = new(new Election[] { }, "Id", "Name");
+
 
 
   }

@@ -19,7 +19,9 @@
         <div class="card mb-3 text-bg-primary">
             <div class="card-header">Jumlah Peserta</div>
             <div class="card-body">
-                <h1 class="card-text">100</h1>
+                <h1 class="card-text">
+                    @(Model.Election?.ElectionUsers?.Count ?? 0)
+                </h1>
             </div>
         </div>
     </div>
@@ -27,7 +29,9 @@
         <div class="card mb-3 text-bg-secondary">
             <div class="card-header">Suara Masuk</div>
             <div class="card-body">
-                <h1 class="card-text">100</h1>
+                <h1 class="card-text">
+                    @(Model.Election?.Candidates?.Sum(c => c.CandidateUsers.Count()) ?? 0)
+                </h1>
             </div>
         </div>
     </div>
@@ -35,7 +39,9 @@
         <div class="card mb-3 text-bg-dark">
             <div class="card-header">Jumlah Kandidat</div>
             <div class="card-body">
-                <h1 class="card-text">100</h1>
+                <h1 class="card-text">
+                    @(Model.Election?.Candidates?.Count ?? 0)
+                </h1>
             </div>
         </div>
     </div>
@@ -84,61 +90,30 @@
                 Daftar Kandidat
             </div>
             <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <div>
-                                @* placeholder img *@
-                                <img src="https://via.placeholder.com/50" class="rounded-circle" alt="..."
-                                    style="width: 50px;height: 50px">
+                <ul class="list-group" style="max-height: calc(80px * 3);overflow-y:auto;">
+                    @foreach (var candidate in Model.Election?.Candidates)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-2">
+                                <div>
+                                    @* placeholder img *@
+                                    <img src="@(candidate.Img)" class="rounded-circle" alt="..."
+                                        style="width: 50px;height: 50px">
+                                </div>
+                                <div>
+                                    @(candidate.User.Name)
+                                    <p>
+                                        <span class="badge bg-secondary">XI</span>
+                                        <span class="badge bg-secondary">MIA</span>
+                                        <span class="badge bg-secondary">Putra</span>
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                A list item
-                                <p>
-                                    <span class="badge bg-secondary">XI</span>
-                                    <span class="badge bg-secondary">MIA</span>
-                                    <span class="badge bg-secondary">Putra</span>
-                                </p>
-                            </div>
-                        </div>
-                        <span class="badge text-bg-primary rounded-pill">14</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <div>
-                                @* placeholder img *@
-                                <img src="https://via.placeholder.com/50" class="rounded-circle" alt="..."
-                                    style="width: 50px;height: 50px">
-                            </div>
-                            <div>
-                                A list item
-                                <p>
-                                    <span class="badge bg-secondary">XI</span>
-                                    <span class="badge bg-secondary">MIA</span>
-                                    <span class="badge bg-secondary">Putra</span>
-                                </p>
-                            </div>
-                        </div>
-                        <span class="badge text-bg-primary rounded-pill">14</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center gap-2">
-                            <div>
-                                @* placeholder img *@
-                                <img src="https://via.placeholder.com/50" class="rounded-circle" alt="..."
-                                    style="width: 50px;height: 50px">
-                            </div>
-                            <div>
-                                A list item
-                                <p>
-                                    <span class="badge bg-secondary">XI</span>
-                                    <span class="badge bg-secondary">MIA</span>
-                                    <span class="badge bg-secondary">Putra</span>
-                                </p>
-                            </div>
-                        </div>
-                        <span class="badge text-bg-primary rounded-pill">14</span>
-                    </li>
+                            <span class="badge text-white rounded-pill" style="background-color: #@(candidate.Color);">
+                                @(candidate.CandidateUsers.Count)
+                            </span>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
