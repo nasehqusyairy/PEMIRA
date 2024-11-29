@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PEMIRA.Helpers;
 using PEMIRA.Models;
 using PEMIRA.Services;
 using PEMIRA.ViewModels;
@@ -13,22 +14,22 @@ namespace PEMIRA.Controllers
     public class MonitoringController : BaseController
     {
         [Authorize(Policy = "Admin")]
-        public IActionResult Index()
+        public IActionResult Index(MonitoringViewModel model)
         {
-            MonitoringService service = new(_context);
+            string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
+            MonitoringService service = new(_context, 10, selectedElectionId != null ? long.Parse(selectedElectionId) : 0);
 
             List<Election> elections = service.GetElections();
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
 
-            string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
 
-            MonitoringViewModel model = new()
-            {
-                ElectionId = selectedElectionId,
-                Elections = new SelectList(elections, "Id", "Name", selectedElectionId),
-                Election = selectedElectionId != null ? service.GetElection(long.Parse(selectedElectionId)) : null,
-                GolputUsers = selectedElectionId != null ? service.GetGolputUsers(long.Parse(selectedElectionId)) : []
-            };
+            TableHelper.SetTableViewModel(service, model);
+
+            model.ElectionId = selectedElectionId;
+            model.Elections = new SelectList(elections, "Id", "Name", selectedElectionId);
+            model.Election = service.GetElection();
+            model.GolputUsersCount = service.GetGolputUsersCount();
+            model.Tags = service.GetTags();
 
             return View(model);
         }
