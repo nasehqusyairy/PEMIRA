@@ -76,8 +76,9 @@ namespace PEMIRA.Services
                 _context.RoleUsers.Add(new RoleUser
                 {
                     UserId = newuser.Id,
-                    RoleId = 4
-                    
+                    RoleId = 4,
+                    ElectionId = 70536
+
                 });
                 _context.SaveChanges();
             }
