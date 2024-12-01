@@ -55,25 +55,25 @@ namespace PEMIRA.Services
 
             page = page < 1 ? 1 : page;
 
-            IQueryable<User> query = _context.Users;
-
-            if (_selectedTags.Count == 0)
-            {
-                query = query.Where(user =>
+            IQueryable<User> query = _context.ElectionUsers
+                .Where(eu => eu.ElectionId == _electionId)
+                .Select(eu => eu.User)
+                .Where(user =>
                     user.DeletedAt == null &&
                     !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId) &&
-                    (user.Name.ToUpper().Contains(search.ToUpper()) || user.Code.Contains(search)));
+                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(user =>
+                    user.Name.ToUpper().Contains(search.ToUpper()) || user.Code.Contains(search));
             }
-            else
+
+            if (_selectedTags.Count > 0)
             {
                 query = query
                     .Include(user => user.TagUsers)
                     .Where(user =>
-                        user.DeletedAt == null &&
-                        !_context.CandidateUsers
-                            .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId) &&
-                        (user.Name.ToUpper().Contains(search.ToUpper()) || user.Code.Contains(search)) &&
                         user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
             }
 
@@ -85,27 +85,32 @@ namespace PEMIRA.Services
 
             return query.ToList();
         }
+
         public override int GetTotalEntry(string search)
         {
-            if (_selectedTags.Count == 0)
-            {
-                return _context.Users.Count(user =>
+            IQueryable<User> query = _context.ElectionUsers
+                .Where(eu => eu.ElectionId == _electionId)
+                .Select(eu => eu.User)
+                .Where(user =>
                     user.DeletedAt == null &&
                     !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId) &&
-                    (string.IsNullOrEmpty(search) || user.Name.Contains(search) || user.Code.Contains(search)));
-            }
-            else
+                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
+
+            if (!string.IsNullOrEmpty(search))
             {
-                return _context.Users
+                query = query.Where(user =>
+                    user.Name.ToUpper().Contains(search.ToUpper()) || user.Code.Contains(search));
+            }
+
+            if (_selectedTags.Count > 0)
+            {
+                query = query
                     .Include(user => user.TagUsers)
-                    .Count(user =>
-                        user.DeletedAt == null &&
-                        !_context.CandidateUsers
-                            .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId) &&
-                        (string.IsNullOrEmpty(search) || user.Name.Contains(search) || user.Code.Contains(search)) &&
+                    .Where(user =>
                         user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
             }
+
+            return query.Count();
         }
 
     }
