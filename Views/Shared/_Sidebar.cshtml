@@ -67,7 +67,7 @@
                   @foreach (Menu menu in Model.Menus.Where(m => m.MenusegmentId == segment.Id))
                   {
                     <a href="@(menu.Url)"
-                      class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark @(Context.Request.Path == menu.Url ? "active" : "")"
+                      class="list-group-item list-group-item-action border-0 mb-1 text-bg-dark @(Context.Request.Path.ToString().Contains( menu.Url)||menu.Url.Contains(Context.Request.Path.ToString()) ? "active" : "")"
                       data-bs-placement="right" data-bs-title="@menu.Name">
                       <i class="bi bi-@menu.Icon me-3"></i>
                       <span class="submenu-title">@menu.Name</span>
