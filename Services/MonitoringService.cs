@@ -40,12 +40,15 @@ namespace PEMIRA.Services
 
         public long GetGolputUsersCount()
         {
-            return _context.ElectionUsers
-              .Where(eu => eu.ElectionId == electionId)
-              .Select(eu => eu.User)
-              .Count(user => !user.CandidateUsers.Any());
+            return _context.Users
+                .Where(user =>
+                    user.DeletedAt == null &&
+                    _context.ElectionUsers
+                        .Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) && // Filter pengguna yang terdaftar di pemilihan
+                    !_context.CandidateUsers
+                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId)) // Filter pengguna yang belum memilih kandidat
+                .Count();
         }
-
         public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
             if (!ModelHelper.IsPropertyExist<User>(orderBy))

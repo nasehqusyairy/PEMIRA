@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +32,7 @@ namespace PEMIRA.Controllers
             model.GolputUsersCount = service.GetGolputUsersCount();
             model.Tags = service.GetTags();
             model.TagUsers = service.GetTagUsers();
-
+            TempData["GolputCount"] = model.GolputUsersCount.ToString();
             return View(model);
         }
 
@@ -51,6 +52,28 @@ namespace PEMIRA.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Print()
+        {
+            if (User.Identity is not ClaimsIdentity identity)
+            {
+                return Unauthorized();
+            }
+            var existingClaim = identity.FindFirst("ElectionId");
+            if (existingClaim != null)
+            {
+                MonitoringService service = new(_context, Convert.ToInt32(TempData["GolputCount"]), Convert.ToInt64(existingClaim.Value));
+                MonitoringViewModel model = new MonitoringViewModel();
+                TableHelper.SetTableViewModel(service, model);
+                TempData.Keep("GolputCount");
+                model.TagUsers = service.GetTagUsers();
+                return View(model);
+            }
+            else
+            {
+                return NoContent();
+            }
         }
 
     }
