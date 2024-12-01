@@ -67,13 +67,12 @@
                     <div class="card-header">Golongan Putih</div>
                     <div class="card-body">
                         <h1 class="card-text">
-                            @(Model.TotalEntries)
+                            @(Model.GolputUsersCount)
                         </h1>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <div class="row">
             <div class="col-12 col-xxl-4">
@@ -82,7 +81,7 @@
                         Daftar Kandidat
                     </div>
                     <div class="card-body">
-                        <div class="list-group"style="height: calc(400px - calc(16px * 2)); overflow-y: auto;">
+                        <div class="list-group" style="height: calc(400px - calc(16px * 2)); overflow-y: auto;">
                             @foreach (var candidate in Candidates)
                             {
                                 <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
@@ -90,7 +89,7 @@
                                         <div>
                                             @* placeholder img *@
                                             <img src="@(candidate.Img)" class="rounded-circle" alt="..."
-                                                style="width: 50px;height: 50px">
+                                                 style="width: 50px;height: 50px">
                                         </div>
                                         <div>
                                             @(candidate.User.Name)
@@ -126,106 +125,110 @@
 
         <div class="row">
             <div class="col-md-12">
-        <div class="card">
-            <div class="card-body">
-                <form method="post">
-                    <div class="mb-3 d-grid gap-2 d-md-block">
-                        <a asp-action="Print" class="btn btn-primary" target="_blank"><i class="bi bi-printer me-2"></i>Cetak</a>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                            data-bs-target="#tagsModal"><i class="bi bi-filter-left"></i> Saring Penanda</button>
-                    </div>
-                    <div class="modal fade" tabindex="-1" id="tagsModal">
-                        <div class="modal-dialog modal-dialog-scrollable">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Saring Penanda</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <ul class="list-group">
-                                        @foreach (var tag in Model.Tags)
-                                        {
-                                            <li class="list-group-item">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" name="SelectedTags[]" type="checkbox"
-                                                        value="@(tag.Id)" id="tag@(tag.Id)"
-                                                    @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
-                                                    <label class="form-check-label" for="tag@(tag.Id)">
-                                                        @(tag.Name)
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        }
-                                    </ul>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Tutup</button>
-                                    <button class="btn btn-primary" type="submit">Terapkan</button>
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="mb-3 d-grid gap-2 d-md-block">
+                                <a asp-action="Print" class="btn btn-primary" target="_blank"><i class="bi bi-printer me-2"></i>Cetak</a>
+                                <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#tagsModal">
+                                    <i class="bi bi-filter-left"></i> Saring Penanda
+                                </button>
+                            </div>
+                            <div class="modal fade" tabindex="-1" id="tagsModal">
+                                <div class="modal-dialog modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Saring Penanda</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-group">
+                                                @foreach (var tag in Model.Tags)
+                                                {
+                                                    <li class="list-group-item">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" name="SelectedTags[]" type="checkbox"
+                                                                   value="@(tag.Id)" id="tag@(tag.Id)"
+                                                            @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
+                                                            <label class="form-check-label" for="tag@(tag.Id)">
+                                                                @(tag.Name)
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">
+                                                Tutup
+                                            </button>
+                                            <button class="btn btn-primary" type="submit">Terapkan</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
-                    <p>
-                        Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
-                        @(Model.TotalEntries) data)
+                            @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
+                            <p>
+                                Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
+                                @(Model.TotalEntries) data)
 
-                    </p>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>
-                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Code"))" class="text-dark">
-                                            ID
-                                        </a>
-                                    </th>
-                                    <th>
-                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
-                                            Nama
-                                        </a>
-                                    </th>
-                                    <th>
-                                        <a href="@(UrlHelper.SetOrderBy(currentUrl,"Gender"))" class="text-dark">
-                                            Jenis Kelamin
-                                        </a>
-                                    </th>
-                                    <th>Penanda</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var user in Model.Entries.Where(id => id.Id != 1))
-                                {
-                                    <tr>
-                                        <td>@(startNumber++)</td>
-                                        <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
-                                        <td>@user.Name</td>
-                                        <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
-                                        <td style="max-width: 100px;">
-                                            @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
-                                           user.Id))
-                                            {
-                                                <span class="badge bg-secondary">@taguser.Tag.Name</span>
-                                            }
+                            </p>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>
+                                                <a href="@(UrlHelper.SetOrderBy(currentUrl,"Code"))" class="text-dark">
+                                                    ID
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="@(UrlHelper.SetOrderBy(currentUrl,"Name"))" class="text-dark">
+                                                    Nama
+                                                </a>
+                                            </th>
+                                            <th>
+                                                <a href="@(UrlHelper.SetOrderBy(currentUrl,"Gender"))" class="text-dark">
+                                                    Jenis Kelamin
+                                                </a>
+                                            </th>
+                                            <th>Penanda</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var user in Model.Entries.Where(id => id.Id != 1))
+                                        {
+                                            <tr>
+                                                <td>@(startNumber++)</td>
+                                                <td><a href="#" onclick="copyText(event)" data-bs-title="Salin">@user.Code</a></td>
+                                                <td>@user.Name</td>
+                                                <td>@(user.Gender == false ? "Laki-laki" : "Perempuan")</td>
+                                                <td style="max-width: 100px;">
+                                                    @foreach (var taguser in Model.TagUsers.Where(userid => userid.UserId ==
+                                                   user.Id))
+                                                    {
+                                                        <span class="badge bg-secondary">@taguser.Tag.Name</span>
+                                                    }
 
-                                        </td>     
-                                    </tr>
-                                }
-                                @if (Model.Entries.Count == 0)
-                                {
-                                    @(ViewHelper.GenerateNoDataRow(6))
-                                }
-                            </tbody>
-                        </table>
+                                                </td>
+                                            </tr>
+                                        }
+                                        @if (Model.Entries.Count == 0)
+                                        {
+                                            @(ViewHelper.GenerateNoDataRow(6))
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
+                        </form>
                     </div>
-                    @(ViewHelper.GeneratePagination(currentUrl, Model.CurrentPage, Model.PageCount))
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
         </div>
     }
 }
@@ -237,7 +240,7 @@
     var labels = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"'{c.User.Name}'")) : string.Empty;
     var data = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => c.CandidateUsers.Count)) : string.Empty;
     var colors = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"'#{c.Color}'")) : string.Empty;
-    
+
 }
 <script>
     var ctx = document.getElementById('chart').getContext('2d');
