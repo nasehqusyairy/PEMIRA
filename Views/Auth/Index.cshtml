@@ -12,6 +12,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insuladev Templates | Sign In</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link rel="stylesheet" href="~/css/main.min.css">
     <link rel="shortcut icon" href="/img/LOGO BULAT.png">
 
@@ -50,18 +53,15 @@
                     </p>
                 </div>
                 <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID" required>
-                        <label asp-for="Code">ID</label>
-                    </div>
+                    <label asp-for="Code" class="form-label">ID Pengguna</label>
+                    <input type="text" class="form-control" asp-for="Code" placeholder="0xxxx" required>
                     <small><span class="text-danger" asp-validation-for="Code"></span></small>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Kata Sandi</label>
                     <div class="input-group">
-                        <div class="form-floating">
-                            <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password" required>
-                            <label asp-for="Password">Kata Sandi</label>
-                        </div>
+                        <input type="password" class="form-control" asp-for="Password" placeholder="Masukkan Kata Sandi"
+                            required>
                         <button type="button" class="btn btn-primary" onclick="showPassword()" style="
             display: flex;
             align-items: center;
@@ -72,16 +72,14 @@
                     <small><span class="text-danger" asp-validation-for="Password"></span></small>
                 </div>
                 <div class="mb-3">
-                    <div class="form-floating">
-                        <select class="form-select" asp-for="ElectionId" required>
-                            <option value="0">Pilih Pencoblosan</option>
-                            @foreach (Election election in Model.Elections)
-                            {
-                                <option value="@(election.Id)">@election.Name</option>
-                            }
-                        </select>
-                        <label asp-for="ElectionId">Pencoblosan</label>
-                    </div>
+                    <label asp-for="ElectionId" class="form-label">Pemilihan</label>
+                    <select class="form-select" asp-for="ElectionId" required>
+                        <option value="0">Pilih Pemilihan</option>
+                        @foreach (Election election in Model.Elections)
+                        {
+                            <option value="@(election.Id)">@election.Name</option>
+                        }
+                    </select>
                     <small><span class="text-danger" asp-validation-for="ElectionId"></span></small>
                 </div>
                 <div class="d-grid gap-2 mb-3">
@@ -103,8 +101,10 @@
                                 PILKASI (Pemilihan Ketua Organisasi)
                             </h3>
                             <p class="text-justify">
-                                Ini adalah kesempatan Anda untuk memilih pemimpin yang akan memimpin organisasi berikutnya. 
-                                Suara Anda sangat penting dalam menentukan siapa yang akan membawa visi dan perubahan positif. 
+                                Ini adalah kesempatan Anda untuk memilih pemimpin yang akan memimpin organisasi
+                                berikutnya.
+                                Suara Anda sangat penting dalam menentukan siapa yang akan membawa visi dan perubahan
+                                positif.
                                 Pelajari profil dan visi para calon, pilih yang terbaik, dan berikan suara Anda.
                             </p>
                             <p>
@@ -125,9 +125,12 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 
     <script>
         function showPassword() {
@@ -143,6 +146,12 @@
                 showPassword.title = 'Tampilkan Kata Sandi';
             }
         }
+
+        $('.form-select').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            dropdownAutoWidth: true
+        });
     </script>
 
 </body>
