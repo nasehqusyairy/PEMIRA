@@ -5,7 +5,9 @@
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 <style>
     @@media (min-width: 1400px) {
         .card-body:has(canvas) {
@@ -235,10 +237,30 @@
             </div>
         </div>
     }
+}else{
+     <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4 text-center">
+            <img src="/img/empty-animate.svg" class="img-fluid">
+            <h2 class="text-dark">
+                Pemilihan tidak Tersedia
+            </h2>
+            <p class="text-justify text-lg-center">
+                Pemilihan tidak tersedia saat ini, silahkan coba lagi nanti.
+            </p>
+            <a href="https://storyset.com/people">People illustrations by Storyset</a>
+        </div>
+    </div>
 }
 
 
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $('.form-select').select2({
+        theme: 'bootstrap-5',
+        dropdownAutoWidth: true,
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 @{
     var labels = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"'{c.User.Name}'")) : string.Empty;
