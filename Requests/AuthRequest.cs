@@ -46,14 +46,8 @@ public class AuthRequest(ModelStateDictionary modelState, AuthViewModel input, A
             else
             {
                 DerivedData["UserId"] = user.Id;
-                if (roleUser != null)
-                {
-                    DerivedData["RoleId"] = roleUser.RoleId;
-                }
-                else
-                {
-                    DerivedData["RoleId"] = 4;
-                }
+                DerivedData["RoleId"] = 4;
+
             }
         }
         else

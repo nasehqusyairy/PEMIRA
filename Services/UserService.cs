@@ -70,18 +70,6 @@ namespace PEMIRA.Services
             user.Name = user.Name.ToUpper();
             _context.Users.Add(user);
             _context.SaveChanges();
-            User? newuser = _context.Users.FirstOrDefault(u => u.Code == user.Code);
-            if (newuser != null)
-            {
-                _context.RoleUsers.Add(new RoleUser
-                {
-                    UserId = newuser.Id,
-                    RoleId = 4,
-                    ElectionId = 70536
-
-                });
-                _context.SaveChanges();
-            }
         }
         public void Update(UserViewModel input, User user, long idUserNow)
         {
