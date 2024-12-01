@@ -1,1 +1,19 @@
-<h1>🗿</h1>
+@model AccessDeniedViewModel
+@{
+  ViewBag.PageTitle = Model.Title;
+}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6 col-lg-4 text-center">
+    <img src="/img/403-error-forbidden-animate.svg" alt="" class="img-fluid">
+    <h2>
+      Akses Halaman Ditolak
+    </h2>
+    <p>
+      Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.
+    </p>
+    <p>
+      <a href="/" class="btn btn-primary">Kembali ke Beranda</a>
+    </p>
+    <a href="https://storyset.com/worker">Worker illustrations by Storyset</a>
+  </div>
+</div>

@@ -82,8 +82,7 @@
                                 <div class="d-grid gap-2">
                                     <div class="text-center">
                                         <img src="@(candidate.Img)" class="rounded-circle mb-3 img-thumbnail"
-                                            alt="Foto @(candidate.User.Name)"
-                                            style="border-color: #@(candidate.Color);border-width: 3px;width: 125px;height:125px">
+                                            alt="Foto @(candidate.User.Name)" style="width: 125px;height:125px">
                                         <h5 class="card-title">@(candidate.User.Name)</h5>
                                         <p>
                                             @foreach (var tag in candidate.User.TagUsers.Select(t => t.Tag))
