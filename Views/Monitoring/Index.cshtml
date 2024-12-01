@@ -30,6 +30,7 @@
     @if (Model.Election.Candidates != null && Model.Election.Candidates.Count > 0)
     {
         var Candidates = Model.Election.Candidates.OrderByDescending(c => c.CandidateUsers.Count);
+        
 
         <div class="row">
             <div class="col-12 col-lg-3">
@@ -88,7 +89,7 @@
                                     <div class="d-flex align-items-center gap-2">
                                         <div>
                                             @* placeholder img *@
-                                            <img src="@(candidate.Img)" class="rounded-circle" alt="..."
+                                            <img  src="@(candidate.Img == "nophoto.jpg" ? Url.Content("/img/"+candidate.Img) : candidate.Img)" class="rounded-circle" alt="..."
                                                  style="width: 50px;height: 50px">
                                         </div>
                                         <div>
@@ -126,6 +127,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
+                    <div class="card-header">
+                        Peserta yang Belum Memilih
+                    </div>
                     <div class="card-body">
                         <form method="post">
                             <div class="mb-3 d-grid gap-2 d-md-block">

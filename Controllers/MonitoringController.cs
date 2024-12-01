@@ -66,6 +66,7 @@ namespace PEMIRA.Controllers
                 MonitoringService service = new(_context, Convert.ToInt32(TempData["GolputCount"]), Convert.ToInt64(existingClaim.Value));
                 MonitoringViewModel model = new MonitoringViewModel();
                 TableHelper.SetTableViewModel(service, model);
+
                 TempData.Keep("GolputCount");
                 model.TagUsers = service.GetTagUsers();
                 return View(model);

@@ -21,6 +21,6 @@ namespace PEMIRA.ViewModels
         public long ElectionId { get; set; }
         public string Color { get; set; } = "#00bcd4";
         public string? Img { get; set; }
-        public IFormFile Image { get; set; } = null!;
+        public IFormFile? Image { get; set; } = null;
     }
 }

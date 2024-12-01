@@ -32,9 +32,8 @@
             @* preview *@
             <div class="mb-3">
                 <img class="img-thumbnail"
-                     src="@(Model.Img != "nophoto.jpg" ? Url.Content(@Model.Img) : Url.Content("/img/placeholder.jpg"))"
-                     id="preview"
-                     style="width: 100px; height: 100px;">
+                    src="@(Model.Img != "nophoto.jpg" ? Url.Content(@Model.Img) : Url.Content("/img/"+Model.Img))"
+                    id="preview" style="width: 100px; height: 100px;">
             </div>
             <button class="btn btn-primary" type="submit">Simpan</button>
             <a asp-action="Index" class="btn btn-secondary">Kembali</a>

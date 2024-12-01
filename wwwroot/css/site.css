@@ -1,3 +1,7 @@
 td .btn{
   margin-bottom: calc(1rem * .25);
 }
+
+tr {
+  vertical-align: middle;
+}
