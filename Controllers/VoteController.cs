@@ -19,7 +19,7 @@ namespace PEMIRA.Controllers
         {
             VoteService service = new(_context);
 
-            List<Election> elections = service.GetElections();
+            List<Election> elections = service.GetElectionUsers(UserId);
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
 
             string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;

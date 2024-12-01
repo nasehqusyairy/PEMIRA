@@ -1,143 +1,149 @@
 @model AuthViewModel
 @{
-  Layout = null;
-  ViewBag.PageTitle = "Authentication";
-  List<string> errorMessages = TempData["ErrorMessages"] as List<string> ?? new List<string>();
-  Model.ReturnUrl = Context.Request.Query["ReturnUrl"];
+    Layout = null;
+    ViewBag.PageTitle = "Authentication";
+    List<string> errorMessages = TempData["ErrorMessages"] as List<string> ?? new List<string>();
+    Model.ReturnUrl = Context.Request.Query["ReturnUrl"];
 }
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Insuladev Templates | Sign In</title>
-  <link rel="stylesheet" href="~/css/main.min.css">
-  <link rel="shortcut icon" href="/img/LOGO BULAT.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insuladev Templates | Sign In</title>
+    <link rel="stylesheet" href="~/css/main.min.css">
+    <link rel="shortcut icon" href="/img/LOGO BULAT.png">
 
-  <!-- Theme Color -->
-  <!-- <meta name="theme-color" content="#008080"> -->
-  <meta name="theme-color" content="#0d6efd">
-  <style>
-    .bd-login-form {
-      min-height: 100vh;
-      flex: 3;
-      background-position: center;
-      background-size: cover;
-    }
+    <!-- Theme Color -->
+    <!-- <meta name="theme-color" content="#008080"> -->
+    <meta name="theme-color" content="#0d6efd">
+    <style>
+        .bd-login-form {
+            min-height: 100vh;
+            flex: 3;
+            background-position: center;
+            background-size: cover;
+        }
 
-    .bd-login-cover {
-      flex: 8;
-      min-height: 100vh;
-      background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .5)), url(/img/bg-login.jpg);
-      background-size: cover;
-      background-position: center;
-    }
-  </style>
+        .bd-login-cover {
+            flex: 8;
+            min-height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .5)), url(/img/bg-login.jpg);
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
 </head>
 
 <body style="background-color: var(--bs-gray-900);">
-  <div class="bg-white d-block d-lg-flex">
+    <div class="bg-white d-block d-lg-flex">
 
-    <section class="bd-login-form px-5 h-100 d-flex align-items-center justify-content-center">
-      <!-- login form -->
-      <form class="w-100" asp-action="Index" method="post">
-        <input type="hidden" asp-for="ReturnUrl">
-        <div class="text-center">
-          <h3 class=" fw-bold">Autentikasi</h3>
-          <p class="text-muted ">
-            Silahkan masukkan ID dan Kata Sandi Anda
-          </p>
-        </div>
-        <div class="mb-3">
-          <div class="form-floating">
-            <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID" required>
-            <label asp-for="Code">ID</label>
-          </div>
-          <small><span class="text-danger" asp-validation-for="Code"></span></small>
-        </div>
-        <div class="mb-3">
-          <div class="input-group">
-            <div class="form-floating">
-              <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password" required>
-              <label asp-for="Password">Kata Sandi</label>
-            </div>
-            <button type="button" class="btn btn-primary" onclick="showPassword()" style="
+        <section class="bd-login-form px-5 h-100 d-flex align-items-center justify-content-center">
+            <!-- login form -->
+            <form class="w-100" asp-action="Index" method="post">
+                <input type="hidden" asp-for="ReturnUrl">
+                <div class="text-center">
+                    <h3 class=" fw-bold">Autentikasi</h3>
+                    <p class="text-muted ">
+                        Silahkan masukkan ID dan Kata Sandi Anda
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" asp-for="Code" placeholder="Enter your ID" required>
+                        <label asp-for="Code">ID</label>
+                    </div>
+                    <small><span class="text-danger" asp-validation-for="Code"></span></small>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" asp-for="Password" placeholder="Enter your Password" required>
+                            <label asp-for="Password">Kata Sandi</label>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="showPassword()" style="
             display: flex;
             align-items: center;
             justify-content: center;" id="show-password" title="Show Password">
-              <i class="bi bi-eye px-2"></i>
-            </button>
-          </div>
-          <small><span class="text-danger" asp-validation-for="Password"></span></small>
-        </div>
-        <div class="mb-3">
-          <div class="form-floating">
-            <select class="form-select" asp-for="ElectionId" required>
-              <option value="0">Pilih Pencoblosan</option>
-              @foreach (Election election in Model.Elections)
-              {
-                <option value="@(election.Id)">@election.Name</option>
-              }
-            </select>
-            <label asp-for="ElectionId">Pencoblosan</label>
-          </div>
-          <small><span class="text-danger" asp-validation-for="ElectionId"></span></small>
-        </div>
-        <div class="d-grid gap-2 mb-3">
-          <button type="submit" class="btn btn-primary btn-lg">Masuk</button>
-        </div>
-      </form>
-    </section>
+                            <i class="bi bi-eye px-2"></i>
+                        </button>
+                    </div>
+                    <small><span class="text-danger" asp-validation-for="Password"></span></small>
+                </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <select class="form-select" asp-for="ElectionId" required>
+                            <option value="0">Pilih Pencoblosan</option>
+                            @foreach (Election election in Model.Elections)
+                            {
+                                <option value="@(election.Id)">@election.Name</option>
+                            }
+                        </select>
+                        <label asp-for="ElectionId">Pencoblosan</label>
+                    </div>
+                    <small><span class="text-danger" asp-validation-for="ElectionId"></span></small>
+                </div>
+                <div class="d-grid gap-2 mb-3">
+                    <button type="submit" class="btn btn-primary btn-lg">Masuk</button>
+                </div>
+            </form>
+        </section>
 
-    <section class="bd-login-cover p-3 p-lg-5 d-flex flex-column justify-content-center justify-content-lg-end">
-      <div class="row justify-content-end">
-        <div class="col-12 col-lg-6">
-          <div class="border border-light rounded p-5 shadow" style="
-          backdrop-filter: blur( 4px );
-          backdrop-filter: blur( 7.5px );
-          -webkit-backdrop-filter: blur( 10px );">
-            <div class="text-white text-justify">
-              <img src="/img/LOGO_TRANSPARAN.png" alt="Logo" height="75" class="mb-3 img-fluid">
-              <h2 class="fw-bold">Insuladev Templates</h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In nemo a debitis iure autem pariatur sed
-                enim,
-                numquam, aliquid repudiandae, maxime inventore laborum recusandae veritatis laboriosam corrupti libero
-                perferendis explicabo! </p>
-              <p>© @(DateTime.Now.Year) Insuladev Official. All rights reserved.</p>
+        <section class="bd-login-cover p-3 p-lg-5 d-flex flex-column justify-content-center justify-content-lg-end">
+            <div class="row justify-content-end">
+                <div class="col-12 col-lg-6">
+                    <div class="border border-light rounded p-5 shadow" style="
+                            backdrop-filter: blur( 4px );
+                            backdrop-filter: blur( 7.5px );
+                             -webkit-backdrop-filter: blur( 10px );">
+                        <div class="text-white">
+                            <img src="/img/LOGO_TRANSPARAN.png" alt="Logo" height="75" class="mb-3 img-fluid">
+                            <h3 class="fw-bold">
+                                PILKASI (Pemilihan Ketua Organisasi)
+                            </h3>
+                            <p class="text-justify">
+                                Ini adalah kesempatan Anda untuk memilih pemimpin yang akan memimpin organisasi berikutnya. 
+                                Suara Anda sangat penting dalam menentukan siapa yang akan membawa visi dan perubahan positif. 
+                                Pelajari profil dan visi para calon, pilih yang terbaik, dan berikan suara Anda.
+                            </p>
+                            <p>
+                                Pilih dengan bijak, masa depan organisasi ada di tangan Anda!
+                            </p>
+                            <p>© @(DateTime.Now.Year) Insuladev Official. All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-  </div>
+    </div>
 
-  <!-- JavaScript -->
-  @{
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-  }
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
-
-  <script>
-    function showPassword() {
-      const password = document.getElementById('Password');
-      const showPassword = document.getElementById('show-password');
-      if (password.type === 'password') {
-        password.type = 'text';
-        showPassword.innerHTML = '<i class="px-2 bi bi-eye-slash"></i>';
-        showPassword.title = 'Sembunyikan Kata Sandi';
-      } else {
-        password.type = 'password';
-        showPassword.innerHTML = '<i class="px-2 bi bi-eye"></i>';
-        showPassword.title = 'Tampilkan Kata Sandi';
-      }
+    <!-- JavaScript -->
+    @{
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-  </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+
+    <script>
+        function showPassword() {
+            const password = document.getElementById('Password');
+            const showPassword = document.getElementById('show-password');
+            if (password.type === 'password') {
+                password.type = 'text';
+                showPassword.innerHTML = '<i class="px-2 bi bi-eye-slash"></i>';
+                showPassword.title = 'Sembunyikan Kata Sandi';
+            } else {
+                password.type = 'password';
+                showPassword.innerHTML = '<i class="px-2 bi bi-eye"></i>';
+                showPassword.title = 'Tampilkan Kata Sandi';
+            }
+        }
+    </script>
 
 </body>
 

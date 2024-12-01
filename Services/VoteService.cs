@@ -7,9 +7,18 @@ namespace PEMIRA.Services
     {
         private readonly DatabaseContext _context = context;
 
-        public List<Election> GetElections()
-        {
-            return [.. _context.Elections.Where(e => e.DeletedAt == null)];
+        public List<Election> GetElectionUsers(long userId)
+            {
+            if (userId != 1)
+            {
+                return [.. _context.Elections
+                .Where(e => e.DeletedAt == null && e.ElectionUsers.Any(eu => eu.UserId == userId))
+                ];
+            }
+            else
+            {
+                return [.. _context.Elections];
+            }
         }
         public Election? GetElection(long id) => _context.Elections.FirstOrDefault(el => el.Id == id);
         public bool IsUserHasVoted(long id, long electionid) => _context.CandidateUsers.Include(c => c.Candidate).Any(cu => cu.UserId == id && cu.Candidate.ElectionId == electionid);
@@ -22,7 +31,7 @@ namespace PEMIRA.Services
       .Where(c => c.ElectionId == ElectionId && c.DeletedAt == null)];
         }
 
-        public void Store (long userId, long candidateId)
+        public void Store(long userId, long candidateId)
         {
             CandidateUser? choice = new()
             {
