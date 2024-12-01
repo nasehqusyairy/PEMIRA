@@ -67,7 +67,7 @@
                     <div class="card-header">Golongan Putih</div>
                     <div class="card-body">
                         <h1 class="card-text">
-                            @(Model.GolputUsersCount)
+                            @(Model.TotalEntries)
                         </h1>
                     </div>
                 </div>
@@ -194,7 +194,6 @@
                                         </a>
                                     </th>
                                     <th>Penanda</th>
-                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -212,18 +211,7 @@
                                                 <span class="badge bg-secondary">@taguser.Tag.Name</span>
                                             }
 
-                                        </td>
-                                        <td>
-                                            <a href="@Url.Action("TagUser", "User", new { id = user.Id })"
-                                                class="btn btn-primary" data-bs-title="Penanda" data-bs-placement="bottom">
-                                                <i class="bi bi-tags"></i>
-                                            </a>
-                                            <a href="@Url.Action("Edit", "User", new { id = user.Id })"
-                                                class="btn btn-warning" data-bs-title="Edit" data-bs-placement="bottom">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            @(ViewHelper.GenerateDeleteButton(Url.Action("Delete", new { id = user.Id })))
-                                        </td>
+                                        </td>     
                                     </tr>
                                 }
                                 @if (Model.Entries.Count == 0)

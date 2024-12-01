@@ -55,13 +55,12 @@ namespace PEMIRA.Services
 
             page = page < 1 ? 1 : page;
 
-            IQueryable<User> query = _context.ElectionUsers
-                .Where(eu => eu.ElectionId == _electionId)
-                .Select(eu => eu.User)
+            IQueryable<User> query = _context.Users
+                .Include(user => user.TagUsers)
                 .Where(user =>
                     user.DeletedAt == null &&
-                    !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
+                    _context.ElectionUsers.Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) &&
+                    !_context.CandidateUsers.Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -71,10 +70,8 @@ namespace PEMIRA.Services
 
             if (_selectedTags.Count > 0)
             {
-                query = query
-                    .Include(user => user.TagUsers)
-                    .Where(user =>
-                        user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
+                query = query.Where(user =>
+                    user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
             }
 
             query = isAsc
@@ -88,13 +85,12 @@ namespace PEMIRA.Services
 
         public override int GetTotalEntry(string search)
         {
-            IQueryable<User> query = _context.ElectionUsers
-                .Where(eu => eu.ElectionId == _electionId)
-                .Select(eu => eu.User)
+            IQueryable<User> query = _context.Users
+                .Include(user => user.TagUsers)
                 .Where(user =>
                     user.DeletedAt == null &&
-                    !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
+                    _context.ElectionUsers.Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) &&
+                    !_context.CandidateUsers.Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId));
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -104,10 +100,8 @@ namespace PEMIRA.Services
 
             if (_selectedTags.Count > 0)
             {
-                query = query
-                    .Include(user => user.TagUsers)
-                    .Where(user =>
-                        user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
+                query = query.Where(user =>
+                    user.TagUsers.Any(tagUser => _selectedTags.Contains(tagUser.TagId)));
             }
 
             return query.Count();
