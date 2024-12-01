@@ -21,8 +21,6 @@ namespace PEMIRA.ViewModels
         public long ElectionId { get; set; }
         public string Color { get; set; } = "#00bcd4";
         public string? Img { get; set; }
-
-        [Required(ErrorMessage = "Gambar tidak boleh kosong")]
         public IFormFile Image { get; set; } = null!;
     }
 }

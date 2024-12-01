@@ -17,7 +17,7 @@ namespace PEMIRA.Controllers
         public IActionResult Index(MonitoringViewModel model)
         {
             string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
-            MonitoringService service = new(_context, 10, selectedElectionId != null ? long.Parse(selectedElectionId) : 0);
+            MonitoringService service = new(_context, model.LimitEntry, selectedElectionId != null ? long.Parse(selectedElectionId) : 0, model.SelectedTags);
 
             List<Election> elections = service.GetElections();
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
@@ -30,6 +30,7 @@ namespace PEMIRA.Controllers
             model.Election = service.GetElection();
             model.GolputUsersCount = service.GetGolputUsersCount();
             model.Tags = service.GetTags();
+            model.TagUsers = service.GetTagUsers();
 
             return View(model);
         }
