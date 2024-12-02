@@ -4,6 +4,12 @@
     ViewBag.PageTitle = "Pemilihan";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+
+    if (startNumber <= 0)
+    {
+        startNumber = 1;
+    }
+
 }
 @if (TempData["SuccessMessage"] != null)
 {
