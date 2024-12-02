@@ -14,7 +14,21 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 
 const copyText = (evt) => {
   evt.preventDefault()
-  navigator.clipboard.writeText(evt.target.textContent)
+
+  // salin teks
+  // apabila navigator.clipboard tersedia
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(evt.target.textContent)
+  } else {
+    // apabila navigator.clipboard tidak tersedia
+    const textArea = document.createElement('textarea')
+    textArea.value = evt.target.textContent
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+  }
+
   const el = tooltipList.filter(el => el._element == evt.target)[0]
   el.setContent({ '.tooltip-inner': 'Berhasil disalin!' })
   setTimeout(() => {
