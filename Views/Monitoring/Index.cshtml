@@ -263,7 +263,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
 @{
-    var labels = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"'{c.User.Name}'")) : string.Empty;
+    var labels = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"`{c.User.Name}`")) : string.Empty;
     var data = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => c.CandidateUsers.Count)) : string.Empty;
     var colors = Model.Election?.Candidates != null ? string.Join(",", Model.Election.Candidates.Select(c => $"'#{c.Color}'")) : string.Empty;
 

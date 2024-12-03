@@ -7,7 +7,7 @@ namespace PEMIRA.ViewModels
         public long Id { get; set; }
 
         [Required(ErrorMessage = "Nama harus diisi")]
-        [RegularExpression(@"^[a-zA-Z0-9\s\.\,\']+$", ErrorMessage = "Nama hanya boleh berisi huruf, angka, spasi, titik, koma, dan tanda petik")]
+        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Nama hanya boleh berisi huruf dan angka")]
         public string Name { get; set; } = "";
 
         [Required(ErrorMessage = "ID harus diisi")]
