@@ -52,7 +52,7 @@ namespace PEMIRA.Services
 
         public override int GetTotalEntry(string search)
         {
-            return _context.ElectionUsers.Count(electionUser => electionUser.User.Name.Contains(search));
+            return _context.ElectionUsers.Where(eu => eu.ElectionId == ElectionId).Count(electionUser => electionUser.User.Name.Contains(search));
         }
         public List<TagUser> GetTagUsers() => _context.TagUsers.Include(tag => tag.Tag).ToList();
         public int GetPageCount(string search)

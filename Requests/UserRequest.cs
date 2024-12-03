@@ -17,6 +17,7 @@ public class UserRequest(ModelStateDictionary modelState, UserViewModel input, U
     public bool Validate()
     {
         if (Service.IsUserUnique(UserInput.Name, UserInput.Code ?? "") != null)
+
         {
             ModelState.AddModelError("Code", "Peserta Sudah Ada");
         }

@@ -28,7 +28,7 @@ namespace PEMIRA.Controllers
 
             model.ElectionId = selectedElectionId;
             model.Elections = new SelectList(elections, "Id", "Name", selectedElectionId);
-            model.Election = service.GetElection();
+            model.Election = service.GetElection(Convert.ToInt64(selectedElectionId));
             model.GolputUsersCount = service.GetGolputUsersCount();
             model.Tags = service.GetTags();
             model.TagUsers = service.GetTagUsers();
@@ -54,6 +54,10 @@ namespace PEMIRA.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Golputs()
+        {
+            return View();
+        }
         public IActionResult Print()
         {
             if (User.Identity is not ClaimsIdentity identity)

@@ -15,20 +15,35 @@ namespace PEMIRA.Services
             return [.. _context.Elections.Where(e => e.DeletedAt == null)];
         }
 
-        public Election? GetElection()
+        public Election? GetElection(long electionId)
         {
-            return _context.Elections
-              .Include(e => e.Candidates.Where(c => c.DeletedAt == null).OrderByDescending(c => c.CandidateUsers.Count))
-                .ThenInclude(c => c.CandidateUsers)
-              .Include(e => e.Candidates)
-                .ThenInclude(c => c.User)
-              .Include(e => e.ElectionUsers)
-                .ThenInclude(e => e.User)
-                .ThenInclude(u => u.TagUsers)
-                .ThenInclude(tu => tu.Tag)
-            .FirstOrDefault(e => e.Id == electionId);
-        }
+            var election = _context.Elections
+                .Include(e => e.Candidates.Where(c => c.DeletedAt == null)) 
+                    .ThenInclude(c => c.CandidateUsers) 
+                .Include(e => e.Candidates)
+                    .ThenInclude(c => c.User) 
+                .Include(e => e.ElectionUsers) 
+                    .ThenInclude(eu => eu.User) 
+                    .ThenInclude(u => u.TagUsers) 
+                    .ThenInclude(tu => tu.Tag) 
+                .AsNoTracking()
+                .FirstOrDefault(e => e.Id == electionId);
 
+            if (election != null)
+            {
+                foreach (var candidate in election.Candidates)
+                {
+                    candidate.CandidateUsers = candidate.CandidateUsers
+                        .Where(cu => election.ElectionUsers.Any(eu => eu.UserId == cu.UserId))
+                        .ToList();
+                }
+                election.Candidates = election.Candidates
+                    .OrderByDescending(c => c.CandidateUsers.Count)
+                    .ToList();
+            }
+
+            return election;
+        }
         public List<Tag> GetTags()
         {
             return [.. _context.Tags];
@@ -44,9 +59,9 @@ namespace PEMIRA.Services
                 .Where(user =>
                     user.DeletedAt == null &&
                     _context.ElectionUsers
-                        .Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) && // Filter pengguna yang terdaftar di pemilihan
+                        .Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) && 
                     !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId)) // Filter pengguna yang belum memilih kandidat
+                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId)) 
                 .Count();
         }
         public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
