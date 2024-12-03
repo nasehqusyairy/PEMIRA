@@ -33,9 +33,10 @@
         <table class="table table-bordered table-striped">
             <thead class="table-light">
                 <tr>
-                    <th scope="col">No</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Password</th>
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Gender</th>
+                    <th>Password</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +45,7 @@
                     <tr>
                         <td>@Model.Users.ToList().IndexOf(user)</td>
                         <td>@user.Name</td>
+                        <td>@(user.Gender == false ? "Putra" : "Putri")</td>
                         <td>@user.Password</td>
                     </tr>
                 }

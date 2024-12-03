@@ -54,14 +54,14 @@ namespace PEMIRA.Services
 
             return query.ToList();
         }
-        public List<User> GetUsers() => [.. _context.Users];
+        public List<User> GetUsers() => [.. _context.Users.Where(user => user.DeletedAt == null).OrderBy(user => user.Gender).ThenBy(user => user.Name)];
         public override int GetTotalEntry(string search) => _context.Users.Count(user => user.DeletedAt == null && (user.Name.Contains(search) || user.Code.Contains(search)));
         public List<TagUser> GetTagUsers() => [.. _context.TagUsers.Include(tag => tag.Tag)];
         public int GetPageCount(string search)
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && (user.Name.Contains(search) || user.Code.Contains(search))) / (double)LimitEntry);
         }
-        public User? IsUserUnique(string name, long id) => _context.Users.FirstOrDefault(user => user.Name == name && user.DeletedAt == null && user.Id != id);
+        public User? IsUserUnique(string name, long id) => _context.Users.FirstOrDefault(user => user.DeletedAt == null && user.Name == name || user.Id != id);
         public User? GetUserById(long userId) => _context.Users.First(id => id.Id == userId);
         public void Store(User user, long idUserNow)
         {
