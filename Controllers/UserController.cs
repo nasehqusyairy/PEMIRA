@@ -111,11 +111,6 @@ namespace PEMIRA.Controllers
         public IActionResult Edit(UserViewModel input)
         {
             UserService service = new(_context);
-            UserRequest requestValidator = new(ModelState, input, service);
-            if (!requestValidator.Validate())
-            {
-                return ViewEditPage(input);
-            }
             User? user = service.GetUserById(input.Id);
             if (user == null)
             {

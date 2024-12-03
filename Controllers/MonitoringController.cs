@@ -22,13 +22,9 @@ namespace PEMIRA.Controllers
 
             List<Election> elections = service.GetElections();
             elections.Insert(0, new Election { Id = 0, Name = "Pilih Pemilihan" });
-
-
-            TableHelper.SetTableViewModel(service, model);
-
             model.ElectionId = selectedElectionId;
             model.Elections = new SelectList(elections, "Id", "Name", selectedElectionId);
-            model.Election = service.GetElection();
+            model.Election = service.GetElection(Convert.ToInt64(selectedElectionId));
             model.GolputUsersCount = service.GetGolputUsersCount();
             model.Tags = service.GetTags();
             model.TagUsers = service.GetTagUsers();
@@ -54,6 +50,14 @@ namespace PEMIRA.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult Golputs(MonitoringViewModel model)
+        {
+            string? selectedElectionId = Cookie.FindFirst("ElectionId")?.Value;
+            MonitoringService service = new(_context, model.LimitEntry, selectedElectionId != null ? long.Parse(selectedElectionId) : 0, model.SelectedTags);
+            TableHelper.SetTableViewModel(service, model);
+            model.TagUsers = service.GetTagUsers();
+            return View(model);
+        }
         public IActionResult Print()
         {
             if (User.Identity is not ClaimsIdentity identity)

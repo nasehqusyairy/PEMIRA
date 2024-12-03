@@ -18,7 +18,7 @@ namespace PEMIRA.Services
             }
 
             page = page < 1 ? 1 : page;
-
+            search = search.Trim();
             IQueryable<Candidate> query = _context.Candidates
                 .Include(candidate => candidate.User)
                 .Include(candidate => candidate.Election)

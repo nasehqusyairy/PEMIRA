@@ -21,6 +21,7 @@ namespace PEMIRA.Services
 
         public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
+            search = search.Trim();
             if (!ModelHelper.IsPropertyExist<User>(orderBy))
             {
                 orderBy = "Name";
@@ -29,7 +30,6 @@ namespace PEMIRA.Services
             page = page < 1 ? 1 : page;
 
             IQueryable<User> query = _context.Users;
-
             if (_selectedTags.Count == 0)
             {
                 query = query.Where(user =>
@@ -61,7 +61,7 @@ namespace PEMIRA.Services
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && (user.Name.Contains(search) || user.Code.Contains(search))) / (double)LimitEntry);
         }
-        public User? IsUserUnique(string code, long id) => _context.Users.FirstOrDefault(user => user.DeletedAt == null && user.Code == code && user.Id != id);
+        public User? IsUserUnique(string name, string code) => _context.Users.Where(user => user.Name == name || user.Code == code).FirstOrDefault(user => user.DeletedAt == null);
         public User? GetUserById(long userId) => _context.Users.First(id => id.Id == userId);
         public void Store(User user, long idUserNow)
         {
