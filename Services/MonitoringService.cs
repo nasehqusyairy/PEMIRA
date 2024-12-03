@@ -18,14 +18,14 @@ namespace PEMIRA.Services
         public Election? GetElection(long electionId)
         {
             var election = _context.Elections
-                .Include(e => e.Candidates.Where(c => c.DeletedAt == null)) 
-                    .ThenInclude(c => c.CandidateUsers) 
+                .Include(e => e.Candidates.Where(c => c.DeletedAt == null))
+                    .ThenInclude(c => c.CandidateUsers)
                 .Include(e => e.Candidates)
-                    .ThenInclude(c => c.User) 
-                .Include(e => e.ElectionUsers) 
-                    .ThenInclude(eu => eu.User) 
-                    .ThenInclude(u => u.TagUsers) 
-                    .ThenInclude(tu => tu.Tag) 
+                    .ThenInclude(c => c.User)
+                .Include(e => e.ElectionUsers)
+                    .ThenInclude(eu => eu.User)
+                    .ThenInclude(u => u.TagUsers)
+                    .ThenInclude(tu => tu.Tag)
                 .AsNoTracking()
                 .FirstOrDefault(e => e.Id == electionId);
 
@@ -59,9 +59,9 @@ namespace PEMIRA.Services
                 .Where(user =>
                     user.DeletedAt == null &&
                     _context.ElectionUsers
-                        .Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) && 
+                        .Any(eu => eu.UserId == user.Id && eu.ElectionId == _electionId) &&
                     !_context.CandidateUsers
-                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId)) 
+                        .Any(cu => cu.UserId == user.Id && cu.Candidate.ElectionId == _electionId))
                 .Count();
         }
         public override List<User> GetEntries(string search, int page, string orderBy, bool isAsc)
@@ -123,6 +123,14 @@ namespace PEMIRA.Services
             }
 
             return query.Count();
+        }
+
+        public string GetElectionName()
+        {
+            return _context.Elections
+                .Where(e => e.Id == _electionId)
+                .Select(e => e.Name)
+                .First();
         }
 
     }

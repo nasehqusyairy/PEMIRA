@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @model MonitoringViewModel
 @{
-    ViewBag.PageTitle = "Daftar Peserta Belum Memilih";
+    ViewBag.PageTitle = "Peserta yang Belum Memilih";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
 }
@@ -9,16 +9,20 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
-                Peserta yang Belum Memilih
+                Pemilihan : @(ViewBag.ElectionName)
             </div>
             <div class="card-body">
                 <form method="post">
                     <div class="mb-3 d-grid gap-2 d-md-block">
-                        <a asp-action="Print" class="btn btn-primary" target="_blank"><i class="bi bi-printer me-2"></i>Cetak</a>
+                        <a asp-action="Print" class="btn btn-primary" target="_blank"><i
+                                class="bi bi-printer me-2"></i>Cetak</a>
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#tagsModal">
+                            data-bs-target="#tagsModal">
                             <i class="bi bi-filter-left"></i> Saring Penanda
                         </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-return-left"></i> Kembali
+                        </a>
                     </div>
                     <div class="modal fade" tabindex="-1" id="tagsModal">
                         <div class="modal-dialog modal-dialog-scrollable">
@@ -26,7 +30,7 @@
                                 <div class="modal-header">
                                     <h5 class="modal-title">Saring Penanda</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <ul class="list-group">
@@ -35,7 +39,7 @@
                                             <li class="list-group-item">
                                                 <div class="form-check">
                                                     <input class="form-check-input" name="SelectedTags[]" type="checkbox"
-                                                           value="@(tag.Id)" id="tag@(tag.Id)"
+                                                        value="@(tag.Id)" id="tag@(tag.Id)"
                                                     @(Model.SelectedTags.Contains(tag.Id) ? "checked" : "")>
                                                     <label class="form-check-label" for="tag@(tag.Id)">
                                                         @(tag.Name)
@@ -46,8 +50,7 @@
                                     </ul>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                         Tutup
                                     </button>
                                     <button class="btn btn-primary" type="submit">Terapkan</button>
