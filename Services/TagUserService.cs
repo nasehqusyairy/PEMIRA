@@ -10,7 +10,7 @@ namespace PEMIRA.Services
         public override List<TagUser> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
             page = page < 1 ? 1 : page;
-
+            search = search.Trim();
             IQueryable<TagUser> query = _context.TagUsers
                 .Include(tag => tag.Tag)
                 .Include(user => user.User)

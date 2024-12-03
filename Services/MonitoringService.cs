@@ -55,7 +55,7 @@ namespace PEMIRA.Services
             {
                 orderBy = "Name";
             }
-
+            search = search.Trim();
             page = page < 1 ? 1 : page;
 
             IQueryable<User> query = _context.Users

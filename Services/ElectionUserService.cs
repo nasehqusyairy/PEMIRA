@@ -11,6 +11,7 @@ namespace PEMIRA.Services
 
         public override List<ElectionUser> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
+            search = search.Trim();
             if (!ModelHelper.IsPropertyExist<User>(orderBy))
             {
                 orderBy = "Name";

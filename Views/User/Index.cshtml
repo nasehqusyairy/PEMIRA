@@ -4,6 +4,10 @@
     ViewBag.PageTitle = "Pengguna";
     string currentUrl = Context.Request.GetDisplayUrl();
     var startNumber = (Model.CurrentPage - 1) * Model.LimitEntry + 1;
+    if (startNumber <= 0)
+    {
+        startNumber = 1;
+    }
 }
 @* alert success *@
 @if (TempData["SuccessMessage"] != null)
@@ -59,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ?? "", "Cari pengguna..."))
+                    @(ViewHelper.GenerateSearchAndLimitForm(Model.LimitEntry, Model.Search ??  "", "Cari pengguna..."))
                     <p>
                         Menampilkan @Model.Entries.Count dari @(Model.TotalFilteredEntries) data (difilter dari total
                         @(Model.TotalEntries) data)
