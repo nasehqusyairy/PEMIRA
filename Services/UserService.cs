@@ -61,7 +61,7 @@ namespace PEMIRA.Services
         {
             return (int)Math.Ceiling(_context.Users.Count(user => user.DeletedAt == null && (user.Name.Contains(search) || user.Code.Contains(search))) / (double)LimitEntry);
         }
-        public User? IsUserUnique(string name, long id) => _context.Users.FirstOrDefault(user => user.DeletedAt == null && user.Name == name || user.Id != id);
+        public User? IsUserUnique(string code, long id) => _context.Users.FirstOrDefault(user => user.DeletedAt == null && user.Code == code && user.Id != id);
         public User? GetUserById(long userId) => _context.Users.First(id => id.Id == userId);
         public void Store(User user, long idUserNow)
         {

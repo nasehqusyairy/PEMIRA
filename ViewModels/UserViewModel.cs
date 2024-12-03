@@ -7,12 +7,13 @@ namespace PEMIRA.ViewModels
         public long Id { get; set; }
 
         [Required(ErrorMessage = "Nama harus diisi")]
-        [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Nama hanya boleh berisi huruf dan angka")]
+        // nama hanya boleh berisi huruf, angka, dan spasi
+        [RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Nama hanya boleh berisi huruf, angka, dan spasi")]
         public string Name { get; set; } = "";
 
         [Required(ErrorMessage = "ID harus diisi")]
         [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "ID hanya boleh berisi huruf dan angka")]
-        public string? Code { get; set; }
+        public string Code { get; set; } = "";
 
         [Required(ErrorMessage = "Jenis Kelamin Harus diisi")]
         public bool? Gender { get; set; }
