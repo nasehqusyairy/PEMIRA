@@ -28,6 +28,7 @@ namespace PEMIRA.Controllers
             model.GolputUsersCount = service.GetGolputUsersCount();
             model.Tags = service.GetTags();
             model.TagUsers = service.GetTagUsers();
+            TempData["GolputCount"] = model.GolputUsersCount.ToString();
             return View(model);
         }
 
