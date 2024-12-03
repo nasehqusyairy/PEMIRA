@@ -56,6 +56,7 @@ namespace PEMIRA.Controllers
             MonitoringService service = new(_context, model.LimitEntry, selectedElectionId != null ? long.Parse(selectedElectionId) : 0, model.SelectedTags);
             TableHelper.SetTableViewModel(service, model);
             model.TagUsers = service.GetTagUsers();
+            model.Tags = service.GetTags();
             ViewBag.ElectionName = service.GetElectionName();
             return View(model);
         }
