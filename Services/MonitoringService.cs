@@ -22,6 +22,8 @@ namespace PEMIRA.Services
                     .ThenInclude(c => c.CandidateUsers)
                 .Include(e => e.Candidates)
                     .ThenInclude(c => c.User)
+                    .ThenInclude(u => u.TagUsers)
+                    .ThenInclude(tu => tu.Tag)
                 .Include(e => e.ElectionUsers)
                     .ThenInclude(eu => eu.User)
                     .ThenInclude(u => u.TagUsers)
