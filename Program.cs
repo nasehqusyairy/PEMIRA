@@ -68,7 +68,7 @@ app.OnExecute(() =>
         // Uncomment this line to revert the database
         //seeder.Revert();
 
-        seeder.Seed();
+        //seeder.Seed();
     }
 
     app.UseHttpsRedirection();
