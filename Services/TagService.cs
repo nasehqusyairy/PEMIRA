@@ -16,6 +16,7 @@ namespace PEMIRA.Services
             {
                 orderBy = "Name";
             }
+            search = search.Trim();
             page = page < 1 ? 1 : page;
             IQueryable<Tag> query = _context.Tags
                       .Where(tag => tag.DeletedAt == null && tag.Name.Contains(search));

@@ -45,12 +45,14 @@
                 <small class="text-danger"><span asp-validation-for="Gender"></span></small>
               </div>
             </div>
-            <div class="col-12 col-md-6">
-              <div class="mb-3">
-                <label class="form-label" asp-for="Password">Kata Sandi</label>
-                <input type="password" class="form-control" asp-for="Password">
-                <small class="text-danger"><span asp-validation-for="Password"></span></small>
+            <div class="col-6 mb-3">
+              @Html.LabelFor(pw => pw.Password, "Kata Sandi", new { @class = "form-label" })
+              <div class="input-group">
+                @Html.TextBoxFor(pw => pw.Password, new { @class = "form-control", @type = "password" })
+                <button type="button" class="btn btn-primary" onclick="showPassword()" id="show-password"><i
+                    class="bi bi-eye"></i></button>
               </div>
+              <small class="text-danger form-text">@Html.ValidationMessageFor(msg => msg.Password)</small>
             </div>
             <div class="col-12 col-md-6">
               <div class="mb-3">

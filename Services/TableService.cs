@@ -14,7 +14,7 @@ public abstract class TableService<T>(int limit) : ITableService<T>
   public abstract int GetTotalEntry(string search);
   public void SetEntryCount(string search)
   {
-    TotalFilteredEntries = GetTotalEntry(search);
+    TotalFilteredEntries = GetTotalEntry(search.Trim());
     if (search == "")
     {
       TotalEntries = TotalFilteredEntries;

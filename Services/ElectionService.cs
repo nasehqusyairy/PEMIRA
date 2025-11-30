@@ -10,6 +10,7 @@ namespace PEMIRA.Services
         private readonly DatabaseContext _context = context;
         public override List<Election> GetEntries(string search, int page, string orderBy, bool isAsc)
         {
+            search = search.Trim();
             if (!ModelHelper.IsPropertyExist<Election>(orderBy))
             {
                 orderBy = "Name";

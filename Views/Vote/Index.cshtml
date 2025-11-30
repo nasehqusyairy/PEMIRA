@@ -19,27 +19,19 @@
         content: "Dipilih";
     }
 </style>
-<script>
-    const candidatesFormOnSubmit = () => {
-        const formElement = document.getElementById('candidatesForm')
-        const formData = new FormData(formElement)
-        if (formData.get('SelectedCandidateId') === null) {
-            document.getElementById('nullAlert').classList.remove('d-none')
-        } else {
-            formElement.submit()
-        }
-    }
-</script>
 <div class="d-grid gap-2 d-lg-flex justify-content-lg-end">
-    <form asp-action="ChangeElection">
+    <form id="changeElectionForm" asp-action="ChangeElection">
         <div class="input-group">
             <select asp-for="ElectionId" class="form-select" asp-items="Model.Elections"></select>
-            <button class="btn btn-primary">Ganti</button>
+            <button type="button" class="btn btn-primary" onclick="avoidChange()">Ganti</button>
         </div>
     </form>
-    <button class="btn btn-primary" onclick="candidatesFormOnSubmit()">
-        <i class="bi bi-send"></i> Selesaikan
-    </button>
+    @if (Model.UserId != 1)
+    {
+        <button class="btn btn-primary" onclick="candidatesFormOnSubmit()">
+            <i class="bi bi-send"></i> Selesaikan
+        </button>
+    }
 </div>
 <hr>
 @{
@@ -55,7 +47,7 @@
                     <h2 class="text-dark">
                         Pemilihan tidak Tersedia
                     </h2>
-                    <p class="text-justify text-lg-center">
+                    <p class="text-center">
                         Pemilihan tidak tersedia saat ini, silahkan coba lagi nanti.
                     </p>
                     <a href="https://storyset.com/people">People illustrations by Storyset</a>
@@ -76,6 +68,14 @@
                 <button type="button" class="btn-close"
                     onclick="document.getElementById('nullAlert').classList.add('d-none')"></button>
             </div>
+
+            @* alert saat akan ganti pemilihan *@
+            <div class="alert alert-danger alert-dismissible fade show d-none" role="alert" id="avoidChangeAlert">
+                <strong>Kesalahan!</strong> Selesaikan pemilihan terlebih dahulu!
+                <button type="button" class="btn-close"
+                    onclick="document.getElementById('avoidChangeAlert').classList.add('d-none')"></button>
+            </div>
+
             <form id="candidatesForm" class="row" asp-action="Choose" method="post">
                 @foreach (var candidate in Model.Candidates)
                 {
@@ -95,7 +95,8 @@
                                         </p>
                                     </div>
                                     <input type="radio" class="btn-check" name="SelectedCandidateId"
-                                        id="SelectedCandidateId@(candidate.Id)" autocomplete="off" value="@(candidate.Id)" required>
+                                        id="SelectedCandidateId@(candidate.Id)" autocomplete="off" value="@(candidate.Id)" required
+                                        onchange="setSelectedCandidateId(event.target.value)">
                                     <label class="btn btn-primary" for="SelectedCandidateId@(candidate.Id)"></label>
                                 </div>
                             </div>
@@ -103,6 +104,7 @@
                     </div>
                 }
             </form>
+
         }
     }
     else
@@ -111,7 +113,7 @@
             <div class="col-12 col-md-6 col-lg-4 text-center">
                 <img src="/img/done-animate.svg" class="img-fluid">
                 <h2 class="text-dark">Pilihan Anda Terkirim!</h2>
-                <p class="text-justify text-lg-center">
+                <p class="text-center">
                     Terima kasih sudah memilih! Anda bisa melanjutkan pemilihan lainnya atau Anda bisa
                     <a href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">keluar</a> jika sudah selesai.
                 </p>
@@ -129,4 +131,25 @@
         theme: 'bootstrap-5',
         dropdownAutoWidth: true,
     });
+</script>
+<script>
+    const formElement = document.getElementById('candidatesForm')
+    let selectedCandidateId = null
+    const candidatesFormOnSubmit = () => {
+        if (selectedCandidateId === null) {
+            document.getElementById('nullAlert').classList.remove('d-none')
+        } else {
+            formElement.submit()
+        }
+    }
+    const setSelectedCandidateId = (id) => {
+        selectedCandidateId = id
+    }
+    const avoidChange = () => {
+        if (selectedCandidateId === null) {
+            document.getElementById('changeElectionForm').submit()
+        } else {
+            document.getElementById('avoidChangeAlert').classList.remove('d-none')
+        }
+    }
 </script>

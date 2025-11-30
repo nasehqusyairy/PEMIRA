@@ -28,7 +28,8 @@ namespace PEMIRA.Controllers
             {
                 ElectionId = selectedElectionId,
                 Elections = new SelectList(elections, "Id", "Name", selectedElectionId),
-                Candidates = selectedElectionId != null ? service.GetCandidates(long.Parse(selectedElectionId)) : []
+                Candidates = selectedElectionId != null ? service.GetCandidates(long.Parse(selectedElectionId)) : [],
+                UserId = UserId,
             };
             if(service.IsUserHasVoted(UserId, Convert.ToInt64(model.ElectionId)))
             {
@@ -58,6 +59,7 @@ namespace PEMIRA.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "Peserta")]
         public IActionResult Choose(long SelectedCandidateId)
         {
             VoteService service = new(_context);
